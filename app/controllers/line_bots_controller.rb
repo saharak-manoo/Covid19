@@ -1,7 +1,8 @@
 class LineBotsController < ApplicationController
-  def index
+  def callback
     ap '>>>> line callback'
     body = request.body.read
+    ap 'body'
     ap body
 
     signature = request.env['HTTP_X_LINE_SIGNATURE']
@@ -10,6 +11,8 @@ class LineBotsController < ApplicationController
     end
 
     events = client.parse_events_from(body)
+    ap 'events'
+    ap events
     events.each do |event|
       case event
       when Line::Bot::Event::Message
@@ -19,6 +22,10 @@ class LineBotsController < ApplicationController
             type: 'text',
             text: event.message['text']
           }
+
+          ap 'message'
+          ap message
+          
           client.reply_message(event['replyToken'], message)
         when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
           response = client.get_message_content(event.message['id'])
