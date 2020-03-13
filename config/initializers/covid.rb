@@ -29,7 +29,7 @@ class Covid
         deaths: report[4].to_i || 0,
         recovered: report[5].to_i || 0,
         updated_at: updated_at,
-        last_updated: "ปรับปรุงล่าสุดเมื่อ #{time_difference[:hours]} ชั่วโมง #{time_difference[:minutes]} นาที #{time_difference[:seconds]} วินาที",
+        last_updated: "ปรับปรุงล่าสุดเมื่อ #{time_difference[:hours]} ชั่วโมง #{time_difference[:minutes]} นาที",
       }
     end
     
@@ -54,14 +54,8 @@ class Covid
       deaths: deaths || 0,
       recovered: recovered || 0,
       updated_at: updated_at,
-      last_updated: "ปรับปรุงล่าสุดเมื่อ #{time_difference[:hours]} ชั่วโมง #{time_difference[:minutes]} นาที #{time_difference[:seconds]} วินาที",
+      last_updated: "ปรับปรุงล่าสุดเมื่อ #{time_difference[:hours]} ชั่วโมง #{time_difference[:minutes]} นาที",
     }
-  end
-
-  def self.country(nation = 'TH')
-    resp = daily_reports_by_date
-
-    resp.detect{ |r| r[:country_id] == nation.upcase }
   end
 
   def self.retroact(days = 6)
@@ -74,22 +68,21 @@ class Covid
     data
   end
 
-  def self.total_retroact(days = 6)
-    resp = retroact(days)
-    confirmed = 0
-    deaths = 0
-    recovered = 0
+  def self.country(nation, date = Date.yesterday)
+    nation = nation || 'TH'
+    resp = daily_reports_by_date(date)
+
+    resp.detect{ |r| r[:country_id] == nation.upcase }
+  end
+
+  def self.country_retroact(nation, days = 6)
+    nation = nation || 'TH'
+    data = {}
 
     ((Date.yesterday - days..Date.yesterday)).each do |date|
-      confirmed += resp[date.strftime("%a")].sum { |r| r[:confirmed].to_i }
-      deaths += resp[date.strftime("%a")].sum { |r| r[:deaths].to_i }
-      recovered += resp[date.strftime("%a")].sum { |r| r[:recovered].to_i }
+      data[date.strftime("%a")] = country(nation, date)
     end
 
-    { 
-      confirmed: confirmed,
-      deaths: deaths,
-      recovered: recovered,
-    }
+    data
   end
 end
