@@ -7,7 +7,7 @@
             <mat-card class="card-text-data">
               <mat-card-content>
                 <h2>ผู้ติดเชื้อ</h2>
-                <p class="infected-person">123123</p>
+                <p class="infected-person">{{ total.confirmed }}</p>
                 <p>คน</p>
               </mat-card-content>
             </mat-card>
@@ -15,8 +15,8 @@
           <div class="col-sm-4">
             <mat-card class="card-text-data">
               <mat-card-content>
-                <h2>ผู้ติดเชื้อ</h2>
-                <p class="infected-person">123123</p>
+                <h2>รักษาหายแล้ว</h2>
+                <p class="infected-person">{{ total.recovered }}</p>
                 <p>คน</p>
               </mat-card-content>
             </mat-card>
@@ -24,8 +24,8 @@
           <div class="col-sm-4">
             <mat-card class="card-text-data">
               <mat-card-content>
-                <h2>ผู้ติดเชื้อ</h2>
-                <p class="infected-person">123123</p>
+                <h2>เสียชีวิต</h2>
+                <p class="infected-person">{{ total.deaths }}</p>
                 <p>คน</p>
               </mat-card-content>
             </mat-card>
