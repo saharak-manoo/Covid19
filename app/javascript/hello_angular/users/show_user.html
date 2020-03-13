@@ -1,0 +1,58 @@
+<div class="container">
+  <div class="text-center">
+    <h3>{{ datas.user.first_name }} {{ datas.user.last_name }}</h3>
+  </div>
+
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-sm-12 col-lg-6">
+        <img [src]="datas.user.photo_url" class="text-center" class="upload-photo img-circle"
+          (click)="onSelectFile($event)">
+        <input type="file" class="d-none" id="photo" (change)="onFileChange($event)">
+      </div>
+
+      <div class="col-sm-6 col-lg-6 py-5">
+        <div class="group">
+          <input type="email" formControlName="email" [(ngModel)]="datas.user.email" class="input-lable" required
+            [email]="true">
+          <span class="highlight"></span>
+          <span class="bar"></span>
+          <label>Email</label>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4 d-center py-5">
+        <div class="group">
+          <input type="text" formControlName="first_name" [(ngModel)]="datas.user.first_name" class="input-lable"
+            required>
+          <span class="highlight"></span>
+          <span class="bar"></span>
+          <label>First Name</label>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4 d-center py-5">
+        <div class="group">
+          <input type="text" formControlName="last_name" [(ngModel)]="datas.user.last_name" class="input-lable"
+            required>
+          <span class="highlight"></span>
+          <span class="bar"></span>
+          <label>Last Name</label>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4 d-center py-5">
+        <div class="group">
+          <input type="text" formControlName="phone_number" minlength="10" maxlength="10"
+            [(ngModel)]="datas.user.phone_number" class="input-lable" required>
+          <span class="highlight"></span>
+          <span class="bar"></span>
+          <label>Phone Number</label>
+        </div>
+      </div>
+    </div>
+    <button [disabled]="userForm.invalid || canUpdate" class="btn btn-outline-dark btn-rounded">Update</button>
+  </form>
+  <br>
+  <span class="text-danger" *ngIf="!sessions.current_user.admin">Only update for user admin</span>
+</div>

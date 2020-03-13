@@ -1,0 +1,71 @@
+<div class="row set-margin">
+  <div class="col-sm-12">
+    <h3 class="text-left">User</h3>
+  </div>
+  <div class="col-sm-12">
+    <div class="row">
+      <div class="col-sm-12">
+        <input type="text" class="col-max" placeholder="Type to filter the name column..." (keyup)="search($event)">
+      </div>
+    </div>
+    <div>
+      <ngx-datatable #usersTable class="material expandable" [loadingIndicator]="loading" [externalSorting]="true"
+        [rows]="rows" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'"
+        [externalPaging]="true" [count]="page.total" [offset]="page.page_now" [limit]="page.limit"
+        (page)="pageChanged($event)" (sort)="sort($event)">
+
+        <ngx-datatable-row-detail [rowHeight]="80" #usersDetailRow>
+          <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+            <div class="row">
+              <div class="col-sm-6">
+                <img [src]="row.photo_url" class="img-lg"> Full Name: {{ row.full_name }}
+              </div>
+              <div class="col-sm-6">
+                <button [disabled]="canRemove" class="btn btn-outline-danger btn-rounded"
+                  (click)="removeUser(row.id)">Delete</button>
+              </div>
+            </div>
+          </ng-template>
+        </ngx-datatable-row-detail>
+
+        <ngx-datatable-column [resizeable]="false" [sortable]="false" [draggable]="false" [canAutoResize]="false">
+          <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+            <a href="javascript:void(0)" [class.datatable-icon-right]="!expanded" [class.datatable-icon-down]="expanded"
+              title="Expand/Collapse Row" (click)="toggleExpandRow(row)">
+            </a>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column prop="id" name="ID">
+          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{ row.id }}
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column prop="email" name="Email">
+          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            <a class="nav-link" routerLink="/users/{{ row.id }}" routerLinkActive="active">{{ row.email }}</a>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column prop="first_name" name="Full Name">
+          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            <a class="nav-link" routerLink="/users/{{ row.id }}" routerLinkActive="active">{{ row.full_name }}</a>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column prop="phone_number" name="Phone Number">
+          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{ row.phone_number }}
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column prop="updated_at" name="Updated At">
+          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{ row.updated_at_formatted }}
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
+    </div>
+  </div>
+</div>

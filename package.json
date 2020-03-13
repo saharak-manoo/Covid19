@@ -1,0 +1,47 @@
+{
+	"name": "Covid19",
+	"private": true,
+	"dependencies": {
+		"@angular/animations": "^8.1.2",
+		"@angular/cdk": "^8.1.1",
+		"@angular/common": "^8.1.2",
+		"@angular/compiler": "^8.1.2",
+		"@angular/core": "^8.1.2",
+		"@angular/forms": "^8.1.2",
+		"@angular/material": "^8.1.1",
+		"@angular/platform-browser": "^8.1.2",
+		"@angular/platform-browser-dynamic": "^8.1.2",
+		"@angular/router": "^8.1.2",
+		"@material/menu": "^3.0.0",
+		"@ng-bootstrap/ng-bootstrap": "^5.1.0",
+		"@rails/actioncable": "^6.0.0-alpha",
+		"@rails/actiontext": "^6.0.0-rc1",
+		"@rails/activestorage": "^6.0.0-alpha",
+		"@rails/ujs": "^6.0.0-alpha",
+		"@rails/webpacker": "^4.0.7",
+		"@swimlane/ngx-datatable": "^15.0.2",
+		"angular-material": "^1.1.19",
+		"angular-material-multilevel-menu": "^1.5.1",
+		"babel-runtime": "^6.26.0",
+		"core-js": "^2.5.7",
+		"html-loader": "^0.5.5",
+		"mdbootstrap": "^4.8.7",
+		"ng-flash-messages": "^0.3.0",
+		"ngx-bootstrap": "^5.1.0",
+		"ngx-pagination": "^4.1.0",
+		"rxjs": "^6.5.2",
+		"trix": "^1.0.0",
+		"ts-loader": "^6.0.4",
+		"turbolinks": "^5.2.0",
+		"typescript": "^3.5.3",
+		"zone.js": "^0.9.1"
+	},
+	"version": "0.1.0",
+	"devDependencies": {
+		"webpack-dev-server": "^3.7.2"
+	},
+	"scripts": {
+		"heroku-prebuild": "npm install",
+		"heroku-yarn": "yarn install"
+	}
+}
