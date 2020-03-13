@@ -1,23 +1,47 @@
 class Covid
+  CATEGORIES = ['Confirmed', 'Deaths', 'Recovered']
+
   def self.rest_api(path)
     response = RestClient::Request.new({
       method: :get,
-      url: "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv"
+      url: "#{ENV['covid_api_host']}#{path}"
     }).execute do |response, request, result|
       return JSON.parse(CSV.parse(response.to_str).to_json)
     end
   end
 
-  def self.current
-    data = rest_api("/current_list")
-    ap data
-    ap '>>>'
+  def self.daily_reports(date_str = Date.yesterday.strftime('%m-%d-%Y'))
+    reports = rest_api("csse_covid_19_daily_reports/#{date_str}.csv")
+    data = []
+    reports.each_with_index do |report, index|
+      next if index.zero?
 
+      country_id = ISO3166::Country.find_country_by_name(report[0])&.alpha2 || ISO3166::Country.find_country_by_name(report[1])&.alpha2
+      updated_at = DateTime.parse(report[2]).localtime
+      time_difference = TimeDifference.between(updated_at, Time.now).in_general
+      data << {
+        country: report[1],
+        country_id: country_id,
+        province: report[0],
+        confirmed: report[3],
+        deaths: report[4],
+        recovered: report[5],
+        updated_at: updated_at,
+        last_updated: "ปรับปรุงล่าสุดเมื่อ #{time_difference[:hours]} ชั่วโมง #{time_difference[:minutes]} นาที #{time_difference[:seconds]} วินาที",
+      }
+    end
+    
     data
   end
 
+  def self.current
+    daily_reports()
+  end
+
   def self.confirmed
-    rest_api("/timeseries/confirmed")
+    resp = daily_reports()
+    data = {}
+
   end
 
   def self.total
