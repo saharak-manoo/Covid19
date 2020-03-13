@@ -14,10 +14,10 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :line_bots, do
+  resources :line_bots do
     collection do
       post 'callback'
-    end  
+    end
   end  
 
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
