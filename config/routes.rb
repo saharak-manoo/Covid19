@@ -5,11 +5,14 @@ Rails.application.routes.draw do
   # Angular
   root 'homes#index'
   resources :home
-  resources :users do
+  resources :covids, only: %i[index] do
     collection do
-      get 'check_sign_in'
+      get 'total'
+      get 'country'
+      get 'retroact'
+      get 'total_retroact'
     end
-  end  
+  end
 
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 end

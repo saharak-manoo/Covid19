@@ -1,5 +1,5 @@
 <nav class="mb-1 navbar navbar-expand-lg navbar-dark unique-color-dark fixed-top">
-  <a class="navbar-brand" routerLink="homes" routerLinkActive="active">Rails & Angular</a>
+  <a class="navbar-brand" routerLink="homes" routerLinkActive="active">Covid 19 TH</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -10,32 +10,6 @@
         <a class="nav-link" routerLink="homes" routerLinkActive="active">Home
           <span class="sr-only">(current)</span>
         </a>
-      </li>
-      <li class="nav-item" [ngClass]="{ 'active': activeTab === 'users' }" (click)="activeNavTab('users')">
-        <a class="nav-link" routerLink="users" routerLinkActive="active">User</a>
-      </li>
-      <li class="nav-item" *ngIf="!sessions.signed_in" [ngClass]="{ 'active': activeTab === 'sign_in' }"
-        (click)="activeNavTab('sign_in')">
-        <a class="nav-link" routerLink="sign_in" routerLinkActive="active">Sign in</a>
-      </li>
-    </ul>
-    <ul class="navbar-nav ml-auto nav-flex-icons">
-      <li class="nav-item">
-        <a class="nav-link waves-effect waves-light">1
-          <i class="fas fa-envelope"></i>
-        </a>
-      </li>
-      <li class="nav-item avatar dropdown" *ngIf="sessions.signed_in">
-        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-          aria-expanded="false">
-          <img [src]="sessions.current_user.photo_url" class="rounded-circle z-depth-0 img-sm" alt="avatar image">
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" routerLink="/users/{{ sessions.current_user.id }}"
-            routerLinkActive="active">Profile</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" (click)="signOut(sessions.current_user.id)">Sign Out</a>
-        </div>
       </li>
     </ul>
   </div>
@@ -53,22 +27,3 @@
     </div>
   </div>
 </div>
-
-<footer class="page-footer font-small unique-color-dark pt-4">
-  <div class="container" *ngIf="!sessions.signed_in">
-    <ul class="list-unstyled list-inline text-center py-2">
-      <li class="list-inline-item">
-        <h5 class="mb-1">Register for free</h5>
-      </li>
-      <li class="list-inline-item">
-        <a class="btn btn-outline-white btn-rounded" routerLink="/sign_up" routerLinkActive="active">
-          Sign Up</a>
-      </li>
-    </ul>
-  </div>
-  <div class="footer-copyright text-center py-3">© 2019 Copyright:
-    <a class="nav-link" routerLink="homes" routerLinkActive="active">Angula & Rails
-      <span class="sr-only">(current)</span>
-    </a>
-  </div>
-</footer>
