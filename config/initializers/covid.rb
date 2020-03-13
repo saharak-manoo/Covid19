@@ -2,14 +2,18 @@ class Covid
   def self.rest_api(path)
     response = RestClient::Request.new({
       method: :get,
-      url: "#{Figaro.env.covid_api_host}#{path}"
+      url: "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv"
     }).execute do |response, request, result|
-      return JSON.parse(response.to_str)
+      return JSON.parse(CSV.parse(response.to_str).to_json)
     end
   end
 
   def self.current
-    rest_api("/current_list")
+    data = rest_api("/current_list")
+    ap data
+    ap '>>>'
+
+    data
   end
 
   def self.confirmed
@@ -24,11 +28,11 @@ class Covid
     rest_api("/confirmed")
   end
 
-  def self.deaths
+  def self.total_deaths
     rest_api("/deaths")
   end
 
-  def self.recovered
+  def self.total_recovered
     rest_api("/recovered")
   end
 

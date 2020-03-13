@@ -15,16 +15,16 @@ class CovidsController < ApplicationController
     render json: { data: Covid.total_confirmed, api_from: "https://github.com/nat236919/Covid2019API" }, status: :ok
   end
 
-  def deaths
-    render json: { data: Covid.deaths, api_from: "https://github.com/nat236919/Covid2019API" }, status: :ok
+  def total_deaths
+    render json: { data: Covid.total_deaths, api_from: "https://github.com/nat236919/Covid2019API" }, status: :ok
   end
 
-  def recovered
-    render json: { data: Covid.recovered, api_from: "https://github.com/nat236919/Covid2019API" }, status: :ok
+  def total_recovered
+    render json: { data: Covid.total_recovered, api_from: "https://github.com/nat236919/Covid2019API" }, status: :ok
   end
 
   def country
-    render json: { data: Covid.country(params[:nation]), api_from: "https://github.com/nat236919/Covid2019API" }, status: :ok
+    render json: { data: Covid.country(params[:nation] || 'th'), api_from: "https://github.com/nat236919/Covid2019API" }, status: :ok
   end
 
   def timeseries_confirmed
