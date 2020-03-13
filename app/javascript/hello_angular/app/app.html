@@ -1,19 +1,8 @@
-<nav class="mb-1 navbar navbar-expand-lg navbar-dark unique-color-dark fixed-top">
-  <a class="navbar-brand" routerLink="homes" routerLinkActive="active">Covid 19 TH</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item" [ngClass]="{ 'active': activeTab === 'homes' }" (click)="activeNavTab('homes')">
-        <a class="nav-link" routerLink="homes" routerLinkActive="active">Home
-          <span class="sr-only">(current)</span>
-        </a>
-      </li>
-    </ul>
-  </div>
-</nav>
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>Covid 19 TH</span>
+  </mat-toolbar-row>
+</mat-toolbar>
 
 <div id="wrap" class="margin-div">
   <div id="main" class="row py-5">
