@@ -14,5 +14,7 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :line_bots, only: %i[index]
+
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 end
