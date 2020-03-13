@@ -87,4 +87,5 @@ gem 'rails_admin', '~> 2.0.0.beta'
 gem 'rolify'
 gem 'rename'
 gem 'figaro'
-
+gem 'rest-client'
+gem 'line-bot-api'
