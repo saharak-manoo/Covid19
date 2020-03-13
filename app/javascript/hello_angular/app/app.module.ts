@@ -12,18 +12,85 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { NgFlashMessagesModule } from 'ng-flash-messages';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatFormFieldModule, MatInputModule } from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbPaginationModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmDialogComponent } from '../confirm_dialog/confirm_dialog.conponent';
 import { CustomMaterialModule } from '../custom_material/custom_material.module';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatButtonModule } from '@angular/material/button';
+import { ChartsModule } from 'ng2-charts';
+import {
+	MatAutocompleteModule,
+	MatButtonModule,
+	MatButtonToggleModule,
+	MatCardModule,
+	MatCheckboxModule,
+	MatChipsModule,
+	MatDatepickerModule,
+	MatDialogModule,
+	MatExpansionModule,
+	MatGridListModule,
+	MatIconModule,
+	MatInputModule,
+	MatListModule,
+	MatMenuModule,
+	MatNativeDateModule,
+	MatPaginatorModule,
+	MatProgressBarModule,
+	MatProgressSpinnerModule,
+	MatRadioModule,
+	MatRippleModule,
+	MatSelectModule,
+	MatSidenavModule,
+	MatSliderModule,
+	MatSlideToggleModule,
+	MatSnackBarModule,
+	MatSortModule,
+	MatTableModule,
+	MatTabsModule,
+	MatToolbarModule,
+	MatTooltipModule,
+	MatStepperModule,
+	MatFormFieldModule
+} from '@angular/material';
 
 enableProdMode();
+
+@NgModule({
+	exports: [
+		MatAutocompleteModule,
+		MatButtonModule,
+		MatButtonToggleModule,
+		MatCardModule,
+		MatCheckboxModule,
+		MatChipsModule,
+		MatStepperModule,
+		MatDatepickerModule,
+		MatDialogModule,
+		MatExpansionModule,
+		MatGridListModule,
+		MatIconModule,
+		MatInputModule,
+		MatListModule,
+		MatMenuModule,
+		MatNativeDateModule,
+		MatPaginatorModule,
+		MatProgressBarModule,
+		MatProgressSpinnerModule,
+		MatRadioModule,
+		MatRippleModule,
+		MatSelectModule,
+		MatSidenavModule,
+		MatSliderModule,
+		MatSlideToggleModule,
+		MatSnackBarModule,
+		MatSortModule,
+		MatTableModule,
+		MatTabsModule,
+		MatToolbarModule,
+		MatTooltipModule,
+		MatFormFieldModule
+	]
+})
+export class MaterialModule {}
 
 const appRoutes: Routes = [
 	{ path: '', component: HomeComponent },
@@ -37,22 +104,17 @@ const appRoutes: Routes = [
 		HttpClientModule,
 		NgxDatatableModule,
 		NgxPaginationModule,
-		MatButtonModule,
 		FormsModule,
-		MatTableModule,
-		MatPaginatorModule,
 		CustomMaterialModule,
 		NgFlashMessagesModule.forRoot(),
 		TooltipModule.forRoot(),
 		ReactiveFormsModule,
-		MatMenuModule,
-		MatDatepickerModule,
-		MatFormFieldModule,
-		MatInputModule,
 		NgbModule,
 		NgbPaginationModule,
 		NgbAlertModule,
-		RouterModule.forRoot(appRoutes, { useHash: true })
+		RouterModule.forRoot(appRoutes, { useHash: true }),
+		ChartsModule,
+		MaterialModule
 	],
 	providers: [{ provide: APP_BASE_HREF, useValue: '/' }],
 	entryComponents: [ConfirmDialogComponent],

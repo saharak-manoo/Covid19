@@ -25,27 +25,5 @@ export class AppComponent {
 	activeTab: string;
 	signInMenu = false;
 
-	ngOnInit() {
-		this.checkSignIn();
-	}
-
-	checkSignIn() {
-		this.appService.all('covids').subscribe(
-			resp => {
-				console.log(resp);
-			},
-			e => {
-				this.ngFlashMessageService.showFlashMessage({
-					messages: [e.message],
-					dismissible: true,
-					timeout: 5000,
-					type: 'danger'
-				});
-			}
-		);
-	}
-
-	activeNavTab(tab) {
-		this.activeTab = tab;
-	}
+	ngOnInit() {}
 }
