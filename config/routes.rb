@@ -8,9 +8,9 @@ Rails.application.routes.draw do
   resources :covids, only: %i[index] do
     collection do
       get 'total'
-      get 'country'
       get 'retroact'
-      get 'total_retroact'
+      get 'country'
+      get 'country_retroact'
     end
   end
 

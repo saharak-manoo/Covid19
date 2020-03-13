@@ -4,7 +4,6 @@
 
 body {
 	background: #fff;
-	text-align: center;
 	font-family: 'Kanit', sans-serif;
 }
 
@@ -27,22 +26,26 @@ mat-card-title {
 }
 
 .card-chart {
-	max-width: 500px;
-	max-height: 320px;
-	margin: 20px;
+	max-width: 100%;
+	max-height: 100%;
+	margin: 10px;
 }
 
 .card-text-data {
-	width: 300px;
-	height: 220px;
-	margin: 20px;
-}
-
-.color-red {
-	color: '#F91758';
+	max-width: 100%;
+	max-height: 100%;
+	margin: 10px;
 }
 
 .infected-person {
 	font-size: 60px;
-	color: '#F91758' !important;
+}
+
+.head {
+	margin: 10px;
+}
+
+.margin-text {
+	margin: 10px;
+	padding-top: 10px;
 }

@@ -7,15 +7,15 @@ class CovidsController < ApplicationController
     render json: { data: Covid.total }, status: :ok
   end
 
-  def country
-    render json: { data: Covid.country(params[:nation] || 'TH') }, status: :ok
-  end
-
   def retroact
     render json: { data: Covid.retroact }, status: :ok
   end
 
-  def total_retroact
-    render json: { data: Covid.total_retroact }, status: :ok
+  def country
+    render json: { data: Covid.country(params[:nation] || 'TH') }, status: :ok
+  end
+
+  def country_retroact
+    render json: { data: Covid.country_retroact(params[:nation] || 'TH') }, status: :ok
   end
 end
