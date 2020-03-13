@@ -26,7 +26,11 @@ export class HomeComponent {
 			backgroundColor: ['#FCD35E', '#5EFCAD', '#FC5E71']
 		}
 	];
-	total: any = [];
+	total: any = {
+		confirmed: 0,
+		recovered: 0,
+		deaths: 0
+	};
 
 	ngOnInit() {
 		this.dailyTotal();
