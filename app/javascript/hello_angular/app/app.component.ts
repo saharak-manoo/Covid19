@@ -26,12 +26,7 @@ export class AppComponent {
 	signInMenu = false;
 
 	ngOnInit() {
-		this.router.events.subscribe(event => {
-			if (event) {
-				this.activeTab = 'homes';
-				this.checkSignIn();
-			}
-		});
+		this.checkSignIn();
 	}
 
 	checkSignIn() {
