@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material';
 @Component({
 	selector: 'hello-angular',
 	template: templateString,
-	providers: [AppService]
+	providers: [AppService],
 })
 export class AppComponent {
 	constructor(
