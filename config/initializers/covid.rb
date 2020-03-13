@@ -10,7 +10,8 @@ class Covid
     end
   end
 
-  def self.daily_reports(date_str = Date.yesterday.strftime('%m-%d-%Y'))
+  def self.daily_reports_by_date(date = Date.yesterday)
+    date_str = date.strftime('%m-%d-%Y')
     reports = rest_api("csse_covid_19_daily_reports/#{date_str}.csv")
     data = []
     reports.each_with_index do |report, index|
@@ -34,45 +35,56 @@ class Covid
     data
   end
 
-  def self.current
-    daily_reports()
-  end
-
-  def self.confirmed
-    resp = daily_reports()
-    data = {}
-
+  def self.daily_reports
+    daily_reports_by_date
   end
 
   def self.total
-    rest_api("/total")
+    resp = daily_reports_by_date
+    updated_at = resp.map{|h| h[:updated_at]}.max
+    time_difference = TimeDifference.between(updated_at, Time.now).in_general
+
+    { 
+      confirmed: resp.sum { |r| r[:confirmed].to_i },
+      deaths: resp.sum { |r| r[:deaths].to_i },
+      recovered: resp.sum { |r| r[:recovered].to_i },
+      updated_at: updated_at,
+      last_updated: "ปรับปรุงล่าสุดเมื่อ #{time_difference[:hours]} ชั่วโมง #{time_difference[:minutes]} นาที #{time_difference[:seconds]} วินาที",
+    }
   end
 
-  def self.total_confirmed
-    rest_api("/confirmed")
+  def self.country(nation = 'TH')
+    resp = daily_reports_by_date
+
+    resp.detect{ |r| r[:country_id] == nation.upcase }
   end
 
-  def self.total_deaths
-    rest_api("/deaths")
+  def self.retroact(days = 6)
+    data = {}
+
+    ((Date.yesterday - days..Date.yesterday)).each do |date|
+      data[date.strftime('%d-%m-%Y')] = daily_reports_by_date(date)
+    end
+
+    data
   end
 
-  def self.total_recovered
-    rest_api("/recovered")
-  end
+  def self.total_retroact(days = 6)
+    resp = retroact(days)
+    confirmed = 0
+    deaths = 0
+    recovered = 0
 
-  def self.country(nation = 'th')
-    rest_api("/country/#{nation}")
-  end
+    ((Date.yesterday - days..Date.yesterday)).each do |date|
+      confirmed = resp[date.strftime('%d-%m-%Y')].sum { |r| r[:confirmed].to_i }
+      deaths = resp[date.strftime('%d-%m-%Y')].sum { |r| r[:deaths].to_i }
+      recovered =resp[date.strftime('%d-%m-%Y')].sum { |r| r[:recovered].to_i }
+    end
 
-  def self.timeseries_confirmed
-    rest_api("/timeseries/confirmed")
-  end
-
-  def self.timeseries_deaths
-    rest_api("/timeseries/deaths")
-  end
-
-  def self.timeseries_recovered
-    rest_api("/timeseries/recovered")
+    { 
+      confirmed: confirmed,
+      deaths: deaths,
+      recovered: recovered,
+    }
   end
 end

@@ -1,41 +1,21 @@
 class CovidsController < ApplicationController
   def index
-    render json: { data: Covid.current, api_from: "https://github.com/nat236919/Covid2019API" }, status: :ok
-  end
-
-  def confirmed
-    render json: { data: Covid.confirmed, api_from: "https://github.com/nat236919/Covid2019API" }, status: :ok
+    render json: { data: Covid.daily_reports }, status: :ok
   end
 
   def total
-    render json: { data: Covid.total, api_from: "https://github.com/nat236919/Covid2019API" }, status: :ok
-  end
-
-  def total_confirmed
-    render json: { data: Covid.total_confirmed, api_from: "https://github.com/nat236919/Covid2019API" }, status: :ok
-  end
-
-  def total_deaths
-    render json: { data: Covid.total_deaths, api_from: "https://github.com/nat236919/Covid2019API" }, status: :ok
-  end
-
-  def total_recovered
-    render json: { data: Covid.total_recovered, api_from: "https://github.com/nat236919/Covid2019API" }, status: :ok
+    render json: { data: Covid.total }, status: :ok
   end
 
   def country
-    render json: { data: Covid.country(params[:nation] || 'th'), api_from: "https://github.com/nat236919/Covid2019API" }, status: :ok
+    render json: { data: Covid.country(params[:nation] || 'TH') }, status: :ok
   end
 
-  def timeseries_confirmed
-    render json: { data: Covid.country(params[:timeseries_confirmed]), api_from: "https://github.com/nat236919/Covid2019API" }, status: :ok
+  def retroact
+    render json: { data: Covid.retroact }, status: :ok
   end
 
-  def timeseries_deaths
-    render json: { data: Covid.country(params[:timeseries_deaths]), api_from: "https://github.com/nat236919/Covid2019API" }, status: :ok
-  end
-
-  def timeseries_recovered
-    render json: { data: Covid.country(params[:timeseries_recovered]), api_from: "https://github.com/nat236919/Covid2019API" }, status: :ok
+  def total_retroact
+    render json: { data: Covid.total_retroact }, status: :ok
   end
 end

@@ -7,15 +7,10 @@ Rails.application.routes.draw do
   resources :home
   resources :covids, only: %i[index] do
     collection do
-      get 'confirmed'
       get 'total'
-      get 'total_confirmed'
-      get 'total_deaths'
-      get 'total_recovered'
       get 'country'
-      get 'timeseries_confirmed'
-      get 'timeseries_deaths'
-      get 'timeseries_recovered'
+      get 'retroact'
+      get 'total_retroact'
     end
   end
 
