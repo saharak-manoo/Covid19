@@ -92,3 +92,6 @@ gem 'line-bot-api'
 gem 'time_difference'
 gem 'countries'
 gem 'sinatra'
+
+# Dialogflow
+gem 'api-ai-ruby'
