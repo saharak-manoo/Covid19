@@ -3,6 +3,7 @@ import templateString from './app.html';
 import { NgFlashMessageService } from 'ng-flash-messages';
 import { AppService } from '../app/app.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MatSnackBar, ErrorStateMatcher } from '@angular/material';
 import {
 	ConfirmDialogModel,
 	ConfirmDialogComponent
@@ -20,10 +21,21 @@ export class AppComponent {
 		private appService: AppService,
 		private route: ActivatedRoute,
 		private router: Router,
-		public dialog: MatDialog
+		public dialog: MatDialog,
+		public snackBar: MatSnackBar
 	) {}
+
 	activeTab: string;
 	signInMenu = false;
 
 	ngOnInit() {}
+
+	openSnackBar(message, action, className) {
+		this.snackBar.open(message, action, {
+			duration: 5000,
+			panelClass: [className],
+			verticalPosition: 'top',
+			horizontalPosition: 'right'
+		});
+	}
 }

@@ -1,4 +1,4 @@
-class LineBotsController < ApplicationController
+class WebhooksController < ApplicationController
   def callback
     ap '>>>> dialogflow callback'
     ap '>>>> line callback'
