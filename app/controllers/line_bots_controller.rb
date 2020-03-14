@@ -1,8 +1,9 @@
 class LineBotsController < ApplicationController
   def callback
+    ap '>>>> dialogflow callback'
     ap '>>>> line callback'
     body = request.body.read
-    ap 'body'
+    ap '>>> body'
     ap body
 
     signature = request.env['HTTP_X_LINE_SIGNATURE']
