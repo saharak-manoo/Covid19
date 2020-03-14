@@ -15,7 +15,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :line_bots do
+  resources :webhooks do
     collection do
       post 'callback'
     end

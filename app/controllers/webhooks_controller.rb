@@ -1,4 +1,4 @@
-class LineBotsController < ApplicationController
+class WebhooksController < ApplicationController
   def callback
     ap '>>>> dialogflow callback'
     ap '>>>> line callback'
@@ -21,7 +21,7 @@ class LineBotsController < ApplicationController
         when Line::Bot::Event::MessageType::Text
           message = {
             type: 'text',
-            text: event.message['text']
+            text: 'Rails bot =>>>>'
           }
 
           ap 'message'

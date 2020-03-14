@@ -68,3 +68,22 @@ agm-map {
 	margin-left: auto;
 	margin-right: auto;
 }
+
+.green-snackbar {
+	background: rgb(71, 252, 146);
+	color: black;
+}
+
+.blue-snackbar {
+	background: rgb(37, 204, 255);
+	color: black;
+}
+
+.red-snackbar {
+	background: rgb(248, 115, 115);
+	color: black;
+}
+
+.mat-simple-snackbar-action {
+	color: yellow;
+}
