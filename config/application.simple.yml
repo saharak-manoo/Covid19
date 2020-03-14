@@ -1,4 +1,12 @@
 covid_api_host: https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/
+line_channel_id: 1653946879
+line_channel_secret: cea83883ecfcdc8ba8887cfe4bdb7d8b
+line_channel_token: v+zlCsRn9DJPCjYzBooWfN9Hko3zymHqNG7+V8cBCtcNcr9+WIaN4vIA1+EztWnVsVmma52BvVIWjNE6yTtomdEaKggvkD2pV3KAU38zbY64h+LXpGiKfikwiD5vI+7aOel2PSwZ6S8WevgvJBh1zAdB04t89/1O/w1cDnyilFU=
+dialogflow_client_access_token: 1a6a620a0e4e4efaafdbdebc2437e6fe
 
 production:
   covid_api_host: https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/
+  line_channel_id: 1653946879
+  line_channel_secret: cea83883ecfcdc8ba8887cfe4bdb7d8b
+  line_channel_token: v+zlCsRn9DJPCjYzBooWfN9Hko3zymHqNG7+V8cBCtcNcr9+WIaN4vIA1+EztWnVsVmma52BvVIWjNE6yTtomdEaKggvkD2pV3KAU38zbY64h+LXpGiKfikwiD5vI+7aOel2PSwZ6S8WevgvJBh1zAdB04t89/1O/w1cDnyilFU=
+  dialogflow_client_access_token: 1a6a620a0e4e4efaafdbdebc2437e6fe

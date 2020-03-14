@@ -10,6 +10,16 @@ class Covid
     end
   end
 
+  def self.time_difference_str(updated_at)
+    time_difference = TimeDifference.between(updated_at, Time.now).in_general
+    last_updated = "ปรับปรุงล่าสุดเมื่อ "
+    last_updated += "#{time_difference[:hours]} ชั่วโมง " unless time_difference[:hours].zero?
+    last_updated += "#{time_difference[:minutes]} นาที" unless time_difference[:minutes].zero?
+    last_updated += "ณ เวลานานี้" if time_difference[:hours].zero? && time_difference[:minutes].zero?
+
+    last_updated
+  end
+
   def self.daily_reports_by_date(date = Date.yesterday)
     date_str = date.strftime('%m-%d-%Y')
     reports = rest_api("csse_covid_19_daily_reports/#{date_str}.csv")
@@ -29,7 +39,7 @@ class Covid
         deaths: report[4].to_i || 0,
         recovered: report[5].to_i || 0,
         updated_at: updated_at,
-        last_updated: "ปรับปรุงล่าสุดเมื่อ #{time_difference[:hours]} ชั่วโมง #{time_difference[:minutes]} นาที",
+        last_updated: time_difference_str(updated_at),
       }
     end
     
@@ -43,18 +53,18 @@ class Covid
   def self.total(date = Date.yesterday)
     resp = daily_reports_by_date(date)
     updated_at = resp.map{|h| h[:updated_at]}.max
-    time_difference = TimeDifference.between(updated_at, Time.now).in_general
 
     confirmed = resp.sum { |r| r[:confirmed].to_i }
     deaths = resp.sum { |r| r[:deaths].to_i }
     recovered = resp.sum { |r| r[:recovered].to_i }
+
     { 
       confirmed: confirmed || 0,
       healings: (confirmed - recovered) - deaths || 0,
       deaths: deaths || 0,
       recovered: recovered || 0,
       updated_at: updated_at,
-      last_updated: "ปรับปรุงล่าสุดเมื่อ #{time_difference[:hours]} ชั่วโมง #{time_difference[:minutes]} นาที",
+      last_updated: time_difference_str(updated_at),
     }
   end
 

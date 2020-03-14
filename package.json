@@ -2,6 +2,7 @@
 	"name": "Covid19",
 	"private": true,
 	"dependencies": {
+		"@agm/core": "^1.1.0",
 		"@angular/animations": "^8.1.2",
 		"@angular/cdk": "^8.1.1",
 		"@angular/common": "^8.1.2",
