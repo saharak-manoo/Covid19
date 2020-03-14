@@ -21,7 +21,7 @@ class WebhooksController < ApplicationController
         when Line::Bot::Event::MessageType::Text
           message = {
             type: 'text',
-            text: event.message['text']
+            text: 'Rails bot =>>>>'
           }
 
           ap 'message'
