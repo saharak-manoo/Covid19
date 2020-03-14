@@ -18,4 +18,8 @@ class CovidsController < ApplicationController
   def country_retroact
     render json: { data: Covid.country_retroact(params[:nation] || 'TH') }, status: :ok
   end
+
+  def hospital
+    render json: { data: Hospital.all.as_json({api: true}) }, status: :ok
+  end
 end

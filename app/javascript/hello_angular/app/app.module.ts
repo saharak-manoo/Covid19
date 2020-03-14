@@ -51,6 +51,7 @@ import {
 	MatStepperModule,
 	MatFormFieldModule
 } from '@angular/material';
+import { AgmCoreModule } from '@agm/core';
 
 enableProdMode();
 
@@ -114,7 +115,10 @@ const appRoutes: Routes = [
 		NgbAlertModule,
 		RouterModule.forRoot(appRoutes, { useHash: true }),
 		ChartsModule,
-		MaterialModule
+		MaterialModule,
+		AgmCoreModule.forRoot({
+			apiKey: 'AIzaSyByaaldtl6PxcbsTkdwbcsbknjWQenVx9Y'
+		})
 	],
 	providers: [{ provide: APP_BASE_HREF, useValue: '/' }],
 	entryComponents: [ConfirmDialogComponent],
