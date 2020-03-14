@@ -2,28 +2,29 @@ class WebhooksController < ApplicationController
   protect_from_forgery with: :null_session
   
   def callback
-    ap '>>>> dialogflow callback'
-    ap '>>>> line callback'
     body = request.body.read
-    ap '>>> body'
-    ap body
 
     events = client.parse_events_from(body)
-    ap 'events'
-    ap events
     events.each do |event|
       case event
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Text
+          bot_message = ""
+          response = Dialogflow.send(event.message['text'])
+
+          if response[:intent_name] == "Covid19"
+            data = Covid.country('TH')
+            bot_message = "คนไทยติดเชื้อทั้งหมด #{data[:confirmed]} กำลังรักษา #{data[:healings]} รักษาหายแล้ว #{data[:recovered]} และตาย #{data[:deaths]} ข้อมูลนี้#{data[:last_updated]}"
+          else
+            bot_message = response[:fulfillment][:speech]
+          end
+
           message = {
             type: 'text',
-            text: 'Rails bot =>>>>'
+            text: bot_message
           }
 
-          ap 'message'
-          ap message
-          
           client.reply_message(event['replyToken'], message)
         when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
           response = client.get_message_content(event.message['id'])
