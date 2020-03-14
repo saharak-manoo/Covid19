@@ -35,8 +35,7 @@ class LineBotsController < ApplicationController
       end
     end
 
-    # Don't forget to return a successful response
-    "OK"
+    render json: { message: 'OK' }, status: :ok
   end
 
   private

@@ -76,6 +76,27 @@
               </mat-card-content>
             </mat-card>
           </div>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <mat-card class="card-chart">
+              <mat-card-content>
+                <h3 class="text-center">สถานที่ตรวจหาโรค/รักษา ({{ hospitals.length || 0}} แห่ง)</h3>
+                <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="12">
+                  <agm-marker 
+                    *ngFor="let hospital of hospitals; let i = index" 
+                    [latitude]="hospital.latitude" 
+                    [longitude]="hospital.longitude" 
+                    [label]="i + 1">
+                    <agm-info-window>
+                      <h5>{{ hospital.name }}</h5>
+                      <p>ที่อยู่: {{ hospital.address }}</p>
+                      <p>เบอร์โทร: {{ hospital.phone }}</p>
+                      <strong>{{ hospital.estimated_examination_fees }}</strong>
+                    </agm-info-window>
+                  </agm-marker>
+                </agm-map>
+              </mat-card-content>
+            </mat-card>
+          </div>
         </div>
         
         <div class="row">
@@ -151,7 +172,23 @@
               </mat-card-content>
             </mat-card>
           </div>
-         </div> 
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <mat-card class="card-qr-code">
+              <mat-card-content>
+                <h3 class="text-center">Line Bot QR Code</h3>
+                <img src="/LineBotQRCode.png" class="qrcode">
+                <p class="text-center">Line Bot ชื่อ : Covid19</p>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <mat-card class="card-chart">
+              <mat-card-content>
+                <p class="text-center">พัฒนาโดย <strong>นาย สหรัก มณู</strong> ใช้ข้อมูลจาก <a href="https://github.com/CSSEGISandData/COVID-19">CSSEGISandData</a></p>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
       </mat-card>
     </div>
   </div>

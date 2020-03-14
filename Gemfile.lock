@@ -62,6 +62,8 @@ GEM
       zeitwerk (~> 2.1, >= 2.1.4)
     addressable (2.6.0)
       public_suffix (>= 2.0.2, < 4.0)
+    api-ai-ruby (2.1.0)
+      http (~> 2.0)
     autoprefixer-rails (9.6.1)
       execjs
     awesome_print (1.8.0)
@@ -132,9 +134,16 @@ GEM
     haml (5.1.1)
       temple (>= 0.8.0)
       tilt
+    http (2.2.2)
+      addressable (~> 2.3)
+      http-cookie (~> 1.0)
+      http-form_data (~> 1.0.1)
+      http_parser.rb (~> 0.6.0)
     http-accept (1.7.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
+    http-form_data (1.0.3)
+    http_parser.rb (0.6.0)
     i18n (1.6.0)
       concurrent-ruby (~> 1.0)
     i18n_data (0.10.0)
@@ -370,6 +379,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  api-ai-ruby
   awesome_print
   bootsnap (>= 1.4.2)
   bootstrap (~> 4.3.1)

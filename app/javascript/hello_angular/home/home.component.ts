@@ -94,9 +94,13 @@ export class HomeComponent {
 			backgroundColor: '#FC5E71'
 		}
 	];
+	latitude: number = 13.7530066;
+	longitude: number = 100.4960144;
+	hospitals: any = [];
 
 	ngOnInit() {
 		this.loadData();
+		this.loadHospital();
 
 		setInterval(() => {
 			this.loadData();
@@ -108,6 +112,23 @@ export class HomeComponent {
 		this.countryRetroact();
 		this.dailyTotal();
 		this.retroact();
+	}
+
+	loadHospital() {
+		this.appService.all('covids/hospital').subscribe(
+			resp => {
+				let response: any = resp;
+				this.hospitals = response.data;
+			},
+			e => {
+				this.ngFlashMessageService.showFlashMessage({
+					messages: [e.message],
+					dismissible: true,
+					timeout: 5000,
+					type: 'danger'
+				});
+			}
+		);
 	}
 
 	dailyTotalLocal() {

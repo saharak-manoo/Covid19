@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       get 'retroact'
       get 'country'
       get 'country_retroact'
+      get 'hospital'
     end
   end
 
