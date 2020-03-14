@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ChartType, ChartOptions } from 'chart.js';
 import { Label } from 'ng2-charts';
+import { AppComponent } from '../app/app.component';
 
 @Component({
 	template: templateString
@@ -16,7 +17,8 @@ export class HomeComponent {
 		private appService: AppService,
 		public dialog: MatDialog,
 		private route: ActivatedRoute,
-		private router: Router
+		private router: Router,
+		private app: AppComponent
 	) {}
 	localLastUpdated: string = 'กำหลังโหลด...';
 	globleLastUpdated: string = 'กำหลังโหลด...';
@@ -104,7 +106,7 @@ export class HomeComponent {
 
 		setInterval(() => {
 			this.loadData();
-		}, 1000 * 60);
+		}, 5 * 60 * 1000);
 	}
 
 	loadData() {
@@ -121,12 +123,7 @@ export class HomeComponent {
 				this.hospitals = response.data;
 			},
 			e => {
-				this.ngFlashMessageService.showFlashMessage({
-					messages: [e.message],
-					dismissible: true,
-					timeout: 5000,
-					type: 'danger'
-				});
+				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
 			}
 		);
 	}
@@ -145,12 +142,7 @@ export class HomeComponent {
 				];
 			},
 			e => {
-				this.ngFlashMessageService.showFlashMessage({
-					messages: [e.message],
-					dismissible: true,
-					timeout: 5000,
-					type: 'danger'
-				});
+				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
 			}
 		);
 	}
@@ -168,12 +160,7 @@ export class HomeComponent {
 				});
 			},
 			e => {
-				this.ngFlashMessageService.showFlashMessage({
-					messages: [e.message],
-					dismissible: true,
-					timeout: 5000,
-					type: 'danger'
-				});
+				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
 			}
 		);
 	}
@@ -192,12 +179,7 @@ export class HomeComponent {
 				];
 			},
 			e => {
-				this.ngFlashMessageService.showFlashMessage({
-					messages: [e.message],
-					dismissible: true,
-					timeout: 5000,
-					type: 'danger'
-				});
+				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
 			}
 		);
 	}
@@ -215,12 +197,7 @@ export class HomeComponent {
 				});
 			},
 			e => {
-				this.ngFlashMessageService.showFlashMessage({
-					messages: [e.message],
-					dismissible: true,
-					timeout: 5000,
-					type: 'danger'
-				});
+				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
 			}
 		);
 	}
