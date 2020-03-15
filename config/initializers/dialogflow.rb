@@ -23,6 +23,7 @@ class Dialogflow
       agent_message: response[:result][:resolvedQuery], 
       action: response[:result][:action],
       intent_name: data[:intentName],
+      parameters: response[:result][:parameters],
       fulfillment: response[:result][:fulfillment]
     }
 
