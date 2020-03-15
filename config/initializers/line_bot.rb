@@ -51,9 +51,9 @@ class LineBot
       end
 
       bot_message += "\n\n * ข้อมูลนี้ #{data[:last_updated]}"
-      LineBot.reply(event['replyToken'], bot_message)
+      LineBot.reply(reply_token, bot_message)
     else
-      LineBot.reply(event['replyToken'], resp[:fulfillment][:speech])
+      LineBot.reply(reply_token, resp[:fulfillment][:speech])
     end
   end
 
