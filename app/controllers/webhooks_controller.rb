@@ -20,8 +20,8 @@ class WebhooksController < ApplicationController
             bot_message = response[:fulfillment][:speech]
           end
 
-          LineBot.client.reply(event['replyToken'], bot_message)
-          LineBot.client.reply(event['replyToken'], "ข้อมูลนี้ #{data[:last_updated]}")
+          LineBot.reply(event['replyToken'], bot_message)
+          LineBot.reply(event['replyToken'], "ข้อมูลนี้ #{data[:last_updated]}")
         when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
           response = client.get_message_content(event.message['id'])
           tf = Tempfile.open("content")
