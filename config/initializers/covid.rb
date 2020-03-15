@@ -82,7 +82,17 @@ class Covid
     nation = nation || 'TH'
     resp = daily_reports_by_date(date)
 
-    resp.detect{ |r| r[:country_id] == nation.upcase }
+    nations = resp.select{ |r| r[:country_id] == nation.upcase }
+    updated_at = nations.min_by{ |h| h[:updated_at] }[:updated_at]
+    
+    { 
+      confirmed: nations.pluck(:confirmed).sum || 0,
+      healings: nations.pluck(:healings).sum || 0,
+      deaths: nations.pluck(:deaths).sum || 0,
+      recovered: nations.pluck(:recovered).sum || 0,
+      updated_at: updated_at,
+      last_updated: time_difference_str(updated_at),
+    }
   end
 
   def self.country_retroact(nation, days = 6)

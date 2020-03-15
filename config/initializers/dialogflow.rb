@@ -18,7 +18,7 @@ class Dialogflow
     response = client(api_session_id).text_request(message)
     data = response[:result][:metadata]
 
-    resp = { 
+    {
       session_id: response[:sessionId], 
       agent_message: response[:result][:resolvedQuery], 
       action: response[:result][:action],
@@ -26,7 +26,5 @@ class Dialogflow
       parameters: response[:result][:parameters],
       fulfillment: response[:result][:fulfillment]
     }
-
-    ap resp
   end
 end
