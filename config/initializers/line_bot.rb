@@ -77,7 +77,7 @@ class LineBot
         type: "text",
         text: text,
         flex: 3,
-        size: "xs",
+        size: "md",
         gravity: "center",
         wrap: true
       }
@@ -99,9 +99,9 @@ class LineBot
             {
               type: "text",
               text: header,
-              size: "xl",
+              size: "lg",
               weight: "bold",
-              color: "#000000",
+              color: "#565656"
               wrap: true
             }
           ]
@@ -110,7 +110,7 @@ class LineBot
           type: "image",
           url: "https://www.autoinfo.co.th/wp-content/uploads/2020/03/55.jpg",
           size: "full",
-          aspectRatio: "20:13",
+          aspectRatio: "16:9",
           aspectMode: "cover",
           action: {
             type: "uri",
@@ -133,7 +133,8 @@ class LineBot
               type: "text",
               text: footer,
               weight: "bold",
-              wrap: true
+              wrap: true,
+              size: "xs",
             }
           ]
         }
