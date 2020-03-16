@@ -79,7 +79,7 @@ class LineBot
       )
     end
 
-    flex({ type: "carousel", contents: bubble_messages })
+    flex(bubble_messages.first)
   end
 
   def self.flex(messages)
