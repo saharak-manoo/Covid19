@@ -62,19 +62,19 @@ class LineBot
     ActiveSupport::NumberHelper.number_to_delimited(number)
   end
 
-  def self.data_hospital(hotpitals)
+  def self.data_hospital(hospitals)
     bubble_messages = []
 
-    hotpitals.each do |hotpital|
+    hospitals.each do |hospital|
       contents = [
-        "ที่อยู่ : #{hotpital.addrees}",
-        "เบอร์โทร : #{hotpital.phone}"
+        "ที่อยู่ : #{hospital.address}",
+        "เบอร์โทร : #{hospital.phone}"
       ]
 
       bubble_messages << bubble_message(
-        hotpital.name, 
+        hospital.name, 
         contents, 
-        hotpital.estimated_examination_fees, 
+        hospital.estimated_examination_fees, 
         'https://image.makewebeasy.net/makeweb/r_600x0/amoluGlRn/Data/c03433b120249dba3f3627c135690521.jpg'
       )
     end
