@@ -10,7 +10,15 @@ class WebhooksController < ApplicationController
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Text
-          LineBot.data_covid(event['replyToken'], event.message['text'])
+          resp = Dialogflow.send(event.message['text'])
+
+          if resp[:intent_name] == "COVID-DATA"
+            LineBot.reply(event['replyToken'], LineBot.data_covid(resp))
+          elsif resp[:intent_name] == "COVID-HOSPITAL"
+            LineBot.reply(event['replyToken'], LineBot.data_hospital(Hospital.all))
+          else
+            LineBot.reply(event['replyToken'], { type: 'text', text: resp[:fulfillment][:speech] })
+          end
         when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
           response = client.get_message_content(event.message['id'])
           tf = Tempfile.open("content")
