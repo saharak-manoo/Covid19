@@ -8,12 +8,12 @@ class LineBot
   end
 
   def self.reply(reply_token, bot_message)
-    message = { type: 'text', text: bot_message }
-    client.reply_message(reply_token, message)
+    client.reply_message(reply_token, bot_message)
   end
 
   def self.data_covid(reply_token, user_message)
-    bot_message = "ทั่วโลก"
+    contents = []
+    header = "ทั่วโลก"
     resp = Dialogflow.send(user_message)
     date = Date.yesterday
     isConfirmed = resp[:parameters][:confirmed].present?
@@ -24,40 +24,112 @@ class LineBot
     if resp[:intent_name] == "Covid"
       if resp[:parameters][:language].present?
         data = Covid.country('TH', date)
-        bot_message = resp[:parameters][:language]
+        header = resp[:parameters][:language]
       else
         data = Covid.total(date)
       end
 
+      footer = "* ข้อมูลนี้ #{data[:last_updated]}"
+
       if resp[:parameters][:date_time].present?
         param_date = Date.parse(resp[:parameters][:date_time])
         if param_date == Date.today
-          bot_message += "\n * เนื่องจากน้องบอทไม่มีข้อมูลของวันนี้ ทางน้องบอทจะนำข้อมูลที่มีอยู่ล่าสุดให้แทนนะ"
+          footer += "\nเนื่องจากน้องบอทไม่มีข้อมูลของวันนี้ \nทางน้องบอทจะนำข้อมูลที่มีอยู่ล่าสุดให้แทนนะ"
         else
           date = param_date
         end  
       end
 
-      unless isConfirmed && isHealings && isRecovered && isDeaths
-        bot_message += "\n - ติดเชื้อทั้งหมด #{to_delimited(data[:confirmed])} คน 
-                        \n - กำลังรักษาทั้งหมด #{to_delimited(data[:healings])} คน
-                        \n - รักษาหายแล้วทั้งหมด #{to_delimited(data[:recovered])} คน
-                        \n - เสียชีวิตแล้วทั้งหมด #{to_delimited(data[:deaths])} คน"
-      else
-        bot_message += " ติดเชื้อทั้งหมด #{to_delimited(data[:confirmed])} คน" if isConfirmed
-        bot_message += " กำลังรักษาทั้งหมด #{to_delimited(data[:healings])} คน" if isHealings
-        bot_message += " รักษาหายแล้วทั้งหมด #{to_delimited(data[:recovered])} คน" if isRecovered
-        bot_message += " เสียชีวิตแล้วทั้งหมด #{to_delimited(data[:deaths])} คน" if isDeaths
+      if isConfirmed
+        contents << "- ติดเชื้อทั้งหมด #{to_delimited(data[:confirmed])} คน"
+      elsif isHealings
+        contents <<  "- กำลังรักษาทั้งหมด #{to_delimited(data[:healings])} คน"
+      elsif isRecovered
+        contents <<  "- รักษาหายแล้วทั้งหมด #{to_delimited(data[:recovered])} คน"
+      elsif isDeaths
+        contents <<  "- เสียชีวิตแล้วทั้งหมด #{to_delimited(data[:deaths])} คน"
+      elsif !isConfirmed && !isHealings && !isRecovered && !isDeaths
+        contents = [
+          "- ติดเชื้อทั้งหมด #{to_delimited(data[:confirmed])} คน",
+          "- กำลังรักษาทั้งหมด #{to_delimited(data[:healings])} คน",
+          "- รักษาหายแล้วทั้งหมด #{to_delimited(data[:recovered])} คน",
+          "- เสียชีวิตแล้วทั้งหมด #{to_delimited(data[:deaths])} คน"
+      ]
       end
 
-      bot_message += "\n\n * ข้อมูลนี้ #{data[:last_updated]}"
-      LineBot.reply(reply_token, bot_message)
+      
+      LineBot.reply(reply_token, flex_message(header, contents, footer))
     else
-      LineBot.reply(reply_token, resp[:fulfillment][:speech])
+      LineBot.reply(reply_token, { type: 'text', text: resp[:fulfillment][:speech] })
     end
+
+    ap bot_message
   end
 
   def self.to_delimited(number)
     ActiveSupport::NumberHelper.number_to_delimited(number)
-  end  
+  end
+
+  def self.flex_message(header, data, footer)
+    contents = []
+    data.each do |text|
+      contents << {
+        type: "text",
+        text: content,
+        flex: 3,
+        size: "md",
+        gravity: "top"
+      }
+    end
+
+    {
+      type: "flex",
+      altText: "Flex Message",
+      contents: {
+        type: "bubble",
+        header: {
+          type: "box",
+          layout: "horizontal",
+          contents: [
+            {
+              type: "text",
+              text: header,
+              size: "sm",
+              weight: "bold",
+              color: "#000000"
+            }
+          ]
+        },
+        hero: {
+          type: "image",
+          url: "https://www.autoinfo.co.th/wp-content/uploads/2020/03/55.jpg",
+          size: "full",
+          aspectRatio: "20:13",
+          aspectMode: "cover",
+          action: {
+            type: "uri",
+            label: "Action",
+            uri: "https://data-covid-2019.herokuapp.com/"
+          }
+        },
+        body: {
+          type: "box",
+          layout: "horizontal",
+          spacing: "md",
+          contents: contents
+        },
+        footer: {
+          type: "box",
+          layout: "horizontal",
+          contents: [
+            {
+              type: "text",
+              text: footer,
+              weight: "bold"
+            }
+          ]
+        }
+      }
+    }
+  end
 end
