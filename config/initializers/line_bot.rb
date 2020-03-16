@@ -41,19 +41,19 @@ class LineBot
       end
 
       if isConfirmed
-        contents << "- ติดเชื้อทั้งหมด #{to_delimited(data[:confirmed])} คน"
+        contents << "ติดเชื้อทั้งหมด #{to_delimited(data[:confirmed])} คน"
       elsif isHealings
-        contents <<  "- กำลังรักษาทั้งหมด #{to_delimited(data[:healings])} คน"
+        contents <<  "กำลังรักษาทั้งหมด #{to_delimited(data[:healings])} คน"
       elsif isRecovered
-        contents <<  "- รักษาหายแล้วทั้งหมด #{to_delimited(data[:recovered])} คน"
+        contents <<  "รักษาหายแล้วทั้งหมด #{to_delimited(data[:recovered])} คน"
       elsif isDeaths
-        contents <<  "- เสียชีวิตแล้วทั้งหมด #{to_delimited(data[:deaths])} คน"
+        contents <<  "เสียชีวิตแล้วทั้งหมด #{to_delimited(data[:deaths])} คน"
       elsif !isConfirmed && !isHealings && !isRecovered && !isDeaths
         contents = [
-          "- ติดเชื้อทั้งหมด #{to_delimited(data[:confirmed])} คน",
-          "- กำลังรักษาทั้งหมด #{to_delimited(data[:healings])} คน",
-          "- รักษาหายแล้วทั้งหมด #{to_delimited(data[:recovered])} คน",
-          "- เสียชีวิตแล้วทั้งหมด #{to_delimited(data[:deaths])} คน"
+          "ติดเชื้อทั้งหมด #{to_delimited(data[:confirmed])} คน",
+          "กำลังรักษาทั้งหมด #{to_delimited(data[:healings])} คน",
+          "รักษาหายแล้วทั้งหมด #{to_delimited(data[:recovered])} คน",
+          "เสียชีวิตแล้วทั้งหมด #{to_delimited(data[:deaths])} คน"
       ]
       end
 
@@ -120,8 +120,9 @@ class LineBot
         },
         body: {
           type: "box",
-          layout: "horizontal",
-          spacing: "md",
+          layout: "vertical",
+          spacing: "sm",
+          margin: "md",
           contents: contents
         },
         footer: {
