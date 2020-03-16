@@ -75,7 +75,7 @@ class LineBot
     data.each do |text|
       contents << {
         type: "text",
-        text: content,
+        text: text,
         flex: 3,
         size: "md",
         gravity: "top"
