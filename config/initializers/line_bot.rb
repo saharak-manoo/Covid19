@@ -78,7 +78,8 @@ class LineBot
         text: text,
         flex: 3,
         size: "xs",
-        gravity: "top"
+        gravity: "center",
+        wrap: true
       }
       
       contents << {
@@ -100,7 +101,8 @@ class LineBot
               text: header,
               size: "xl",
               weight: "bold",
-              color: "#000000"
+              color: "#000000",
+              wrap: true
             }
           ]
         },
@@ -129,7 +131,8 @@ class LineBot
             {
               type: "text",
               text: footer,
-              weight: "bold"
+              weight: "bold",
+              wrap: true
             }
           ]
         }
