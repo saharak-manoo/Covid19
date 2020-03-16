@@ -24,7 +24,7 @@ class LineBot
     if resp[:intent_name] == "Covid"
       if resp[:parameters][:language].present?
         data = Covid.country('TH', date)
-        header = resp[:parameters][:language]
+        header = "ประเทศไทย"
       else
         data = Covid.total(date)
       end
@@ -77,8 +77,12 @@ class LineBot
         type: "text",
         text: text,
         flex: 3,
-        size: "md",
+        size: "xs",
         gravity: "top"
+      }
+      
+      contents << {
+        type: "separator"
       }
     end
 
@@ -94,7 +98,7 @@ class LineBot
             {
               type: "text",
               text: header,
-              size: "sm",
+              size: "xl",
               weight: "bold",
               color: "#000000"
             }
