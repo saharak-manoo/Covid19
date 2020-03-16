@@ -87,7 +87,7 @@ class LineBot
       type: "flex",
       altText: "Flex Message",
       contents: {
-        contents: messages
+        messages
       }
     }
   end
