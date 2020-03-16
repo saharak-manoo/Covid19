@@ -55,7 +55,7 @@ class LineBot
     ]
     end
       
-    flex(bubble_message(header, contents, footer, 'https://www.autoinfo.co.th/wp-content/uploads/2020/03/55.jpg'))
+    flex(bubble_message(header, contents, footer, 'https://www.autoinfo.co.th/wp-content/uploads/2020/03/55.jpg'), header)
   end
 
   def self.to_delimited(number)
@@ -79,13 +79,20 @@ class LineBot
       )
     end
 
-    flex({ "type": "carousel", "contents": bubble_messages })
-  end
-
-  def self.flex(messages)
     {
       type: "flex",
-      altText: "Flex Message",
+      altText: "สถานที่ตรวจหาโรค/รักษา (#{hospitals.count} แห่ง)",
+      contents: {
+        type: "carousel",
+        contents: bubble_messages
+      }
+    } 
+  end
+
+  def self.flex(messages, header)
+    {
+      type: "flex",
+      altText: "ข้อมูลไวรัสโควิด #{header}",
       contents: messages
     }
   end
