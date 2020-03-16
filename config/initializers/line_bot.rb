@@ -38,16 +38,16 @@ class LineBot
         end  
       end
 
-      bot_message += " ติดเชื้อทั้งหมด #{to_delimited(data[:confirmed])} คน" if isConfirmed
-      bot_message += " กำลังรักษาทั้งหมด #{to_delimited(data[:healings])} คน" if isHealings
-      bot_message += " รักษาหายแล้วทั้งหมด #{to_delimited(data[:recovered])} คน" if isRecovered
-      bot_message += " เสียชีวิตแล้วทั้งหมด #{to_delimited(data[:deaths])} คน" if isDeaths
-
       unless isConfirmed && isHealings && isRecovered && isDeaths
         bot_message += "\n - ติดเชื้อทั้งหมด #{to_delimited(data[:confirmed])} คน 
                         \n - กำลังรักษาทั้งหมด #{to_delimited(data[:healings])} คน
                         \n - รักษาหายแล้วทั้งหมด #{to_delimited(data[:recovered])} คน
                         \n - เสียชีวิตแล้วทั้งหมด #{to_delimited(data[:deaths])} คน"
+      else
+        bot_message += " ติดเชื้อทั้งหมด #{to_delimited(data[:confirmed])} คน" if isConfirmed
+        bot_message += " กำลังรักษาทั้งหมด #{to_delimited(data[:healings])} คน" if isHealings
+        bot_message += " รักษาหายแล้วทั้งหมด #{to_delimited(data[:recovered])} คน" if isRecovered
+        bot_message += " เสียชีวิตแล้วทั้งหมด #{to_delimited(data[:deaths])} คน" if isDeaths
       end
 
       bot_message += "\n\n * ข้อมูลนี้ #{data[:last_updated]}"
