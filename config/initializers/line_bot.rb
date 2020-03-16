@@ -54,7 +54,7 @@ class LineBot
         "เสียชีวิตแล้วทั้งหมด #{to_delimited(data[:deaths])} คน"
     ]
     end
-
+      
     bubble_message(header, contents, footer, 'https://www.autoinfo.co.th/wp-content/uploads/2020/03/55.jpg')
   end
 
@@ -67,7 +67,7 @@ class LineBot
 
     hotpitals.each do |hotpital|
       contents = [
-        "ที่อยู่ : #{hotpital.address}",
+        "ที่อยู่ : #{hotpital.addrees}",
         "เบอร์โทร : #{hotpital.phone}"
       ]
 
@@ -79,16 +79,23 @@ class LineBot
       )
     end
 
-    flex(bubble_messages)
-  end
-
-  def self.flex(contents)
     {
       type: "flex",
       altText: "Flex Message",
       contents: {
         type: "carousel",
-        contents: contents
+        contents: bubble_messages
+      }
+    }
+  end
+
+  def self.flex(messages)
+    {
+      type: "flex",
+      altText: "Flex Message",
+      contents: {
+        type: "carousel",
+        contents: messages
       }
     }
   end
@@ -114,55 +121,52 @@ class LineBot
       type: "flex",
       altText: "Flex Message",
       contents: {
-        type: "carousel",
-        contents: {
-          type: "bubble",
-          header: {
-            type: "box",
-            layout: "horizontal",
-            contents: [
-              {
-                type: "text",
-                text: header,
-                size: "lg",
-                weight: "bold",
-                color: "#565656",
-                wrap: true
-              }
-            ]
-          },
-          hero: {
-            type: "image",
-            url: image,
-            size: "full",
-            aspectRatio: "16:9",
-            aspectMode: "cover",
-            action: {
-              type: "uri",
-              label: "Action",
-              uri: "https://data-covid-2019.herokuapp.com/"
+        type: "bubble",
+        header: {
+          type: "box",
+          layout: "horizontal",
+          contents: [
+            {
+              type: "text",
+              text: header,
+              size: "lg",
+              weight: "bold",
+              color: "#565656"
+              wrap: true
             }
-          },
-          body: {
-            type: "box",
-            layout: "vertical",
-            spacing: "sm",
-            margin: "md",
-            contents: contents
-          },
-          footer: {
-            type: "box",
-            layout: "horizontal",
-            contents: [
-              {
-                type: "text",
-                text: footer,
-                weight: "bold",
-                wrap: true,
-                size: "xs",
-              }
-            ]
+          ]
+        },
+        hero: {
+          type: "image",
+          url: image,
+          size: "full",
+          aspectRatio: "16:9",
+          aspectMode: "cover",
+          action: {
+            type: "uri",
+            label: "Action",
+            uri: "https://data-covid-2019.herokuapp.com/"
           }
+        },
+        body: {
+          type: "box",
+          layout: "vertical",
+          spacing: "sm",
+          margin: "md",
+          contents: contents
+        },
+        footer: {
+          type: "box",
+          layout: "horizontal",
+          contents: [
+            {
+              type: "text",
+              text: footer,
+              weight: "bold",
+              wrap: true,
+              size: "xs",
+            }
+          ]
         }
       }
     }
