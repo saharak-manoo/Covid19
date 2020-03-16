@@ -67,7 +67,7 @@ class LineBot
 
     hotpitals.each do |hotpital|
       contents = [
-        "ที่อยู่ : #{hotpital.addrees}",
+        "ที่อยู่ : #{hotpital.address}",
         "เบอร์โทร : #{hotpital.phone}"
       ]
 
