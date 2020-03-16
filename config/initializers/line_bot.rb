@@ -131,7 +131,7 @@ class LineBot
               text: header,
               size: "lg",
               weight: "bold",
-              color: "#565656"
+              color: "#565656",
               wrap: true
             }
           ]
