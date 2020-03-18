@@ -81,7 +81,7 @@ class LineBot
 
     {
       type: "flex",
-      altText: "สถานที่ตรวจหาโรค/รักษา (#{hospitals.count} แห่ง)",
+      altText: "สถานที่ตรวจหาโรค/รักษา",
       contents: {
         type: "carousel",
         contents: bubble_messages
