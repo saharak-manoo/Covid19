@@ -83,7 +83,6 @@ class LineBot
       type: "flex",
       altText: "สถานที่ตรวจหาโรค/รักษา (#{hospitals.count} แห่ง)",
       contents: {
-       {
   "type": "carousel",
   "contents": [
     {
@@ -259,7 +258,6 @@ class LineBot
       }
     }
   ]
-}
       }
     } 
   end
