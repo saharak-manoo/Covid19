@@ -55,41 +55,45 @@ class LineBot
     ]
     end
       
-    flex(bubble_message(header, contents, footer, 'https://www.autoinfo.co.th/wp-content/uploads/2020/03/55.jpg'))
+    flex(bubble_message(header, contents, footer, 'https://www.autoinfo.co.th/wp-content/uploads/2020/03/55.jpg'), header)
   end
 
   def self.to_delimited(number)
     ActiveSupport::NumberHelper.number_to_delimited(number)
   end
 
-  def self.data_hospital(hotpitals)
+  def self.data_hospital(hospitals)
     bubble_messages = []
 
-    hotpitals.each do |hotpital|
+    hospitals.each do |hospital|
       contents = [
-        "ที่อยู่ : #{hotpital.addrees}",
-        "เบอร์โทร : #{hotpital.phone}"
+        "ที่อยู่ : #{hospital.address}",
+        "เบอร์โทร : #{hospital.phone}"
       ]
 
       bubble_messages << bubble_message(
-        hotpital.name, 
+        hospital.name, 
         contents, 
-        hotpital.estimated_examination_fees, 
+        hospital.estimated_examination_fees, 
         'https://image.makewebeasy.net/makeweb/r_600x0/amoluGlRn/Data/c03433b120249dba3f3627c135690521.jpg'
       )
     end
 
-    flex(bubble_messages)
-  end
-
-  def self.flex(messages)
     {
       type: "flex",
-      altText: "Flex Message",
+      altText: "สถานที่ตรวจหาโรค/รักษา",
       contents: {
         type: "carousel",
-        contents: messages
+        contents: bubble_messages
       }
+    } 
+  end
+
+  def self.flex(messages, header)
+    {
+      type: "flex",
+      altText: "ข้อมูลไวรัสโควิด #{header}",
+      contents: messages
     }
   end
 
@@ -121,7 +125,7 @@ class LineBot
             text: header,
             size: "lg",
             weight: "bold",
-            color: "#565656"
+            color: "#565656",
             wrap: true
           }
         ]
