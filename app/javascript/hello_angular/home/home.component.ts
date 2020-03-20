@@ -89,22 +89,27 @@ export class HomeComponent {
 	];
 	barChartColors = [
 		{
-			backgroundColor: '#FCD35E'
+			backgroundColor: '#FCD35E',
+			borderColor: '#FCD35E'
 		},
 		{
-			backgroundColor: '#BFFD59'
+			backgroundColor: '#BFFD59',
+			borderColor: '#BFFD59'
 		},
 		{
-			backgroundColor: '#5EFCAD'
+			backgroundColor: '#5EFCAD',
+			borderColor: '#5EFCAD'
 		},
 		{
-			backgroundColor: '#FC5E71'
+			backgroundColor: '#FC5E71',
+			borderColor: '#FC5E71'
 		}
 	];
 	latitude: number = 13.7530066;
 	longitude: number = 100.4960144;
 	hospitals: any = [];
 	allCountryDisplayedColumns: string[] = [
+		'country_flag',
 		'country',
 		'travel',
 		'confirmed',
@@ -131,6 +136,7 @@ export class HomeComponent {
 	@ViewChild('patientInformationPaginator', { static: true })
 	patientInformationPaginator: MatPaginator;
 	patientInformationCount: number = 0;
+	localAddTodayCount: number = 0;
 
 	ngOnInit() {
 		this.loadData();
@@ -139,6 +145,50 @@ export class HomeComponent {
 		setInterval(() => {
 			this.loadData();
 		}, 5 * 60 * 1000);
+
+		setInterval(() => {
+			if (this.barChartType === 'bar') {
+				this.barChartType = 'line';
+				this.barChartColors = [
+					{
+						backgroundColor: 'rgb(252, 211, 94, 0.5)',
+						borderColor: '#FCD35E'
+					},
+					{
+						backgroundColor: 'rgb(191, 253, 89, 0.5)',
+						borderColor: '#BFFD59'
+					},
+					{
+						backgroundColor: 'rgb(94, 252, 173, 0.5)',
+						borderColor: '#5EFCAD'
+					},
+					{
+						backgroundColor: 'rgb(252, 94, 113, 0.5)',
+						borderColor: '#FC5E71'
+					}
+				];
+			} else {
+				this.barChartType = 'bar';
+				this.barChartColors = [
+					{
+						backgroundColor: '#FCD35E',
+						borderColor: '#FCD35E'
+					},
+					{
+						backgroundColor: '#BFFD59',
+						borderColor: '#BFFD59'
+					},
+					{
+						backgroundColor: '#5EFCAD',
+						borderColor: '#5EFCAD'
+					},
+					{
+						backgroundColor: '#FC5E71',
+						borderColor: '#FC5E71'
+					}
+				];
+			}
+		}, 30000);
 	}
 
 	loadData() {
@@ -165,6 +215,7 @@ export class HomeComponent {
 		this.appService.all('covids/constants').subscribe(
 			resp => {
 				let response: any = resp;
+				this.localAddTodayCount = response.data.add_today_count;
 				this.localLastUpdated = response.data.last_updated;
 				this.totalLocal = response.data;
 				this.pieChartDataLocal = [
