@@ -137,27 +137,48 @@ class Covid
 
     response.each do |resp|
       type = 'ไม่มีข้อมูล'
+      type_color = "#000"
 
       case resp['type']
       when '1 - เดินทางมาจากประเทศกลุ่มเสี่ยง'  
+        type_color = "#FE205D"
         type = 'เดินทางมาจากประเทศกลุ่มเสี่ยง'
       when '2 - ใกล้ชิดผู้เดินทางมาจากประเทศกลุ่มเสี่ยง'
+        type_color = "#FE2099"
         type = 'ใกล้ชิดผู้เดินทางมาจากประเทศกลุ่มเสี่ยง'
       when '3 - ทราบผู้ป่วยแพร่เชื้อ (ไม่เข้าเกณฑ์ 1-2)'
+        type_color = "#5920FE"
         type = 'ทราบผู้ป่วยแพร่เชื้อ'
       when '4 - ไม่ทราบผู้ป่วยแพร่เชื้อ (ไม่เข้าเกณฑ์ 1-2)'
+        type_color = "#AD20FE"
         type = 'ไม่ทราบผู้ป่วยแพร่เชื้อ'
+      end
+
+      status = resp['status'] || 'ไม่มีข้อมูล'
+      status_color = "#000"
+
+      case status
+      when 'รักษา'
+        status_color = "#A2F202"
+        status = 'กำลังรักษา'
+      when 'หาย'
+        status_color = "#01E35E"
+        status = 'หายแล้ว'
+      when 'เสียชีวิต'
+        status_color = "#FC5E71"
       end
 
       data << {
         detected_at: resp['detectedAt'] || 'ไม่มีข้อมูล',
         origin: resp['origin'] || 'ไม่มีข้อมูล',
         treat_at: resp['treatAt'] || 'ไม่มีข้อมูล',
-        status: resp['status'] || 'ไม่มีข้อมูล',
+        status: status,
+        status_color: status_color,
         job: resp['job'] || 'ไม่มีข้อมูล',
         gender: resp['gender'] || 'ไม่มีข้อมูล',
         age: resp['age'] || 'ไม่มีข้อมูล',
-        type: type
+        type: type,
+        type_color: type_color
       }
     end
 
@@ -169,13 +190,24 @@ class Covid
     response = api_workpoint('world')
 
     response['statistics'].each do |resp|
+      travel = resp['travel'] || 'ยังไม่มีความเสี่ยง'
+      travel_color = "#000"
+
+      case travel
+      when 'มีความเสี่ยง'
+        travel_color = "#FED023"
+      when 'ห้ามเดินทาง'
+        travel_color = "#FE205D"
+      end
+
       data << {
         country: resp['name'],
         confirmed: resp['confirmed'] || 0,
         healings: (resp['confirmed'].to_i - resp['recovered'].to_i ) - resp['deaths'].to_i || 0,
         deaths: resp['deaths'] || 0,
         recovered: resp['recovered'] || 0,
-        travel: resp['travel'] || 'ยังไม่มีความเสี่ยง'
+        travel: travel,
+        travel_color: travel_color
       }
     end
 
