@@ -14,8 +14,8 @@
           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
             <mat-card class="card-text-data">
               <mat-card-content>
-                <h3 class="text-center">ผู้ติดเชื้อ</h3>
-                <p class="infected-person text-center">{{ totalLocal.confirmed.toLocaleString('en') }}</p>
+                <p class="text-center font-size-26">ผู้ติดเชื้อ <strong class="font-size-14">(เพิ่มขึ้น {{ localAddTodayCount }})</strong></p>
+                <p class="infected-person confirmed text-center">{{ totalLocal.confirmed.toLocaleString('en') }}</p>
                 <h4 class="text-center">คน</h4>
               </mat-card-content>
             </mat-card>
@@ -23,8 +23,8 @@
           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
             <mat-card class="card-text-data">
               <mat-card-content>
-                <h3 class="text-center">กำลังอยู่ในการรักษา</h3>
-                <p class="infected-person text-center">{{ totalLocal.healings.toLocaleString('en') }}</p>
+                <p class="text-center font-size-26">กำลังอยู่ในการรักษา</p>
+                <p class="infected-person healings text-center">{{ totalLocal.healings.toLocaleString('en') }}</p>
                 <h4 class="text-center">คน</h4>
               </mat-card-content>
             </mat-card>
@@ -32,8 +32,8 @@
           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
             <mat-card class="card-text-data">
               <mat-card-content>
-                <h3 class="text-center">รักษาหายแล้ว</h3>
-                <p class="infected-person text-center">{{ totalLocal.recovered.toLocaleString('en') }}</p>
+                <p class="text-center font-size-26">รักษาหายแล้ว</p>
+                <p class="infected-person recovered text-center">{{ totalLocal.recovered.toLocaleString('en') }}</p>
                 <h4 class="text-center">คน</h4>
               </mat-card-content>
             </mat-card>
@@ -41,8 +41,8 @@
           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
             <mat-card class="card-text-data">
               <mat-card-content>
-                <h3 class="text-center">เสียชีวิต</h3>
-                <p class="infected-person text-center">{{ totalLocal.deaths.toLocaleString('en') }}</p>
+                <p class="text-center font-size-26">เสียชีวิต</p>
+                <p class="infected-person deaths text-center">{{ totalLocal.deaths.toLocaleString('en') }}</p>
                 <h4 class="text-center">คน</h4>
               </mat-card-content>
             </mat-card>
@@ -51,7 +51,7 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
             <mat-card class="card-chart">
               <mat-card-content>
-                <h3 class="text-center">เปรียบเทียบอัตราส่วน</h3>
+                <p class="text-center font-size-26">เปรียบเทียบอัตราส่วน</p>
                 <canvas baseChart
                   [options]="pieChartOptions"
                   [data]="pieChartDataLocal"
@@ -65,7 +65,7 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
             <mat-card class="card-chart">
               <mat-card-content>
-                <h3 class="text-center">ข้อมูลย้อนหลัง 7 วัน</h3>
+                <p class="text-center font-size-26">ข้อมูลย้อนหลัง <strong class="font-size-26 color-7">7</strong> วัน</p>
                 <canvas baseChart
                   [datasets]="barChartDataLocal"
                   [labels]="barChartLabels"
@@ -79,7 +79,7 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <mat-card class="card-chart">
               <mat-card-content>
-                <h3 class="text-center">สถานที่ตรวจหาโรค/รักษา ({{ hospitals.length || 0}} แห่ง)</h3>
+                <p class="text-center font-size-26">สถานที่ตรวจหาโรค/รักษา ({{ hospitals.length || 0}} แห่ง)</p>
                 <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="12">
                   <agm-marker 
                     *ngFor="let hospital of hospitals; let i = index" 
@@ -100,7 +100,7 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <mat-card class="card-chart">
               <mat-card-content>
-                <h3 class="text-center">ข้อมูลผู้ป่วยในประเทศที่ยืนยันแล้ว ({{ patientInformationCount }} คน)</h3>
+                <p class="text-center font-size-26">ข้อมูลผู้ป่วยในประเทศที่ยืนยันแล้ว ({{ patientInformationCount }} คน)</p>
                 <mat-form-field>
                   <mat-label>ค้นหา...</mat-label>
                   <input matInput (keyup)="searchPatientInformation($event)" placeholder="ตัวอย่าง. เชียงใหม่">
@@ -172,8 +172,8 @@
           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
             <mat-card class="card-text-data">
               <mat-card-content>
-                <h3 class="text-center">ผู้ติดเชื้อ</h3>
-                <p class="infected-person text-center">{{ total.confirmed.toLocaleString('en') }}</p>
+                 <p class="text-center font-size-26">ผู้ติดเชื้อ</p>
+                <p class="infected-person confirmed text-center">{{ total.confirmed.toLocaleString('en') }}</p>
                 <h4 class="text-center">คน</h4>
               </mat-card-content>
             </mat-card>
@@ -181,8 +181,8 @@
           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
             <mat-card class="card-text-data">
               <mat-card-content>
-                <h3 class="text-center">กำลังอยู่ในการรักษา</h3>
-                <p class="infected-person text-center">{{ total.healings.toLocaleString('en') }}</p>
+                <p class="text-center font-size-26">กำลังอยู่ในการรักษา</p>
+                <p class="infected-person healings text-center">{{ total.healings.toLocaleString('en') }}</p>
                 <h4 class="text-center">คน</h4>
               </mat-card-content>
             </mat-card>
@@ -190,8 +190,8 @@
           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
             <mat-card class="card-text-data">
               <mat-card-content>
-                <h3 class="text-center">รักษาหายแล้ว</h3>
-                <p class="infected-person text-center">{{ total.recovered.toLocaleString('en') }}</p>
+                <p class="text-center font-size-26">รักษาหายแล้ว</p>
+                <p class="infected-person recovered text-center">{{ total.recovered.toLocaleString('en') }}</p>
                 <h4 class="text-center">คน</h4>
               </mat-card-content>
             </mat-card>
@@ -199,8 +199,8 @@
           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
             <mat-card class="card-text-data">
               <mat-card-content>
-                <h3 class="text-center">เสียชีวิต</h3>
-                <p class="infected-person text-center">{{ total.deaths.toLocaleString('en') }}</p>
+                <p class="text-center font-size-26">เสียชีวิต</p>
+                <p class="infected-person deaths text-center">{{ total.deaths.toLocaleString('en') }}</p>
                 <h4 class="text-center">คน</h4>
               </mat-card-content>
             </mat-card>
@@ -208,7 +208,7 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
             <mat-card class="card-chart">
               <mat-card-content>
-                <h3 class="text-center">เปรียบเทียบอัตราส่วน</h3>
+                <p class="text-center font-size-26">เปรียบเทียบอัตราส่วน</p>
                 <canvas baseChart
                   [options]="pieChartOptions"
                   [data]="pieChartData"
@@ -222,7 +222,7 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
             <mat-card class="card-chart">
               <mat-card-content>
-                <h3 class="text-center">ข้อมูลย้อนหลัง 7 วัน</h3>
+                <p class="text-center font-size-26">ข้อมูลย้อนหลัง <strong class="font-size-26 color-7">7</strong> วัน</p>
                 <canvas baseChart
                   [datasets]="barChartData"
                   [labels]="barChartLabels"
@@ -236,13 +236,18 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <mat-card class="card-chart">
               <mat-card-content>
-                <h3 class="text-center">ข้อมูลแบบแยกประเทศ</h3>
+                <p class="text-center font-size-26">ข้อมูลแบบแยกประเทศ</p>
                 <mat-form-field>
                   <mat-label>ค้นหา...</mat-label>
                   <input matInput (keyup)="searchAllCountry($event)" placeholder="ตัวอย่าง. Thailand">
                 </mat-form-field>
                 <div class="mat-elevation-z8">
                   <table mat-table #allCountry [dataSource]="allCountryDataSource" matSort matSortActive="confirmed" matSortDirection="desc">
+
+                    <ng-container matColumnDef="country_flag">
+                      <th mat-header-cell *matHeaderCellDef></th>
+                      <td mat-cell *matCellDef="let element"><div [ngStyle]="{'background-image': 'url(' + element.country_flag + ')'}" class="country-flag"></div></td>
+                    </ng-container>
 
                     <ng-container matColumnDef="country">
                       <th mat-header-cell *matHeaderCellDef mat-sort-header> ประเทศ </th>
@@ -286,7 +291,7 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <mat-card class="card-qr-code">
               <mat-card-content>
-                <h3 class="text-center">Line Bot QR Code</h3>
+                <p class="text-center font-size-26"><strong class="font-size-26 color-line">Line</strong> Bot QR Code</p>
                 <img src="/LineBotQRCode.png" class="qrcode">
                 <p class="text-center">Line Bot ชื่อ : Covid19</p>
               </mat-card-content>
