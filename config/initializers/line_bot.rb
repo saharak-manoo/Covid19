@@ -21,10 +21,10 @@ class LineBot
     isDeaths = resp[:parameters][:deaths].present?
 
     if resp[:parameters][:language].present?
-      data = Covid.country('TH', date)
+      data = Covid.constants
       header = "ประเทศไทย"
     else
-      data = Covid.total(date)
+      data = Covid.world
     end
 
     footer = "* ข้อมูลนี้ #{data[:last_updated]}"

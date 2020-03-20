@@ -12,6 +12,10 @@ Rails.application.routes.draw do
       get 'country'
       get 'country_retroact'
       get 'hospital'
+      get 'constants'
+      get 'world'
+      get 'cases'
+      get 'trend'
     end
   end
 

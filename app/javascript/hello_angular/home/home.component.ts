@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import templateString from './home.html';
 import { NgFlashMessageService } from 'ng-flash-messages';
 import { AppService } from '../app/app.service';
@@ -7,6 +7,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ChartType, ChartOptions } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { AppComponent } from '../app/app.component';
+import { LoadingBarService } from '@ngx-loading-bar/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
 	template: templateString
@@ -18,7 +21,8 @@ export class HomeComponent {
 		public dialog: MatDialog,
 		private route: ActivatedRoute,
 		private router: Router,
-		private app: AppComponent
+		private app: AppComponent,
+		private loadingBar: LoadingBarService
 	) {}
 	localLastUpdated: string = 'กำหลังโหลด...';
 	globleLastUpdated: string = 'กำหลังโหลด...';
@@ -99,6 +103,31 @@ export class HomeComponent {
 	latitude: number = 13.7530066;
 	longitude: number = 100.4960144;
 	hospitals: any = [];
+	allCountryDisplayedColumns: string[] = [
+		'country',
+		'travel',
+		'confirmed',
+		'healings',
+		'recovered',
+		'deaths'
+	];
+	allCountryDataSource: any = [];
+	@ViewChild('allCountryPaginator', { static: true }) allCountryPaginator: MatPaginator;
+
+	patientInformationDisplayedColumns: string[] = [
+		'detected_at',
+		'origin',
+		'treat_at',
+		'status',
+		'job',
+		'gender',
+		'age',
+		'type'
+	];
+	patientInformationDataSource: any = [];
+	@ViewChild('patientInformationPaginator', { static: true })
+	patientInformationPaginator: MatPaginator;
+	patientInformationCount: number = 0;
 
 	ngOnInit() {
 		this.loadData();
@@ -112,8 +141,9 @@ export class HomeComponent {
 	loadData() {
 		this.dailyTotalLocal();
 		this.countryRetroact();
-		this.dailyTotal();
 		this.retroact();
+		this.loadCountryCases();
+		this.loadAllCountry();
 	}
 
 	loadHospital() {
@@ -129,7 +159,7 @@ export class HomeComponent {
 	}
 
 	dailyTotalLocal() {
-		this.appService.all('covids/country').subscribe(
+		this.appService.all('covids/constants').subscribe(
 			resp => {
 				let response: any = resp;
 				this.localLastUpdated = response.data.last_updated;
@@ -165,10 +195,30 @@ export class HomeComponent {
 		);
 	}
 
-	dailyTotal() {
-		this.appService.all('covids/total').subscribe(
+	retroact() {
+		this.appService.all('covids/retroact').subscribe(
 			resp => {
 				let response: any = resp;
+				this.barChartLabels = Object.keys(response.data);
+				Object.keys(response.data).forEach((key, index) => {
+					this.barChartData[0].data[index] = response.data[key].confirmed;
+					this.barChartData[1].data[index] = response.data[key].healings;
+					this.barChartData[2].data[index] = response.data[key].recovered;
+					this.barChartData[3].data[index] = response.data[key].deaths;
+				});
+			},
+			e => {
+				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
+			}
+		);
+	}
+
+	loadAllCountry() {
+		this.appService.all('covids/world').subscribe(
+			resp => {
+				let response: any = resp;
+				this.allCountryDataSource = new MatTableDataSource<any>(response.data.statistics);
+				this.allCountryDataSource.paginator = this.allCountryPaginator;
 				this.globleLastUpdated = response.data.last_updated;
 				this.total = response.data;
 				this.pieChartData = [
@@ -184,17 +234,13 @@ export class HomeComponent {
 		);
 	}
 
-	retroact() {
-		this.appService.all('covids/retroact').subscribe(
+	loadCountryCases() {
+		this.appService.all('covids/cases').subscribe(
 			resp => {
 				let response: any = resp;
-				this.barChartLabels = Object.keys(response.data);
-				Object.keys(response.data).forEach((key, index) => {
-					this.barChartData[0].data[index] = response.data[key].confirmed;
-					this.barChartData[1].data[index] = response.data[key].healings;
-					this.barChartData[2].data[index] = response.data[key].recovered;
-					this.barChartData[3].data[index] = response.data[key].deaths;
-				});
+				this.patientInformationCount = response.data.length;
+				this.patientInformationDataSource = new MatTableDataSource<any>(response.data);
+				this.patientInformationDataSource.paginator = this.patientInformationPaginator;
 			},
 			e => {
 				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');

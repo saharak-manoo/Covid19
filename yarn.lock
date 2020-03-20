@@ -882,6 +882,20 @@
   dependencies:
     tslib "^1.9.0"
 
+"@ngx-loading-bar/core@^4.2.0":
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/@ngx-loading-bar/core/-/core-4.2.0.tgz#cf0cc209eb967bd7625c2cec565841890cd5e17e"
+  integrity sha512-sfVmsDoLr9zI7ylzPct4wefi6zWBPyekQIhJVhME3h9sPh8S+BHy5loKgUqiZR3YduRNr8boLh4GkHpL3eXEPg==
+  dependencies:
+    tslib "^1.7.1"
+
+"@ngx-loading-bar/http-client@^4.2.0":
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/@ngx-loading-bar/http-client/-/http-client-4.2.0.tgz#62f498c6860a9d460df4f1ef6173608168bdbfe6"
+  integrity sha512-r8M9XAdKZC98LQhxyDA+pq5V9SS471VLI82UlsnBz17i3K2cHWVBjkwomEQq9i2xBNS14DOY/tAlxUlX+WAhSg==
+  dependencies:
+    tslib "^1.9.0"
+
 "@rails/actioncable@^6.0.0-alpha":
   version "6.0.0-alpha"
   resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-6.0.0-alpha.tgz#84be50626a43fe431789243c6b13c14f922bf048"
@@ -4672,6 +4686,11 @@ ng-flash-messages@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/ng-flash-messages/-/ng-flash-messages-0.3.0.tgz#d890e2644e6530d3ba80890d75386475e8c1940c"
   integrity sha512-/oHbyYJQTjI1lXZnWyZcBC1N8phTbt52LTRDi+f6T09x0F8/aQLC1mUrrwFVCBSMt3J9O2K01Rwnu/chnmh8cw==
+
+ng-loading-bar@^0.0.10:
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/ng-loading-bar/-/ng-loading-bar-0.0.10.tgz#cd289cc8aa747520da5008759879deb0a3b8dd48"
+  integrity sha512-y9cfF8R4Xyng+bKk/QYu0PaUDcinEFpfIPVGjfyYTAHl7P4Mgm9A+N/iwO3flE3vGHruaki5zwhdq9xl6jUEEw==
 
 ng2-charts@^2.3.0:
   version "2.3.0"

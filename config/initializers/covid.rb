@@ -15,7 +15,7 @@ class Covid
     last_updated = "ปรับปรุงล่าสุดเมื่อ "
     last_updated += "#{time_difference[:hours]} ชั่วโมง " unless time_difference[:hours].zero?
     last_updated += "#{time_difference[:minutes]} นาที" unless time_difference[:minutes].zero?
-    last_updated += "ณ เวลานานี้" if time_difference[:hours].zero? && time_difference[:minutes].zero?
+    last_updated += "ณ เวลานี้" if time_difference[:hours].zero? && time_difference[:minutes].zero?
 
     last_updated
   end
@@ -23,6 +23,7 @@ class Covid
   def self.daily_reports_by_date(date = Date.yesterday)
     date_str = date.strftime('%m-%d-%Y')
     reports = rest_api("csse_covid_19_daily_reports/#{date_str}.csv")
+
     data = []
     reports.each_with_index do |report, index|
       next if index.zero?
@@ -104,5 +105,94 @@ class Covid
     end
 
     data
+  end
+
+  def self.api_workpoint(path)
+    response = RestClient::Request.new({
+      method: :get,
+      url: "#{ENV['covid_workpoint_api_host']}#{path}"
+    }).execute do |response, request, result|
+      return JSON.parse(response.to_str)
+    end
+  end
+
+  def self.constants
+    response = api_workpoint('constants')
+
+    {
+      confirmed: response['ผู้ติดเชื้อ'],
+      healings: response['กำลังรักษา'] || 0,
+      deaths: response['เสียชีวิต'] || 0,
+      recovered: response['หายแล้ว'] || 0,
+      add_today_count: response['เพิ่มวันนี้'] || 0,
+      add_date: Date.parse(response['เพิ่มวันที่']),
+      updated_at: DateTime.now,
+      last_updated: time_difference_str(DateTime.now),
+    }
+  end
+
+  def self.cases
+    data = []
+    response = api_workpoint('cases')
+
+    response.each do |resp|
+      type = 'ไม่มีข้อมูล'
+
+      case resp['type']
+      when '1 - เดินทางมาจากประเทศกลุ่มเสี่ยง'  
+        type = 'เดินทางมาจากประเทศกลุ่มเสี่ยง'
+      when '2 - ใกล้ชิดผู้เดินทางมาจากประเทศกลุ่มเสี่ยง'
+        type = 'ใกล้ชิดผู้เดินทางมาจากประเทศกลุ่มเสี่ยง'
+      when '3 - ทราบผู้ป่วยแพร่เชื้อ (ไม่เข้าเกณฑ์ 1-2)'
+        type = 'ทราบผู้ป่วยแพร่เชื้อ'
+      when '4 - ไม่ทราบผู้ป่วยแพร่เชื้อ (ไม่เข้าเกณฑ์ 1-2)'
+        type = 'ไม่ทราบผู้ป่วยแพร่เชื้อ'
+      end
+
+      data << {
+        detected_at: resp['detectedAt'] || 'ไม่มีข้อมูล',
+        origin: resp['origin'] || 'ไม่มีข้อมูล',
+        treat_at: resp['treatAt'] || 'ไม่มีข้อมูล',
+        status: resp['status'] || 'ไม่มีข้อมูล',
+        job: resp['job'] || 'ไม่มีข้อมูล',
+        gender: resp['gender'] || 'ไม่มีข้อมูล',
+        age: resp['age'] || 'ไม่มีข้อมูล',
+        type: type
+      }
+    end
+
+    data
+  end
+
+  def self.world
+    data = []
+    response = api_workpoint('world')
+
+    response['statistics'].each do |resp|
+      data << {
+        country: resp['name'],
+        confirmed: resp['confirmed'] || 0,
+        healings: (resp['confirmed'].to_i - resp['recovered'].to_i ) - resp['deaths'].to_i || 0,
+        deaths: resp['deaths'] || 0,
+        recovered: resp['recovered'] || 0,
+        travel: resp['travel'] || 'ยังไม่มีความเสี่ยง'
+      }
+    end
+
+    updated_at = DateTime.parse(response['lastUpdated'])
+
+    {
+      confirmed: response['totalConfirmed'] || 0,
+      healings: (response['totalConfirmed'].to_i - response['totalRecovered'].to_i ) - response['totalDeaths'].to_i || 0,
+      deaths: response['totalDeaths'] || 0,
+      recovered: response['totalRecovered'] || 0,
+      statistics: data,
+      updated_at: updated_at,
+      last_updated: time_difference_str(updated_at),
+    }
+  end
+
+  def self.trend
+    api_workpoint('trend')
   end
 end
