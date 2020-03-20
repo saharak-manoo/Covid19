@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ChartType, ChartOptions } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { AppComponent } from '../app/app.component';
+import { LoadingBarService } from '@ngx-loading-bar/core';
 
 @Component({
 	template: templateString
@@ -18,7 +19,8 @@ export class HomeComponent {
 		public dialog: MatDialog,
 		private route: ActivatedRoute,
 		private router: Router,
-		private app: AppComponent
+		private app: AppComponent,
+		private loadingBar: LoadingBarService
 	) {}
 	localLastUpdated: string = 'กำหลังโหลด...';
 	globleLastUpdated: string = 'กำหลังโหลด...';

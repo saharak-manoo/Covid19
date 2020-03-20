@@ -105,4 +105,34 @@ class Covid
 
     data
   end
+
+  def self.api_workpoint(path)
+    response = RestClient::Request.new({
+      method: :get,
+      url: "#{ENV['covid_workpoint_api_host']}#{path}"
+    }).execute do |response, request, result|
+      return JSON.parse(response.to_str)
+    end
+  end
+
+  def self.constants
+    response = api_workpoint('constants')
+
+    {
+      confirmed: response['ผู้ติดเชื้อ'],
+      healings: response['กำลังรักษา'] || 0,
+      deaths: response['เสียชีวิต'] || 0,
+      recovered: response['หายแล้ว'] || 0,
+      add_today: response['เพิ่มวันนี้'] || 0,
+      updated_at: Date.parse(response['เพิ่มวันที่'])
+    }
+  end
+
+  def self.cases
+    api_workpoint('cases')
+  end
+
+  def self.world
+    api_workpoint('world')
+  end
 end

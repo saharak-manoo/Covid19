@@ -22,4 +22,6 @@ class CovidsController < ApplicationController
   def hospital
     render json: { data: Hospital.all.as_json({api: true}) }, status: :ok
   end
+
+  def 
 end
