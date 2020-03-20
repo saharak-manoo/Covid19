@@ -35,7 +35,11 @@ class CovidsController < ApplicationController
     render json: { data: Covid.cases }, status: :ok
   end
 
-  def trend
-    render json: { data: Covid.trend }, status: :ok
+  def trends
+    render json: { data: Covid.trends }, status: :ok
+  end
+
+  def summary_of_past_data
+    render json: { data: Covid.summary_of_past_data }, status: :ok
   end
 end

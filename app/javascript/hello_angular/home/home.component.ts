@@ -250,7 +250,7 @@ export class HomeComponent {
 	}
 
 	retroact() {
-		this.appService.all('covids/retroact').subscribe(
+		this.appService.all('covids/summary_of_past_data').subscribe(
 			resp => {
 				let response: any = resp;
 				this.barChartLabels = Object.keys(response.data);

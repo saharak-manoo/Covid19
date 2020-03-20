@@ -225,7 +225,25 @@ class Covid
     }
   end
 
-  def self.trend
+  def self.trends
     api_workpoint('trend')
+  end
+
+  def self.summary_of_past_data(days = 6)
+    data = {}
+    trends = trends()
+
+    ((Date.yesterday - days..Date.yesterday)).each do |date|
+      trend = trends[date.strftime("%Y-%m-%d")]
+
+      data[date.strftime("%a")] = {
+        confirmed: trend['confirmed']|| 0,
+        healings: (trend['confirmed'] - trend['recovered']) - trend['deaths'] || 0,
+        deaths: trend['deaths'] || 0,
+        recovered: trend['recovered'] || 0,
+      }
+    end
+
+    data
   end
 end

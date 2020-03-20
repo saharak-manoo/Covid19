@@ -15,7 +15,8 @@ Rails.application.routes.draw do
       get 'constants'
       get 'world'
       get 'cases'
-      get 'trend'
+      get 'trends'
+      get 'summary_of_past_data'
     end
   end
 
