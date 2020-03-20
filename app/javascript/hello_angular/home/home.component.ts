@@ -10,6 +10,7 @@ import { AppComponent } from '../app/app.component';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
 	template: templateString
@@ -112,6 +113,7 @@ export class HomeComponent {
 		'deaths'
 	];
 	allCountryDataSource: any = [];
+	@ViewChild('allCountry', { read: MatSort, static: true }) allCountrySort: MatSort;
 	@ViewChild('allCountryPaginator', { static: true }) allCountryPaginator: MatPaginator;
 
 	patientInformationDisplayedColumns: string[] = [
@@ -125,6 +127,7 @@ export class HomeComponent {
 		'type'
 	];
 	patientInformationDataSource: any = [];
+	@ViewChild('patientInformation', { read: MatSort, static: true }) patientInformationSort: MatSort;
 	@ViewChild('patientInformationPaginator', { static: true })
 	patientInformationPaginator: MatPaginator;
 	patientInformationCount: number = 0;
@@ -219,6 +222,7 @@ export class HomeComponent {
 				let response: any = resp;
 				this.allCountryDataSource = new MatTableDataSource<any>(response.data.statistics);
 				this.allCountryDataSource.paginator = this.allCountryPaginator;
+				this.allCountryDataSource.sort = this.allCountrySort;
 				this.globleLastUpdated = response.data.last_updated;
 				this.total = response.data;
 				this.pieChartData = [
@@ -241,10 +245,29 @@ export class HomeComponent {
 				this.patientInformationCount = response.data.length;
 				this.patientInformationDataSource = new MatTableDataSource<any>(response.data);
 				this.patientInformationDataSource.paginator = this.patientInformationPaginator;
+				this.patientInformationDataSource.sort = this.patientInformationSort;
 			},
 			e => {
 				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
 			}
 		);
+	}
+
+	searchPatientInformation(event: Event) {
+		const filterValue = (event.target as HTMLInputElement).value;
+		this.patientInformationDataSource.filter = filterValue.trim().toLowerCase();
+
+		if (this.patientInformationDataSource.paginator) {
+			this.patientInformationDataSource.paginator.firstPage();
+		}
+	}
+
+	searchAllCountry(event: Event) {
+		const filterValue = (event.target as HTMLInputElement).value;
+		this.allCountryDataSource.filter = filterValue.trim().toLowerCase();
+
+		if (this.allCountryDataSource.paginator) {
+			this.allCountryDataSource.paginator.firstPage();
+		}
 	}
 }

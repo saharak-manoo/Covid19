@@ -101,47 +101,52 @@
             <mat-card class="card-chart">
               <mat-card-content>
                 <h3 class="text-center">ข้อมูลผู้ป่วยในประเทศที่ยืนยันแล้ว ({{ patientInformationCount }} คน)</h3>
+                <mat-form-field>
+                  <mat-label>ค้นหา...</mat-label>
+                  <input matInput (keyup)="searchPatientInformation($event)" placeholder="ตัวอย่าง. เชียงใหม่">
+                </mat-form-field>
+
                 <div class="mat-elevation-z8">
-                  <table mat-table [dataSource]="patientInformationDataSource">
+                  <table mat-table #patientInformation [dataSource]="patientInformationDataSource" matSort>
 
                     <ng-container matColumnDef="detected_at">
-                      <th mat-header-cell *matHeaderCellDef> ตรวจเจอที่ </th>
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> ตรวจเจอที่ </th>
                       <td mat-cell *matCellDef="let element"> {{element.detected_at}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="origin">
-                      <th mat-header-cell *matHeaderCellDef> มาจาก </th>
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> มาจาก </th>
                       <td mat-cell *matCellDef="let element"> {{element.origin}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="treat_at">
-                      <th mat-header-cell *matHeaderCellDef> รักษาที่ </th>
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> รักษาที่ </th>
                       <td mat-cell *matCellDef="let element"> {{element.treat_at}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="status">
-                      <th mat-header-cell *matHeaderCellDef> สถานะ </th>
-                      <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> สถานะ </th>
+                      <td mat-cell *matCellDef="let element" [style.color]="element.status_color"> {{element.status}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="job">
-                      <th mat-header-cell *matHeaderCellDef> อาชีพ </th>
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> อาชีพ </th>
                       <td mat-cell *matCellDef="let element"> {{element.job}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="gender">
-                      <th mat-header-cell *matHeaderCellDef> เพศ </th>
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> เพศ </th>
                       <td mat-cell *matCellDef="let element"> {{element.gender}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="age">
-                      <th mat-header-cell *matHeaderCellDef> อายุ (ปี) </th>
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> อายุ (ปี) </th>
                       <td mat-cell *matCellDef="let element"> {{element.age}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="type">
-                      <th mat-header-cell *matHeaderCellDef> ประเภท </th>
-                      <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> ประเภท </th>
+                      <td mat-cell *matCellDef="let element" [style.color]="element.type_color"> {{element.type}} </td>
                     </ng-container>
 
                     <tr mat-header-row *matHeaderRowDef="patientInformationDisplayedColumns"></tr>
@@ -231,38 +236,42 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <mat-card class="card-chart">
               <mat-card-content>
-                <h3 class="text-center">แยกประเทศ</h3>
+                <h3 class="text-center">ข้อมูลแบบแยกประเทศ</h3>
+                <mat-form-field>
+                  <mat-label>ค้นหา...</mat-label>
+                  <input matInput (keyup)="searchAllCountry($event)" placeholder="ตัวอย่าง. Thailand">
+                </mat-form-field>
                 <div class="mat-elevation-z8">
-                  <table mat-table [dataSource]="allCountryDataSource">
+                  <table mat-table #allCountry [dataSource]="allCountryDataSource" matSort matSortActive="confirmed" matSortDirection="desc">
 
                     <ng-container matColumnDef="country">
-                      <th mat-header-cell *matHeaderCellDef> ประเทศ </th>
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> ประเทศ </th>
                       <td mat-cell *matCellDef="let element"> {{element.country}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="travel">
-                      <th mat-header-cell *matHeaderCellDef> การเดินทาง </th>
-                      <td mat-cell *matCellDef="let element"> {{element.travel}} </td>
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> การเดินทาง </th>
+                      <td mat-cell *matCellDef="let element" [style.color]="element.travel_color"> {{element.travel}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="confirmed">
-                      <th mat-header-cell *matHeaderCellDef> ติดเชื้อ </th>
-                      <td mat-cell *matCellDef="let element"> {{element.confirmed}} </td>
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> ติดเชื้อ </th>
+                      <td mat-cell *matCellDef="let element"> {{element.confirmed.toLocaleString('en')}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="healings">
-                      <th mat-header-cell *matHeaderCellDef> กำลังอยู่ในการรักษา </th>
-                      <td mat-cell *matCellDef="let element"> {{element.healings}} </td>
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> กำลังอยู่ในการรักษา </th>
+                      <td mat-cell *matCellDef="let element"> {{element.healings.toLocaleString('en')}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="recovered">
-                      <th mat-header-cell *matHeaderCellDef> หายแล้ว </th>
-                      <td mat-cell *matCellDef="let element"> {{element.recovered}} </td>
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> หายแล้ว </th>
+                      <td mat-cell *matCellDef="let element"> {{element.recovered.toLocaleString('en')}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="deaths">
-                      <th mat-header-cell *matHeaderCellDef> เสียชีวิต </th>
-                      <td mat-cell *matCellDef="let element"> {{element.deaths}} </td>
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> เสียชีวิต </th>
+                      <td mat-cell *matCellDef="let element"> {{element.deaths.toLocaleString('en')}} </td>
                     </ng-container>
 
                     <tr mat-header-row *matHeaderRowDef="allCountryDisplayedColumns"></tr>
