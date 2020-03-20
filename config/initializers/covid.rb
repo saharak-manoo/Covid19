@@ -202,7 +202,7 @@ class Covid
 
       data << {
         country: resp['name'],
-        country_flag: "/flags/#{resp['alpha2']}.png",
+        country_flag: "/#{resp['alpha2']}.png",
         confirmed: resp['confirmed'] || 0,
         healings: (resp['confirmed'].to_i - resp['recovered'].to_i ) - resp['deaths'].to_i || 0,
         deaths: resp['deaths'] || 0,
