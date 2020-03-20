@@ -15,7 +15,7 @@ class Covid
     last_updated = "ปรับปรุงล่าสุดเมื่อ "
     last_updated += "#{time_difference[:hours]} ชั่วโมง " unless time_difference[:hours].zero?
     last_updated += "#{time_difference[:minutes]} นาที" unless time_difference[:minutes].zero?
-    last_updated += "ณ เวลานานี้" if time_difference[:hours].zero? && time_difference[:minutes].zero?
+    last_updated += "ณ เวลานี้" if time_difference[:hours].zero? && time_difference[:minutes].zero?
 
     last_updated
   end
@@ -126,12 +126,42 @@ class Covid
       recovered: response['หายแล้ว'] || 0,
       add_today_count: response['เพิ่มวันนี้'] || 0,
       add_date: Date.parse(response['เพิ่มวันที่']),
-      updated_at: DateTime.now
+      updated_at: DateTime.now,
+      last_updated: time_difference_str(DateTime.now),
     }
   end
 
   def self.cases
-    api_workpoint('cases')
+    data = []
+    response = api_workpoint('cases')
+
+    response.each do |resp|
+      type = 'ไม่มีข้อมูล'
+
+      case resp['type']
+      when '1 - เดินทางมาจากประเทศกลุ่มเสี่ยง'  
+        type = 'เดินทางมาจากประเทศกลุ่มเสี่ยง'
+      when '2 - ใกล้ชิดผู้เดินทางมาจากประเทศกลุ่มเสี่ยง'
+        type = 'ใกล้ชิดผู้เดินทางมาจากประเทศกลุ่มเสี่ยง'
+      when '3 - ทราบผู้ป่วยแพร่เชื้อ (ไม่เข้าเกณฑ์ 1-2)'
+        type = 'ทราบผู้ป่วยแพร่เชื้อ'
+      when '4 - ไม่ทราบผู้ป่วยแพร่เชื้อ (ไม่เข้าเกณฑ์ 1-2)'
+        type = 'ไม่ทราบผู้ป่วยแพร่เชื้อ'
+      end
+
+      data << {
+        detected_at: resp['detectedAt'] || 'ไม่มีข้อมูล',
+        origin: resp['origin'] || 'ไม่มีข้อมูล',
+        treat_at: resp['treatAt'] || 'ไม่มีข้อมูล',
+        status: resp['status'] || 'ไม่มีข้อมูล',
+        job: resp['job'] || 'ไม่มีข้อมูล',
+        gender: resp['gender'] || 'ไม่มีข้อมูล',
+        age: resp['age'] || 'ไม่มีข้อมูล',
+        type: type
+      }
+    end
+
+    data
   end
 
   def self.world

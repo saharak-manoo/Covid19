@@ -112,12 +112,26 @@ export class HomeComponent {
 		'deaths'
 	];
 	allCountryDataSource: any = [];
-	@ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+	@ViewChild('allCountryPaginator', { static: true }) allCountryPaginator: MatPaginator;
+
+	patientInformationDisplayedColumns: string[] = [
+		'detected_at',
+		'origin',
+		'treat_at',
+		'status',
+		'job',
+		'gender',
+		'age',
+		'type'
+	];
+	patientInformationDataSource: any = [];
+	@ViewChild('patientInformationPaginator', { static: true })
+	patientInformationPaginator: MatPaginator;
+	patientInformationCount: number = 0;
 
 	ngOnInit() {
 		this.loadData();
 		this.loadHospital();
-		this.loadAllCountry();
 
 		setInterval(() => {
 			this.loadData();
@@ -127,8 +141,9 @@ export class HomeComponent {
 	loadData() {
 		this.dailyTotalLocal();
 		this.countryRetroact();
-		this.dailyTotal();
 		this.retroact();
+		this.loadCountryCases();
+		this.loadAllCountry();
 	}
 
 	loadHospital() {
@@ -144,7 +159,7 @@ export class HomeComponent {
 	}
 
 	dailyTotalLocal() {
-		this.appService.all('covids/country').subscribe(
+		this.appService.all('covids/constants').subscribe(
 			resp => {
 				let response: any = resp;
 				this.localLastUpdated = response.data.last_updated;
@@ -180,25 +195,6 @@ export class HomeComponent {
 		);
 	}
 
-	dailyTotal() {
-		// this.appService.all('covids/total').subscribe(
-		// 	resp => {
-		// 		let response: any = resp;
-		// 		this.globleLastUpdated = response.data.last_updated;
-		// 		this.total = response.data;
-		// 		this.pieChartData = [
-		// 			this.total.confirmed,
-		// 			this.total.healings,
-		// 			this.total.recovered,
-		// 			this.total.deaths
-		// 		];
-		// 	},
-		// 	e => {
-		// 		this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
-		// 	}
-		// );
-	}
-
 	retroact() {
 		this.appService.all('covids/retroact').subscribe(
 			resp => {
@@ -222,7 +218,7 @@ export class HomeComponent {
 			resp => {
 				let response: any = resp;
 				this.allCountryDataSource = new MatTableDataSource<any>(response.data.statistics);
-				this.allCountryDataSource.paginator = this.paginator;
+				this.allCountryDataSource.paginator = this.allCountryPaginator;
 				this.globleLastUpdated = response.data.last_updated;
 				this.total = response.data;
 				this.pieChartData = [
@@ -231,6 +227,20 @@ export class HomeComponent {
 					this.total.recovered,
 					this.total.deaths
 				];
+			},
+			e => {
+				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
+			}
+		);
+	}
+
+	loadCountryCases() {
+		this.appService.all('covids/cases').subscribe(
+			resp => {
+				let response: any = resp;
+				this.patientInformationCount = response.data.length;
+				this.patientInformationDataSource = new MatTableDataSource<any>(response.data);
+				this.patientInformationDataSource.paginator = this.patientInformationPaginator;
 			},
 			e => {
 				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
