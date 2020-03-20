@@ -246,7 +246,9 @@
 
                     <ng-container matColumnDef="country_flag">
                       <th mat-header-cell *matHeaderCellDef></th>
-                      <td mat-cell *matCellDef="let element"><div [ngStyle]="{'background-image': 'url(' + element.country_flag + ')'}" class="country-flag"></div></td>
+                      <td mat-cell *matCellDef="let element">
+                        <div [style.background-image]="'url(' + element.country_flag + ')'" class="country-flag"></div>
+                      </td>
                     </ng-container>
 
                     <ng-container matColumnDef="country">
