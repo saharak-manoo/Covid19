@@ -23,6 +23,7 @@ class Covid
   def self.daily_reports_by_date(date = Date.yesterday)
     date_str = date.strftime('%m-%d-%Y')
     reports = rest_api("csse_covid_19_daily_reports/#{date_str}.csv")
+
     data = []
     reports.each_with_index do |report, index|
       next if index.zero?
@@ -123,8 +124,9 @@ class Covid
       healings: response['กำลังรักษา'] || 0,
       deaths: response['เสียชีวิต'] || 0,
       recovered: response['หายแล้ว'] || 0,
-      add_today: response['เพิ่มวันนี้'] || 0,
-      updated_at: Date.parse(response['เพิ่มวันที่'])
+      add_today_count: response['เพิ่มวันนี้'] || 0,
+      add_date: Date.parse(response['เพิ่มวันที่']),
+      updated_at: DateTime.now
     }
   end
 
@@ -133,6 +135,34 @@ class Covid
   end
 
   def self.world
-    api_workpoint('world')
+    data = []
+    response = api_workpoint('world')
+
+    response['statistics'].each do |resp|
+      data << {
+        country: resp['name'],
+        confirmed: resp['confirmed'] || 0,
+        healings: (resp['confirmed'].to_i - resp['recovered'].to_i ) - resp['deaths'].to_i || 0,
+        deaths: resp['deaths'] || 0,
+        recovered: resp['recovered'] || 0,
+        travel: resp['travel'] || 'ยังไม่มีความเสี่ยง'
+      }
+    end
+
+    updated_at = DateTime.parse(response['lastUpdated'])
+
+    {
+      confirmed: response['totalConfirmed'] || 0,
+      healings: (response['totalConfirmed'].to_i - response['totalRecovered'].to_i ) - response['totalDeaths'].to_i || 0,
+      deaths: response['totalDeaths'] || 0,
+      recovered: response['totalRecovered'] || 0,
+      statistics: data,
+      updated_at: updated_at,
+      last_updated: time_difference_str(updated_at),
+    }
+  end
+
+  def self.trend
+    api_workpoint('trend')
   end
 end

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import templateString from './home.html';
 import { NgFlashMessageService } from 'ng-flash-messages';
 import { AppService } from '../app/app.service';
@@ -8,6 +8,8 @@ import { ChartType, ChartOptions } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { AppComponent } from '../app/app.component';
 import { LoadingBarService } from '@ngx-loading-bar/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
 	template: templateString
@@ -101,10 +103,21 @@ export class HomeComponent {
 	latitude: number = 13.7530066;
 	longitude: number = 100.4960144;
 	hospitals: any = [];
+	allCountryDisplayedColumns: string[] = [
+		'country',
+		'travel',
+		'confirmed',
+		'healings',
+		'recovered',
+		'deaths'
+	];
+	allCountryDataSource: any = [];
+	@ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
 	ngOnInit() {
 		this.loadData();
 		this.loadHospital();
+		this.loadAllCountry();
 
 		setInterval(() => {
 			this.loadData();
@@ -168,22 +181,22 @@ export class HomeComponent {
 	}
 
 	dailyTotal() {
-		this.appService.all('covids/total').subscribe(
-			resp => {
-				let response: any = resp;
-				this.globleLastUpdated = response.data.last_updated;
-				this.total = response.data;
-				this.pieChartData = [
-					this.total.confirmed,
-					this.total.healings,
-					this.total.recovered,
-					this.total.deaths
-				];
-			},
-			e => {
-				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
-			}
-		);
+		// this.appService.all('covids/total').subscribe(
+		// 	resp => {
+		// 		let response: any = resp;
+		// 		this.globleLastUpdated = response.data.last_updated;
+		// 		this.total = response.data;
+		// 		this.pieChartData = [
+		// 			this.total.confirmed,
+		// 			this.total.healings,
+		// 			this.total.recovered,
+		// 			this.total.deaths
+		// 		];
+		// 	},
+		// 	e => {
+		// 		this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
+		// 	}
+		// );
 	}
 
 	retroact() {
@@ -197,6 +210,27 @@ export class HomeComponent {
 					this.barChartData[2].data[index] = response.data[key].recovered;
 					this.barChartData[3].data[index] = response.data[key].deaths;
 				});
+			},
+			e => {
+				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
+			}
+		);
+	}
+
+	loadAllCountry() {
+		this.appService.all('covids/world').subscribe(
+			resp => {
+				let response: any = resp;
+				this.allCountryDataSource = new MatTableDataSource<any>(response.data.statistics);
+				this.allCountryDataSource.paginator = this.paginator;
+				this.globleLastUpdated = response.data.last_updated;
+				this.total = response.data;
+				this.pieChartData = [
+					this.total.confirmed,
+					this.total.healings,
+					this.total.recovered,
+					this.total.deaths
+				];
 			},
 			e => {
 				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
