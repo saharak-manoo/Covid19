@@ -52,6 +52,7 @@ import {
 	MatFormFieldModule
 } from '@angular/material';
 import { AgmCoreModule } from '@agm/core';
+import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 
 enableProdMode();
 
@@ -116,6 +117,7 @@ const appRoutes: Routes = [
 		RouterModule.forRoot(appRoutes, { useHash: true }),
 		ChartsModule,
 		MaterialModule,
+		LoadingBarHttpClientModule,
 		AgmCoreModule.forRoot({
 			apiKey: 'AIzaSyByaaldtl6PxcbsTkdwbcsbknjWQenVx9Y'
 		})

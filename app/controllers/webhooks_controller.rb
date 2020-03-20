@@ -15,7 +15,9 @@ class WebhooksController < ApplicationController
           if resp[:intent_name] == "COVID-DATA"
             LineBot.reply(event['replyToken'], LineBot.data_covid(resp))
           elsif resp[:intent_name] == "COVID-HOSPITAL"
-            LineBot.reply(event['replyToken'], LineBot.data_hospital(Hospital.all))
+            Hospital.all.each_slice(10) do |hospital|
+              LineBot.reply(event['replyToken'], LineBot.data_hospital(hospital))
+            end
           else
             LineBot.reply(event['replyToken'], { type: 'text', text: resp[:fulfillment][:speech] })
           end
