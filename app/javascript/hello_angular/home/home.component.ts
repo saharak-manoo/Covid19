@@ -148,10 +148,6 @@ export class HomeComponent {
 		this.loadSafeZone();
 
 		setInterval(() => {
-			this.loadData();
-		}, 5 * 60 * 1000);
-
-		setInterval(() => {
 			if (this.barChartType === 'bar') {
 				this.barChartType = 'line';
 				this.barChartColors = [
