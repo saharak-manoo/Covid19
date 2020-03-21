@@ -137,10 +137,14 @@ export class HomeComponent {
 	patientInformationPaginator: MatPaginator;
 	patientInformationCount: number = 0;
 	localAddTodayCount: number = 0;
+	cases: any = [];
+	safeZones: any = [];
 
 	ngOnInit() {
 		this.loadData();
+		this.loadCasesThai();
 		this.loadHospital();
+		this.loadSafeZone();
 
 		setInterval(() => {
 			this.loadData();
@@ -199,8 +203,20 @@ export class HomeComponent {
 		this.loadAllCountry();
 	}
 
+	loadCasesThai() {
+		this.appService.all('api/covids/cases_thai').subscribe(
+			resp => {
+				let response: any = resp;
+				this.cases = response.data;
+			},
+			e => {
+				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
+			}
+		);
+	}
+
 	loadHospital() {
-		this.appService.all('covids/hospital').subscribe(
+		this.appService.all('api/covids/hospital').subscribe(
 			resp => {
 				let response: any = resp;
 				this.hospitals = response.data;
@@ -211,8 +227,20 @@ export class HomeComponent {
 		);
 	}
 
+	loadSafeZone() {
+		this.appService.all('api/covids/safe_zone').subscribe(
+			resp => {
+				let response: any = resp;
+				this.safeZones = response.data;
+			},
+			e => {
+				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
+			}
+		);
+	}
+
 	dailyTotalLocal() {
-		this.appService.all('covids/constants').subscribe(
+		this.appService.all('api/covids/constants').subscribe(
 			resp => {
 				let response: any = resp;
 				this.localAddTodayCount = response.data.add_today_count;
@@ -232,7 +260,7 @@ export class HomeComponent {
 	}
 
 	countryRetroact() {
-		this.appService.all('covids/country_retroact').subscribe(
+		this.appService.all('api/covids/country_retroact').subscribe(
 			resp => {
 				let response: any = resp;
 				this.barChartLabels = Object.keys(response.data);
@@ -250,7 +278,7 @@ export class HomeComponent {
 	}
 
 	retroact() {
-		this.appService.all('covids/retroact').subscribe(
+		this.appService.all('api/covids/retroact').subscribe(
 			resp => {
 				let response: any = resp;
 				this.barChartLabels = Object.keys(response.data);
@@ -268,7 +296,7 @@ export class HomeComponent {
 	}
 
 	loadAllCountry() {
-		this.appService.all('covids/world').subscribe(
+		this.appService.all('api/covids/world').subscribe(
 			resp => {
 				let response: any = resp;
 				this.allCountryDataSource = new MatTableDataSource<any>(response.data.statistics);
@@ -290,7 +318,7 @@ export class HomeComponent {
 	}
 
 	loadCountryCases() {
-		this.appService.all('covids/cases').subscribe(
+		this.appService.all('api/covids/cases').subscribe(
 			resp => {
 				let response: any = resp;
 				this.patientInformationCount = response.data.length;
