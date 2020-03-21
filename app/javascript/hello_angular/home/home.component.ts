@@ -137,10 +137,14 @@ export class HomeComponent {
 	patientInformationPaginator: MatPaginator;
 	patientInformationCount: number = 0;
 	localAddTodayCount: number = 0;
+	cases: any = [];
+	safeZones: any = [];
 
 	ngOnInit() {
 		this.loadData();
+		this.loadCasesThai();
 		this.loadHospital();
+		this.loadSafeZone();
 
 		setInterval(() => {
 			this.loadData();
@@ -199,11 +203,35 @@ export class HomeComponent {
 		this.loadAllCountry();
 	}
 
+	loadCasesThai() {
+		this.appService.all('api/covids/cases_thai').subscribe(
+			resp => {
+				let response: any = resp;
+				this.cases = response.data;
+			},
+			e => {
+				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
+			}
+		);
+	}
+
 	loadHospital() {
 		this.appService.all('api/covids/hospital').subscribe(
 			resp => {
 				let response: any = resp;
 				this.hospitals = response.data;
+			},
+			e => {
+				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
+			}
+		);
+	}
+
+	loadSafeZone() {
+		this.appService.all('api/covids/safe_zone').subscribe(
+			resp => {
+				let response: any = resp;
+				this.safeZones = response.data;
 			},
 			e => {
 				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');

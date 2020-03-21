@@ -18,6 +18,8 @@ Rails.application.routes.draw do
         get 'cases'
         get 'trends'
         get 'summary_of_past_data'
+        get 'cases_thai'
+        get 'safe_zone'
       end
     end
   end

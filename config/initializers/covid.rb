@@ -270,9 +270,23 @@ class Covid
     response.each do |resp|
       updated_at = DateTime.parse(resp['updated']['$t']).localtime
       date = Date.strptime(resp['gsx$date']['$t'], "%m/%d/%Y")
+      status_color = "#000"
+      status = resp['gsx$status']['$t']
+
+      case status
+      when "ยืนยัน"
+        status_color = "#00EC64"
+      when "ต้องสงสัย" 
+        status_color = "#9412F5"
+      when "ไม่มีข้อมูลผู้ติดเชื้อพื้นที่"
+        status_color = "#129FF5"
+      when "ไม่ระบุพื้นที่"
+        status_color = "#F55E12"
+      end
 
       data << {
-        status: resp['gsx$status']['$t'],
+        status: status,
+        status_color: status_color,
         date: date,
         date_diff_str: date_difference_str(date),
         place: resp['gsx$placename']['$t'],
@@ -280,6 +294,7 @@ class Covid
         placename_eng: resp['gsx$placenameeng']['$t'],
         latitude: resp['gsx$lat']['$t'].to_f,
         longitude: resp['gsx$lng']['$t'].to_f,
+        pin: map_pin('/red-zone-radius.svg'),
         note: resp['gsx$note']['$t'],
         source: resp['gsx$source']['$t'],
         updated_at: updated_at,
@@ -304,6 +319,7 @@ class Covid
         price: resp['gsx$price']['$t'].present? ? resp['gsx$price']['$t'] : 'ไม่มีข้อมูล',
         latitude: resp['gsx$lat']['$t'].to_f,
         longitude: resp['gsx$lng']['$t'].to_f,
+        pin: map_pin('/hospital-zone.svg'),
         updated_at: updated_at,
         last_updated: time_difference_str(updated_at),
       }
@@ -319,15 +335,28 @@ class Covid
     response.each do |resp|
       updated_at = DateTime.parse(resp['updated']['$t']).localtime
       date = Date.parse(resp['gsx$date']['$t'])
+      action_color = "#000"
+      action = resp['gsx$action']['$t']
+
+      case action
+      when "ฆ่าเชื้อ"
+        action_color = "#00EC64"
+      when "ต้องสงสัย" 
+        action_color = "#9412F5"
+      when "ปิด"
+        action_color = "#F51257"
+      end
 
       data << {
         name: resp['gsx$area']['$t'],
         action: resp['gsx$action']['$t'],
+        action_color: action_color,
         date: date,
         date_diff_str: date_difference_str(date),
         latitude: resp['gsx$lat']['$t'].to_f,
         longitude: resp['gsx$lng']['$t'].to_f,
         source: resp['gsx$source']['$t'],
+        pin: map_pin('/sterilized-zone.svg'),
         updated_at: updated_at,
         last_updated: time_difference_str(updated_at),
       }
@@ -354,4 +383,14 @@ class Covid
 
     data
   end
+
+  def self.map_pin(image)
+    {
+      url: image,
+      scaledSize: {
+        width: 30,
+        height: 30
+      }
+    }
+  end  
 end
