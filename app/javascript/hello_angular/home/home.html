@@ -14,7 +14,7 @@
           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
             <mat-card class="card-text-data">
               <mat-card-content>
-                <p class="text-center font-size-26">ผู้ติดเชื้อ <strong class="font-size-14">(เพิ่มขึ้น {{ localAddTodayCount }})</strong></p>
+                <p class="text-center font-size-26">ผู้ติดเชื้อ <strong class="font-size-14">(เพิ่มขึ้น <strong class="font-size-18 color-red">{{ localAddTodayCount }}</strong> คน)</strong></p>
                 <p class="infected-person confirmed text-center">{{ totalLocal.confirmed.toLocaleString('en') }}</p>
                 <h4 class="text-center">คน</h4>
               </mat-card-content>
@@ -79,18 +79,62 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <mat-card class="card-chart">
               <mat-card-content>
-                <p class="text-center font-size-26">สถานที่ตรวจหาโรค/รักษา ({{ hospitals.length || 0}} แห่ง)</p>
-                <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="12">
+                <p class="text-center font-size-26">แผนที่</p>
+                <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="5">
+                  <agm-marker 
+                    *ngFor="let case of cases; let i = index" 
+                    [latitude]="case.latitude" 
+                    [longitude]="case.longitude" 
+                    [iconUrl]="case.pin"
+                    [label]="i + 1">
+                    <agm-info-window>
+                      <h5>{{ case.place }}</h5>
+                      <div class="row">
+                        <div class="col-lg-7">
+                          <h6>จังหวัด : {{ case.province }}</h6>
+                        </div>
+                        <div class="col-lg-5">
+                          <p class="text-right">{{ case.date_diff_str }}</p>
+                        </div>
+                      </div>
+                      <p class="font-size-16">สถานะ :
+                        <strong class="font-size-16" [style.color]="case.status_color">{{ case.status }}</strong>
+                      </p>
+                      <h6>ข้อมูล : {{ case.note }}</h6>
+                    </agm-info-window>
+                  </agm-marker>
+
                   <agm-marker 
                     *ngFor="let hospital of hospitals; let i = index" 
                     [latitude]="hospital.latitude" 
                     [longitude]="hospital.longitude" 
+                    [iconUrl]="hospital.pin"
                     [label]="i + 1">
                     <agm-info-window>
                       <h5>{{ hospital.name }}</h5>
-                      <p>ที่อยู่: {{ hospital.address }}</p>
-                      <p>เบอร์โทร: {{ hospital.phone }}</p>
-                      <strong>{{ hospital.estimated_examination_fees }}</strong>
+                      <h6>เบอร์โทร : {{ hospital.telephone }}</h6>
+                      <h6>ค่าตรวจ : {{ hospital.price }}</h6>
+                    </agm-info-window>
+                  </agm-marker>
+
+                  <agm-marker 
+                    *ngFor="let safeZone of safeZones; let i = index" 
+                    [latitude]="safeZone.latitude" 
+                    [longitude]="safeZone.longitude" 
+                    [iconUrl]="safeZone.pin"
+                    [label]="i + 1">
+                    <agm-info-window>
+                      <h5>{{ safeZone.name }}</h5>
+                      <div class="row">
+                        <div class="col-lg-7">
+                          <p class="font-size-16">สถานะ :
+                            <strong class="font-size-16" [style.color]="safeZone.action_color">{{ safeZone.action }}</strong>
+                          </p>
+                        </div>
+                        <div class="col-lg-5">
+                          <p class="text-right">{{ safeZone.date_diff_str }}</p>
+                        </div>
+                      </div>
                     </agm-info-window>
                   </agm-marker>
                 </agm-map>
@@ -246,7 +290,9 @@
 
                     <ng-container matColumnDef="country_flag">
                       <th mat-header-cell *matHeaderCellDef></th>
-                      <td mat-cell *matCellDef="let element"><div [ngStyle]="{'background-image': 'url(' + element.country_flag + ')'}" class="country-flag"></div></td>
+                      <td mat-cell *matCellDef="let element">
+                        <div [style.background-image]="'url(' + element.country_flag + ')'" class="country-flag"></div>
+                      </td>
                     </ng-container>
 
                     <ng-container matColumnDef="country">

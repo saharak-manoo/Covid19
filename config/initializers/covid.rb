@@ -10,6 +10,12 @@ class Covid
     end
   end
 
+  def self.date_difference_str(date)
+    date_difference = TimeDifference.between(date, Date.today).in_general
+
+    date_difference[:days].zero? ? "วันนี้" : "#{date_difference[:days]} วันที่แล้ว"
+  end
+
   def self.time_difference_str(updated_at)
     time_difference = TimeDifference.between(updated_at, Time.now).in_general
     last_updated = "ปรับปรุงล่าสุดเมื่อ "
@@ -126,8 +132,8 @@ class Covid
       recovered: response['หายแล้ว'] || 0,
       add_today_count: response['เพิ่มวันนี้'] || 0,
       add_date: Date.parse(response['เพิ่มวันที่']),
-      updated_at: DateTime.now,
-      last_updated: time_difference_str(DateTime.now),
+      updated_at: DateTime.now.localtime,
+      last_updated: time_difference_str(DateTime.now.localtime),
     }
   end
 
@@ -202,7 +208,7 @@ class Covid
 
       data << {
         country: resp['name'],
-        country_flag: "/flags/#{resp['alpha2']}.png",
+        country_flag: "/#{resp['alpha2'].downcase}.png",
         confirmed: resp['confirmed'] || 0,
         healings: (resp['confirmed'].to_i - resp['recovered'].to_i ) - resp['deaths'].to_i || 0,
         deaths: resp['deaths'] || 0,
@@ -212,7 +218,7 @@ class Covid
       }
     end
 
-    updated_at = DateTime.parse(response['lastUpdated'])
+    updated_at = DateTime.parse(response['lastUpdated']).localtime
 
     {
       confirmed: response['totalConfirmed'] || 0,
@@ -225,7 +231,166 @@ class Covid
     }
   end
 
-  def self.trend
+  def self.trends
     api_workpoint('trend')
   end
+
+  def self.summary_of_past_data(days = 6)
+    data = {}
+    trends = trends()
+
+    ((Date.yesterday - days..Date.yesterday)).each do |date|
+      trend = trends[date.strftime("%Y-%m-%d")]
+
+      next unless trend.present?
+      data[date.strftime("%a")] = {
+        confirmed: trend['confirmed'] || 0,
+        healings: (trend['confirmed'] - trend['recovered']) - trend['deaths'] || 0,
+        deaths: trend['deaths'] || 0,
+        recovered: trend['recovered'] || 0,
+      }
+    end
+
+    data
+  end
+
+  def self.api_spreadsheets(path)
+    response = RestClient::Request.new({
+      method: :get,
+      url: "#{ENV["covid_#{path}_host"]}"
+    }).execute do |response, request, result|
+      return JSON.parse(response.to_str)['feed']['entry']
+    end
+  end
+
+  def self.cases_thai
+    data = []
+    response = api_spreadsheets('cases_thai')
+
+    response.each do |resp|
+      updated_at = DateTime.parse(resp['updated']['$t']).localtime
+      date = Date.strptime(resp['gsx$date']['$t'], "%m/%d/%Y")
+      status_color = "#000"
+      status = resp['gsx$status']['$t']
+
+      case status
+      when "ยืนยัน"
+        status_color = "#00EC64"
+      when "ต้องสงสัย" 
+        status_color = "#9412F5"
+      when "ไม่มีข้อมูลผู้ติดเชื้อพื้นที่"
+        status_color = "#129FF5"
+      when "ไม่ระบุพื้นที่"
+        status_color = "#F55E12"
+      end
+
+      data << {
+        status: status,
+        status_color: status_color,
+        date: date,
+        date_diff_str: date_difference_str(date),
+        place: resp['gsx$placename']['$t'],
+        province: resp['gsx$province']['$t'],
+        placename_eng: resp['gsx$placenameeng']['$t'],
+        latitude: resp['gsx$lat']['$t'].to_f,
+        longitude: resp['gsx$lng']['$t'].to_f,
+        pin: map_pin('/red-zone-radius.svg'),
+        note: resp['gsx$note']['$t'],
+        source: resp['gsx$source']['$t'],
+        updated_at: updated_at,
+        last_updated: time_difference_str(updated_at),
+      }
+    end
+
+    data
+  end
+
+  def self.hospitals
+    data = []
+    response = api_spreadsheets('hospitals')
+
+    response.each do |resp|
+      updated_at = DateTime.parse(resp['updated']['$t']).localtime
+
+      data << {
+        name: resp['gsx$titleth']['$t'],
+        name_eng: resp['gsx$titleother']['$t'],
+        telephone: resp['gsx$tel']['$t'],
+        price: resp['gsx$price']['$t'].present? ? resp['gsx$price']['$t'] : 'ไม่มีข้อมูล',
+        latitude: resp['gsx$lat']['$t'].to_f,
+        longitude: resp['gsx$lng']['$t'].to_f,
+        pin: map_pin('/hospital-zone.svg'),
+        updated_at: updated_at,
+        last_updated: time_difference_str(updated_at),
+      }
+    end
+
+    data
+  end
+
+  def self.safe_zone
+    data = []
+    response = api_spreadsheets('safe_zone')
+
+    response.each do |resp|
+      updated_at = DateTime.parse(resp['updated']['$t']).localtime
+      date = Date.parse(resp['gsx$date']['$t'])
+      action_color = "#000"
+      action = resp['gsx$action']['$t']
+
+      case action
+      when "ฆ่าเชื้อ"
+        action_color = "#00EC64"
+      when "ต้องสงสัย" 
+        action_color = "#9412F5"
+      when "ปิด"
+        action_color = "#F51257"
+      end
+
+      data << {
+        name: resp['gsx$area']['$t'],
+        action: resp['gsx$action']['$t'],
+        action_color: action_color,
+        date: date,
+        date_diff_str: date_difference_str(date),
+        latitude: resp['gsx$lat']['$t'].to_f,
+        longitude: resp['gsx$lng']['$t'].to_f,
+        source: resp['gsx$source']['$t'],
+        pin: map_pin('/sterilized-zone.svg'),
+        updated_at: updated_at,
+        last_updated: time_difference_str(updated_at),
+      }
+    end
+
+    data
+  end
+
+  def self.thai_summary
+    data = []
+    response = api_spreadsheets('thai_summary')
+
+    response.each do |resp|
+      updated_at = DateTime.parse(resp['updated']['$t']).localtime
+
+      data << {
+        province: resp['gsx$provinceth']['$t'],
+        province_eng: resp['gsx$provinceeng']['$t'],
+        infected: resp['gsx$infected']['$t'].to_i || 0,
+        updated_at: updated_at,
+        last_updated: time_difference_str(updated_at),
+      }
+    end
+
+    data
+  end
+
+  def self.map_pin(image)
+    {
+      url: image,
+      scaledSize: {
+        width: 30,
+        height: 30
+      }
+    }
+  end  
 end
