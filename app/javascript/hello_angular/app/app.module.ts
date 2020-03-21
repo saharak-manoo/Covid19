@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { enableProdMode } from '@angular/core';
 import { AppComponent } from './app.component';
 import { HomeComponent } from '../home/home.component';
+import { MapComponent } from '../map/map.component';
 import { RouterModule, Routes } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
@@ -96,11 +97,12 @@ export class MaterialModule {}
 
 const appRoutes: Routes = [
 	{ path: '', component: HomeComponent },
-	{ path: 'homes', component: HomeComponent }
+	{ path: 'homes', component: HomeComponent },
+	{ path: 'map', component: MapComponent }
 ];
 
 @NgModule({
-	declarations: [AppComponent, HomeComponent, ConfirmDialogComponent],
+	declarations: [AppComponent, HomeComponent, ConfirmDialogComponent, MapComponent],
 	imports: [
 		BrowserModule,
 		HttpClientModule,
