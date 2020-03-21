@@ -32,9 +32,17 @@ export class MapComponent {
 	safeZones: any = [];
 
 	ngOnInit() {
+		this.getLocation();
 		this.loadCasesThai();
 		this.loadHospital();
 		this.loadSafeZone();
+	}
+
+	getLocation() {
+		this.app.getPosition().then(pos => {
+			this.latitude = pos.lat;
+			this.longitude = pos.lng;
+		});
 	}
 
 	loadCasesThai() {

@@ -141,6 +141,7 @@ export class HomeComponent {
 	safeZones: any = [];
 
 	ngOnInit() {
+		this.getLocation();
 		this.loadData();
 		this.loadCasesThai();
 		this.loadHospital();
@@ -201,6 +202,13 @@ export class HomeComponent {
 		this.retroact();
 		this.loadCountryCases();
 		this.loadAllCountry();
+	}
+
+	getLocation() {
+		this.app.getPosition().then(pos => {
+			this.latitude = pos.lat;
+			this.longitude = pos.lng;
+		});
 	}
 
 	loadCasesThai() {

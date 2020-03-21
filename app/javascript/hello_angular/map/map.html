@@ -1,10 +1,9 @@
-<agm-map class="map-full" [latitude]="latitude" [longitude]="longitude" [zoom]="12">
+<agm-map class="map-full" [scrollwheel]="false" [fullscreenControl]="true" [gestureHandling]="greedy" [latitude]="latitude" [longitude]="longitude" [zoom]="12">
   <agm-marker 
     *ngFor="let case of cases; let i = index" 
     [latitude]="case.latitude" 
     [longitude]="case.longitude" 
-    [iconUrl]="case.pin"
-    [label]="i + 1">
+    [iconUrl]="case.pin">
     <agm-info-window>
       <h5>{{ case.place }}</h5>
       <div class="row">
@@ -26,8 +25,7 @@
     *ngFor="let hospital of hospitals; let i = index" 
     [latitude]="hospital.latitude" 
     [longitude]="hospital.longitude" 
-    [iconUrl]="hospital.pin"
-    [label]="i + 1">
+    [iconUrl]="hospital.pin">
     <agm-info-window>
       <h5>{{ hospital.name }}</h5>
       <h6>เบอร์โทร : {{ hospital.telephone }}</h6>
@@ -39,8 +37,7 @@
     *ngFor="let safeZone of safeZones; let i = index" 
     [latitude]="safeZone.latitude" 
     [longitude]="safeZone.longitude" 
-    [iconUrl]="safeZone.pin"
-    [label]="i + 1">
+    [iconUrl]="safeZone.pin">
     <agm-info-window>
       <h5>{{ safeZone.name }}</h5>
       <div class="row">
