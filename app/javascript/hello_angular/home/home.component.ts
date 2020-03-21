@@ -200,7 +200,7 @@ export class HomeComponent {
 	}
 
 	loadHospital() {
-		this.appService.all('covids/hospital').subscribe(
+		this.appService.all('api/covids/hospital').subscribe(
 			resp => {
 				let response: any = resp;
 				this.hospitals = response.data;
@@ -212,7 +212,7 @@ export class HomeComponent {
 	}
 
 	dailyTotalLocal() {
-		this.appService.all('covids/constants').subscribe(
+		this.appService.all('api/covids/constants').subscribe(
 			resp => {
 				let response: any = resp;
 				this.localAddTodayCount = response.data.add_today_count;
@@ -232,7 +232,7 @@ export class HomeComponent {
 	}
 
 	countryRetroact() {
-		this.appService.all('covids/country_retroact').subscribe(
+		this.appService.all('api/covids/country_retroact').subscribe(
 			resp => {
 				let response: any = resp;
 				this.barChartLabels = Object.keys(response.data);
@@ -250,7 +250,7 @@ export class HomeComponent {
 	}
 
 	retroact() {
-		this.appService.all('covids/summary_of_past_data').subscribe(
+		this.appService.all('api/covids/retroact').subscribe(
 			resp => {
 				let response: any = resp;
 				this.barChartLabels = Object.keys(response.data);
@@ -268,7 +268,7 @@ export class HomeComponent {
 	}
 
 	loadAllCountry() {
-		this.appService.all('covids/world').subscribe(
+		this.appService.all('api/covids/world').subscribe(
 			resp => {
 				let response: any = resp;
 				this.allCountryDataSource = new MatTableDataSource<any>(response.data.statistics);
@@ -290,7 +290,7 @@ export class HomeComponent {
 	}
 
 	loadCountryCases() {
-		this.appService.all('covids/cases').subscribe(
+		this.appService.all('api/covids/cases').subscribe(
 			resp => {
 				let response: any = resp;
 				this.patientInformationCount = response.data.length;

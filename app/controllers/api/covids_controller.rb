@@ -1,4 +1,5 @@
-class CovidsController < ApplicationController
+class Api::CovidsController < Api::ApplicationController
+
   def index
     render json: { data: Covid.daily_reports }, status: :ok
   end

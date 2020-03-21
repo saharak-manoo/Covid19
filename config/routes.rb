@@ -5,18 +5,20 @@ Rails.application.routes.draw do
   # Angular
   root 'homes#index'
   resources :home
-  resources :covids, only: %i[index] do
-    collection do
-      get 'total'
-      get 'retroact'
-      get 'country'
-      get 'country_retroact'
-      get 'hospital'
-      get 'constants'
-      get 'world'
-      get 'cases'
-      get 'trends'
-      get 'summary_of_past_data'
+  namespace :api do
+    resources :covids, only: %i[index] do
+      collection do
+        get 'total'
+        get 'retroact'
+        get 'country'
+        get 'country_retroact'
+        get 'hospital'
+        get 'constants'
+        get 'world'
+        get 'cases'
+        get 'trends'
+        get 'summary_of_past_data'
+      end
     end
   end
 

@@ -10,6 +10,12 @@ class Covid
     end
   end
 
+  def self.date_difference_str(date)
+    date_difference = TimeDifference.between(date, Date.today).in_general
+
+    date_difference[:days].zero? ? "วันนี้" : "#{date_difference[:days]} วันที่แล้ว"
+  end
+
   def self.time_difference_str(updated_at)
     time_difference = TimeDifference.between(updated_at, Time.now).in_general
     last_updated = "ปรับปรุงล่าสุดเมื่อ "
@@ -126,8 +132,8 @@ class Covid
       recovered: response['หายแล้ว'] || 0,
       add_today_count: response['เพิ่มวันนี้'] || 0,
       add_date: Date.parse(response['เพิ่มวันที่']),
-      updated_at: DateTime.now,
-      last_updated: time_difference_str(DateTime.now),
+      updated_at: DateTime.now.localtime,
+      last_updated: time_difference_str(DateTime.now.localtime),
     }
   end
 
@@ -212,7 +218,7 @@ class Covid
       }
     end
 
-    updated_at = DateTime.parse(response['lastUpdated'])
+    updated_at = DateTime.parse(response['lastUpdated']).localtime
 
     {
       confirmed: response['totalConfirmed'] || 0,
@@ -236,11 +242,113 @@ class Covid
     ((Date.yesterday - days..Date.yesterday)).each do |date|
       trend = trends[date.strftime("%Y-%m-%d")]
 
+      next unless trend.present?
       data[date.strftime("%a")] = {
-        confirmed: trend['confirmed']|| 0,
+        confirmed: trend['confirmed'] || 0,
         healings: (trend['confirmed'] - trend['recovered']) - trend['deaths'] || 0,
         deaths: trend['deaths'] || 0,
         recovered: trend['recovered'] || 0,
+      }
+    end
+
+    data
+  end
+
+  def self.api_spreadsheets(path)
+    response = RestClient::Request.new({
+      method: :get,
+      url: "#{ENV["covid_#{path}_host"]}"
+    }).execute do |response, request, result|
+      return JSON.parse(response.to_str)['feed']['entry']
+    end
+  end
+
+  def self.cases_thai
+    data = []
+    response = api_spreadsheets('cases_thai')
+
+    response.each do |resp|
+      updated_at = DateTime.parse(resp['updated']['$t']).localtime
+      date = Date.strptime(resp['gsx$date']['$t'], "%m/%d/%Y")
+
+      data << {
+        status: resp['gsx$status']['$t'],
+        date: date,
+        date_diff_str: date_difference_str(date),
+        place: resp['gsx$placename']['$t'],
+        province: resp['gsx$province']['$t'],
+        placename_eng: resp['gsx$placenameeng']['$t'],
+        latitude: resp['gsx$lat']['$t'].to_f,
+        longitude: resp['gsx$lng']['$t'].to_f,
+        note: resp['gsx$note']['$t'],
+        source: resp['gsx$source']['$t'],
+        updated_at: updated_at,
+        last_updated: time_difference_str(updated_at),
+      }
+    end
+
+    data
+  end
+
+  def self.hospitals
+    data = []
+    response = api_spreadsheets('hospitals')
+
+    response.each do |resp|
+      updated_at = DateTime.parse(resp['updated']['$t']).localtime
+
+      data << {
+        name: resp['gsx$titleth']['$t'],
+        name_eng: resp['gsx$titleother']['$t'],
+        telephone: resp['gsx$tel']['$t'],
+        price: resp['gsx$price']['$t'].present? ? resp['gsx$price']['$t'] : 'ไม่มีข้อมูล',
+        latitude: resp['gsx$lat']['$t'].to_f,
+        longitude: resp['gsx$lng']['$t'].to_f,
+        updated_at: updated_at,
+        last_updated: time_difference_str(updated_at),
+      }
+    end
+
+    data
+  end
+
+  def self.safe_zone
+    data = []
+    response = api_spreadsheets('safe_zone')
+
+    response.each do |resp|
+      updated_at = DateTime.parse(resp['updated']['$t']).localtime
+      date = Date.parse(resp['gsx$date']['$t'])
+
+      data << {
+        name: resp['gsx$area']['$t'],
+        action: resp['gsx$action']['$t'],
+        date: date,
+        date_diff_str: date_difference_str(date),
+        latitude: resp['gsx$lat']['$t'].to_f,
+        longitude: resp['gsx$lng']['$t'].to_f,
+        source: resp['gsx$source']['$t'],
+        updated_at: updated_at,
+        last_updated: time_difference_str(updated_at),
+      }
+    end
+
+    data
+  end
+
+  def self.thai_summary
+    data = []
+    response = api_spreadsheets('thai_summary')
+
+    response.each do |resp|
+      updated_at = DateTime.parse(resp['updated']['$t']).localtime
+
+      data << {
+        province: resp['gsx$provinceth']['$t'],
+        province_eng: resp['gsx$provinceeng']['$t'],
+        infected: resp['gsx$infected']['$t'].to_i || 0,
+        updated_at: updated_at,
+        last_updated: time_difference_str(updated_at),
       }
     end
 
