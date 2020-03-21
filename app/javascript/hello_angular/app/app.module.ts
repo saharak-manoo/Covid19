@@ -54,6 +54,7 @@ import {
 } from '@angular/material';
 import { AgmCoreModule } from '@agm/core';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 enableProdMode();
 
@@ -120,6 +121,7 @@ const appRoutes: Routes = [
 		ChartsModule,
 		MaterialModule,
 		LoadingBarHttpClientModule,
+		FlexLayoutModule,
 		AgmCoreModule.forRoot({
 			apiKey: 'AIzaSyByaaldtl6PxcbsTkdwbcsbknjWQenVx9Y'
 		})
