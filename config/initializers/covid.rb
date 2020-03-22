@@ -116,7 +116,7 @@ class Covid
   def self.api_workpoint(path)
     response = RestClient::Request.new({
       method: :get,
-      url: "#{ENV['covid_workpoint_api_host']}#{path}"
+      url: "#{ENV['covid_workpoint_api_host']}#{path}.json"
     }).execute do |response, request, result|
       return JSON.parse(response.to_str)
     end
