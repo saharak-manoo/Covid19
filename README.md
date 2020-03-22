@@ -5,9 +5,9 @@ https://data-covid-2019.herokuapp.com/
 This API provides the information regarding '2019 Novel Coronavirus (Covid-19)'.
 
 References
-https://github.com/CSSEGISandData/COVID-19
-https://covid19.workpointnews.com/
-https://covid-19.sennalabs.com/?fbclid=IwAR0iDjYsW1VlnIvxlByg3nVqjvHJ08NNAtdPPbqdIG9eYCRLgm_nb8R3vFU
+- https://github.com/CSSEGISandData/COVID-19
+- https://covid19.workpointnews.com/
+- https://covid-19.sennalabs.com/?fbclid=IwAR0iDjYsW1VlnIvxlByg3nVqjvHJ08NNAtdPPbqdIG9eYCRLgm_nb8R3vFU
 
 ## How to use API
 
