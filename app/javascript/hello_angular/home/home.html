@@ -84,7 +84,7 @@
             <mat-card class="card-chart">
               <mat-card-content>
                 <p class="text-center font-size-26">แผนที่</p>
-                <agm-map class="card-map" [gestureHandling]="'greedy'" [fullscreenControl]="'true'" [latitude]="latitude" [longitude]="longitude" [zoom]="14">
+                <agm-map class="card-map" [gestureHandling]="'greedy'" [fullscreenControl]="'true'" [latitude]="latitude" [longitude]="longitude" [zoom]="11">
                   <agm-marker 
                     *ngFor="let case of cases; let i = index" 
                     [latitude]="case.latitude" 
@@ -377,8 +377,8 @@
               <mat-card-content>
                 <p class="text-center font-size-26"><strong class="font-size-26 color-line">Line</strong> Notify QR Code</p>
                 <img src="/line_notify.jpg" class="qrcode">
-                <p class="text-center">คลิกที่ 
-                  <a href="https://github.com/Saharak-Dove"><strong>Covid-19 notify</strong></a> 
+                <p class="text-center">
+                  <a href="http://line.me/ti/g/owNyXS1V-D"><strong>Covid-19 notify</strong></a> 
                 </p>
               </mat-card-content>
             </mat-card>
