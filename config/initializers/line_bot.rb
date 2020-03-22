@@ -180,13 +180,46 @@ class LineBot
   def self.flex_msg(header, data, footer, color = "#0367D3")
     contents = []
     data.each do |text|
-      contents <<  {
-        type: "text",
-        text: text,
-        gravity: "center",
-        flex: 4,
-        size: "md",
-        weight: "bold"
+      contents << {
+        type: "box",
+        layout: "horizontal",
+        contents: [{
+          type: "box",
+          layout: "vertical",
+          contents: [{
+            type: "filler"
+          },
+          {
+            type: "box",
+            layout: "vertical",
+            contents: [
+              {
+                type: "filler"
+              }
+            ],
+            cornerRadius: "30px",
+            width: "12px",
+            height: "12px",
+            borderWidth: "2px",
+            borderColor: "#EF454D"
+          },
+          {
+            type: "filler"
+          }
+        ],
+          flex: 0
+        }, {
+          type: "text",
+          text: text,
+          gravity: "center",
+          flex: 4,
+          size: "md",
+          weight: "bold",
+          wrap: true
+        }],
+        spacing: "lg",
+        cornerRadius: "30px",
+        margin: "xl"
       }
     end
 
@@ -241,16 +274,7 @@ class LineBot
       body: {
         type: "box",
         layout: "vertical",
-        contents: [
-          {
-            type: "box",
-            layout: "horizontal",
-            contents: contents,
-            spacing: "lg",
-            cornerRadius: "30px",
-            margin: "xl"
-          }
-        ]
+        contents: contents
       },
       footer: {
         type: "box",
@@ -266,5 +290,5 @@ class LineBot
         ]
       }
     }
-  end  
+  end
 end
