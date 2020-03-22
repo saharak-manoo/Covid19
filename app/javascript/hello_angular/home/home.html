@@ -84,7 +84,7 @@
             <mat-card class="card-chart">
               <mat-card-content>
                 <p class="text-center font-size-26">แผนที่</p>
-                <agm-map class="card-map" [gestureHandling]="'greedy'" [fullscreenControl]="'true'" [latitude]="latitude" [longitude]="longitude" [zoom]="14">
+                <agm-map class="card-map" [gestureHandling]="'greedy'" [fullscreenControl]="'true'" [latitude]="latitude" [longitude]="longitude" [zoom]="11">
                   <agm-marker 
                     *ngFor="let case of cases; let i = index" 
                     [latitude]="case.latitude" 
