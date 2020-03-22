@@ -126,11 +126,11 @@ class Covid
     response = api_workpoint('constants')
 
     {
-      confirmed: response['ผู้ติดเชื้อ'],
-      healings: response['กำลังรักษา'] || 0,
-      deaths: response['เสียชีวิต'] || 0,
-      recovered: response['หายแล้ว'] || 0,
-      add_today_count: response['เพิ่มวันนี้'] || 0,
+      confirmed: response['ผู้ติดเชื้อ'].to_i,
+      healings: response['กำลังรักษา'].to_i || 0,
+      deaths: response['เสียชีวิต'].to_i || 0,
+      recovered: response['หายแล้ว'].to_i || 0,
+      add_today_count: response['เพิ่มวันนี้'].to_i || 0,
       add_date: Date.parse(response['เพิ่มวันที่']),
       updated_at: DateTime.now.localtime,
       last_updated: time_difference_str(DateTime.now.localtime),
@@ -182,7 +182,7 @@ class Covid
         status_color: status_color,
         job: resp['job'] || 'ไม่มีข้อมูล',
         gender: resp['gender'] || 'ไม่มีข้อมูล',
-        age: resp['age'] || 'ไม่มีข้อมูล',
+        age: resp['age'].to_i || 'ไม่มีข้อมูล',
         type: type,
         type_color: type_color
       }
@@ -206,10 +206,10 @@ class Covid
         travel_color = "#FE205D"
       end
 
-      confirmed = resp['confirmed'] || 0
+      confirmed = resp['confirmed'].to_i || 0
       healings = (resp['confirmed'].to_i - resp['recovered'].to_i ) - resp['deaths'].to_i || 0
-      deaths = resp['deaths'] || 0
-      recovered = resp['recovered'] || 0
+      deaths = resp['deaths'].to_i || 0
+      recovered = resp['recovered'].to_i || 0
 
       data << {
         country: resp['name'],
@@ -253,10 +253,10 @@ class Covid
 
       next unless trend.present?
       data[date.strftime("%a")] = {
-        confirmed: trend['confirmed'] || 0,
+        confirmed: trend['confirmed'].to_i || 0,
         healings: (trend['confirmed'] - trend['recovered']) - trend['deaths'] || 0,
-        deaths: trend['deaths'] || 0,
-        recovered: trend['recovered'] || 0,
+        deaths: trend['deaths'].to_i || 0,
+        recovered: trend['recovered'].to_i || 0,
       }
     end
 
