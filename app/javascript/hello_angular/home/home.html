@@ -7,7 +7,7 @@
             <h2 class="head">ประเทศไทย</h2>
           </div>
           <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-            <p class="text-right margin-text">{{ localLastUpdated }}</p>
+            <p class="text-right margin-text">{{ localLastUpdated.toLocaleString('en') || 0 }}</p>
           </div>
         </div>  
         <div class="row">
@@ -252,7 +252,11 @@
           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-3">
             <mat-card class="card-text-data">
               <mat-card-content>
-                 <p class="text-center font-size-26">ผู้ติดเชื้อ</p>
+                <p class="text-center font-size-26">ผู้ติดเชื้อ 
+                  <strong class="font-size-14">(เพิ่มขึ้น 
+                    <strong class="font-size-18 color-red">{{ worldAddTodayCount.toLocaleString('en') || 0 }}</strong> คน)
+                  </strong>
+                </p>
                 <p class="infected-person confirmed text-center">{{ total.confirmed.toLocaleString('en') }}</p>
                 <h4 class="text-center">คน</h4>
               </mat-card-content>

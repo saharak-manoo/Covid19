@@ -136,9 +136,12 @@ export class HomeComponent {
 	@ViewChild('patientInformationPaginator', { static: true })
 	patientInformationPaginator: MatPaginator;
 	patientInformationCount: number = 0;
+
 	localAddTodayCount: number = 0;
+	worldAddTodayCount: number = 0;
 	cases: any = [];
 	safeZones: any = [];
+
 	infectedByProvinceDisplayedColumns: string[] = ['province', 'infected'];
 	infectedByProvinceDataSource: any = [];
 	@ViewChild('infectedByProvince', { read: MatSort, static: true }) infectedByProvinceSort: MatSort;
@@ -309,6 +312,7 @@ export class HomeComponent {
 		this.appService.all('api/covids/world').subscribe(
 			resp => {
 				let response: any = resp;
+				this.worldAddTodayCount = response.data.add_today_count;
 				this.allCountryDataSource = new MatTableDataSource<any>(response.data.statistics);
 				this.allCountryDataSource.paginator = this.allCountryPaginator;
 				this.allCountryDataSource.sort = this.allCountrySort;

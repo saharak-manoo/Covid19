@@ -232,7 +232,7 @@ class Covid
 
     {
       confirmed: response['totalConfirmed'] || 0,
-      add_totay_count: ((response['totalConfirmed'] || 0) - total[:confirmed]) || 0,
+      add_today_count: ((response['totalConfirmed'] || 0) - total[:confirmed]) || 0,
       healings: (response['totalConfirmed'].to_i - response['totalRecovered'].to_i ) - response['totalDeaths'].to_i || 0,
       deaths: response['totalDeaths'] || 0,
       recovered: response['totalRecovered'] || 0,

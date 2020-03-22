@@ -30,9 +30,8 @@ class LineBot
       data = Covid.constants
       header[:sub_title_str] = "#{data[:add_today_count]} คน"
     elsif WORLD.include?(location)
-
       data = Covid.world
-      header[:sub_title_str] = "#{data[:add_today_count]} คน"
+      header[:sub_title_str] = "#{data[:add_today_count] || 0} คน"
     else
       data = Covid.thai_summary
       value = data.detect { |d| d[:province].include?(location) || d[:province_eng].include?(location) }
