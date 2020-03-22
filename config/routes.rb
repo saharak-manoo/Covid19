@@ -20,6 +20,8 @@ Rails.application.routes.draw do
         get 'summary_of_past_data'
         get 'cases_thai'
         get 'safe_zone'
+        get 'infected_by_province'
+        get 'hospital_and_labs'
       end
     end
   end
