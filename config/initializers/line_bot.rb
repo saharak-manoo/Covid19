@@ -37,9 +37,10 @@ class LineBot
       value = data.detect { |d| d[:province].include?(location) || d[:province_eng].include?(location) }
 
       if value.present?
-        contents << "ติดเชื้อทั้งหมด #{value[:infected]} คน"
+        header[:title] = value[:province] || location
         header[:sub_title] = "Province"
-        header[:sub_title_str] = "#{value[:province_eng]}"
+        header[:sub_title_str] = value[:province_eng]
+        contents << "ติดเชื้อทั้งหมด #{value[:infected]} คน"
 
         return flex(flex_msg(header, contents, "* ข้อมูลนี้ #{value[:last_updated]}", value[:infected_color]), header[:title])
       else
