@@ -14,10 +14,10 @@ def thai
 
   ap "scheduler thai"
 
-  if $thai_last_updated != data[:add_today_count]
+  if $thai_last_updated != data[:confirmed]
     LineNoti.send(meesage)
     ap "scheduler thai send"
-    $thai_last_updated = data[:add_today_count]
+    $thai_last_updated = data[:confirmed]
   end
 end
 
@@ -27,10 +27,10 @@ def world
 
   ap "scheduler world"
 
-  if $world_last_updated != data[:add_today_count]
+  if $world_last_updated != data[:confirmed]
     LineNoti.send(meesage)
     ap "scheduler world send"
-    $world_last_updated = data[:add_today_count]
+    $world_last_updated = data[:confirmed]
   end
 end
 
