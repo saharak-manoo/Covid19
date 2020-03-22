@@ -1,6 +1,7 @@
 @import 'indigo-pink.css';
 @import url('https://fonts.googleapis.com/css?family=Kanit&display=swap');
 @import 'bootstrap';
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 body {
 	background: #fff;
@@ -28,13 +29,13 @@ mat-card-title {
 .card-chart {
 	max-width: 100%;
 	max-height: 100%;
-	margin: 10px;
+	margin: 3.5px;
 }
 
 .card-text-data {
 	max-width: 100%;
 	max-height: 100%;
-	margin: 10px;
+	margin: 3.5px;
 }
 
 .infected-person {
@@ -66,8 +67,17 @@ mat-card-title {
 	padding-top: 10px;
 }
 
-agm-map {
-	height: 400px;
+.menu-spacer {
+	flex: 1;
+}
+
+.card-map {
+	height: 450px;
+}
+
+.map-full {
+	height: 93%;
+	width: auto;
 }
 
 .card-qr-code {
@@ -158,4 +168,29 @@ table {
 .font-size-16 {
 	font-size: 16px;
 	font-weight: 300;
+}
+
+button:focus {
+	outline: 0px !important;
+}
+
+.mat-button:hover {
+	outline: 0px !important;
+	color: #fff !important;
+	text-decoration: none !important;
+}
+
+.table-container {
+	position: relative;
+	max-height: 400px;
+	overflow: auto;
+}
+
+.sidenav {
+	width: 60%;
+}
+
+.mat-red {
+	background-color: #fc5e71;
+	color: #fff;
 }

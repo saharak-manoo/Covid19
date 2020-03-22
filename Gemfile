@@ -95,3 +95,11 @@ gem 'sinatra'
 
 # Dialogflow
 gem 'api-ai-ruby'
+
+gem 'geocoder'
+
+# Line Notify
+gem 'line_notify', '~> 1.0'
+
+# Scheduler
+gem 'rufus-scheduler'
