@@ -95,3 +95,5 @@ gem 'sinatra'
 
 # Dialogflow
 gem 'api-ai-ruby'
+
+gem 'geocoder'

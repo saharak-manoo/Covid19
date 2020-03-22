@@ -139,6 +139,11 @@ export class HomeComponent {
 	localAddTodayCount: number = 0;
 	cases: any = [];
 	safeZones: any = [];
+	infectedByProvinceDisplayedColumns: string[] = ['province', 'infected'];
+	infectedByProvinceDataSource: any = [];
+	@ViewChild('infectedByProvince', { read: MatSort, static: true }) infectedByProvinceSort: MatSort;
+	@ViewChild('infectedByProvincePaginator', { static: true })
+	infectedByProvincePaginator: MatPaginator;
 
 	ngOnInit() {
 		this.getLocation();
@@ -198,6 +203,7 @@ export class HomeComponent {
 		this.retroact();
 		this.loadCountryCases();
 		this.loadAllCountry();
+		this.loadInfectedByProvince();
 	}
 
 	getLocation() {
@@ -220,7 +226,7 @@ export class HomeComponent {
 	}
 
 	loadHospital() {
-		this.appService.all('api/covids/hospital').subscribe(
+		this.appService.all('api/covids/hospital_and_labs').subscribe(
 			resp => {
 				let response: any = resp;
 				this.hospitals = response.data;
@@ -351,6 +357,29 @@ export class HomeComponent {
 
 		if (this.allCountryDataSource.paginator) {
 			this.allCountryDataSource.paginator.firstPage();
+		}
+	}
+
+	loadInfectedByProvince() {
+		this.appService.all('api/covids/infected_by_province').subscribe(
+			resp => {
+				let response: any = resp;
+				this.infectedByProvinceDataSource = new MatTableDataSource<any>(response.data);
+				this.infectedByProvinceDataSource.paginator = this.infectedByProvincePaginator;
+				this.infectedByProvinceDataSource.sort = this.infectedByProvinceSort;
+			},
+			e => {
+				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
+			}
+		);
+	}
+
+	searchInfectedByProvince(event: Event) {
+		const filterValue = (event.target as HTMLInputElement).value;
+		this.infectedByProvinceDataSource.filter = filterValue.trim().toLowerCase();
+
+		if (this.infectedByProvinceDataSource.paginator) {
+			this.infectedByProvinceDataSource.paginator.firstPage();
 		}
 	}
 }

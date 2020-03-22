@@ -51,4 +51,12 @@ class Api::CovidsController < Api::ApplicationController
   def safe_zone
     render json: { data: Covid.safe_zone }, status: :ok
   end
+
+  def infected_by_province
+    render json: { data: Covid.thai_summary }, status: :ok
+  end
+
+  def hospital_and_labs
+    render json: { data: Covid.hospital_and_labs }, status: :ok
+  end  
 end

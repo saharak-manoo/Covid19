@@ -1,4 +1,4 @@
-<agm-map class="map-full" [scrollwheel]="false" [fullscreenControl]="true" [gestureHandling]="greedy" [latitude]="latitude" [longitude]="longitude" [zoom]="12">
+<agm-map class="map-full" [scrollwheel]="'false'" [fullscreenControl]="true" [gestureHandling]="'greedy'" [latitude]="latitude" [longitude]="longitude" [zoom]="14">
   <agm-marker 
     *ngFor="let case of cases; let i = index" 
     [latitude]="case.latitude" 
@@ -28,8 +28,8 @@
     [iconUrl]="hospital.pin">
     <agm-info-window>
       <h5>{{ hospital.name }}</h5>
-      <h6>เบอร์โทร : {{ hospital.telephone }}</h6>
-      <h6>ค่าตรวจ : {{ hospital.price }}</h6>
+      <h6>รับตรวจ COVID-19</h6>
+      <h6>ประเภท : {{ hospital.type }}</h6>
     </agm-info-window>
   </agm-marker>
 

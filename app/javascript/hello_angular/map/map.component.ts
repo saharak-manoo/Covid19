@@ -58,7 +58,7 @@ export class MapComponent {
 	}
 
 	loadHospital() {
-		this.appService.all('api/covids/hospital').subscribe(
+		this.appService.all('api/covids/hospital_and_labs').subscribe(
 			resp => {
 				let response: any = resp;
 				this.hospitals = response.data;

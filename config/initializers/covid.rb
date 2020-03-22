@@ -206,13 +206,22 @@ class Covid
         travel_color = "#FE205D"
       end
 
+      confirmed = resp['confirmed'] || 0
+      healings = (resp['confirmed'].to_i - resp['recovered'].to_i ) - resp['deaths'].to_i || 0
+      deaths = resp['deaths'] || 0
+      recovered = resp['recovered'] || 0
+
       data << {
         country: resp['name'],
         country_flag: "/#{resp['alpha2'].downcase}.png",
-        confirmed: resp['confirmed'] || 0,
-        healings: (resp['confirmed'].to_i - resp['recovered'].to_i ) - resp['deaths'].to_i || 0,
-        deaths: resp['deaths'] || 0,
-        recovered: resp['recovered'] || 0,
+        confirmed: confirmed,
+        confirmed_color: covid_color(confirmed),
+        healings: healings,
+        healings_color: covid_color(healings),
+        deaths: deaths,
+        deaths_color: covid_color(deaths),
+        recovered: recovered,
+        recovered_color: covid_color(recovered),
         travel: travel,
         travel_color: travel_color
       }
@@ -371,13 +380,48 @@ class Covid
 
     response.each do |resp|
       updated_at = DateTime.parse(resp['updated']['$t']).localtime
+      infected_color = "#000"
+      infected = resp['gsx$infected']['$t'].to_i || 0
 
       data << {
         province: resp['gsx$provinceth']['$t'],
         province_eng: resp['gsx$provinceeng']['$t'],
-        infected: resp['gsx$infected']['$t'].to_i || 0,
+        infected: infected,
+        infected_color: covid_color(infected),
         updated_at: updated_at,
         last_updated: time_difference_str(updated_at),
+      }
+    end
+
+    data
+  end
+
+  def self.api_hospital_lab
+    response = RestClient::Request.new({
+      method: :get,
+      url: "#{ENV["covid_hospital_labs_host"]}"
+    }).execute do |response, request, result|
+      response_str = response.to_str
+      response_str.gsub! 'var covid19 = ', ''
+
+      return JSON.parse(response_str)['features']
+    end
+  end
+
+  def self.hospital_and_labs
+    data = []
+    response = api_hospital_lab
+
+    response.each do |resp|
+      properties = resp['properties']
+
+      data << {
+        name: properties['NAME'],
+        type: properties['TYPE'],
+        source: properties['source'],
+        pin: map_pin('/hospital-zone.svg'),
+        latitude: properties['Lat'].to_f,
+        longitude: properties['Long'].to_f,
       }
     end
 
@@ -392,5 +436,32 @@ class Covid
         height: 30
       }
     }
+  end
+  
+  def self.covid_color(count = 0)
+    color = "#000"
+
+    case count
+    when 1..100
+      color = "#FECB2A"
+    when 101..500
+      color = "#FC9613"
+    when 501..1000
+      color = "#FE702A"
+    when 1001..2500
+      color = "#FC4B13"
+    when 2501..5000
+      color = "#FC3313"
+    when 5001..7500
+      color = "#FE120A"
+    when 7501..12500
+      color = "#FE0A37"
+    when 12501..17500
+      color = "#772AFE"
+    when 17501..10000000
+      color = "#9412F5"
+    when 0
+      color = "#32DA4B"
+    end
   end  
 end
