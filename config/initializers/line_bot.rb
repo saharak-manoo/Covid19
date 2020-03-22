@@ -38,7 +38,7 @@ class LineBot
       value = data.detect { |d| d[:province].include?(location) || d[:province_eng].include?(location) }
 
       if value.present?
-        contents << "- ติดเชื้อทั้งหมด #{value[:infected]} คน"
+        contents << "ติดเชื้อทั้งหมด #{value[:infected]} คน"
         header[:sub_title] = "Province"
         header[:sub_title_str] = "#{value[:province_eng]}"
 
@@ -51,19 +51,19 @@ class LineBot
     footer = "* ข้อมูลนี้ #{data[:last_updated]}"
 
     if isConfirmed
-      contents << "- ติดเชื้อทั้งหมด #{to_delimited(data[:confirmed])} คน"
+      contents << "ติดเชื้อทั้งหมด #{to_delimited(data[:confirmed])} คน"
     elsif isHealings
-      contents <<  "- กำลังรักษาทั้งหมด #{to_delimited(data[:healings])} คน"
+      contents <<  "กำลังรักษาทั้งหมด #{to_delimited(data[:healings])} คน"
     elsif isRecovered
-      contents <<  "- รักษาหายแล้วทั้งหมด #{to_delimited(data[:recovered])} คน"
+      contents <<  "รักษาหายแล้วทั้งหมด #{to_delimited(data[:recovered])} คน"
     elsif isDeaths
-      contents <<  "- เสียชีวิตแล้วทั้งหมด #{to_delimited(data[:deaths])} คน"
+      contents <<  "เสียชีวิตแล้วทั้งหมด #{to_delimited(data[:deaths])} คน"
     elsif !isConfirmed && !isHealings && !isRecovered && !isDeaths
       contents = [
-        "- ติดเชื้อทั้งหมด #{to_delimited(data[:confirmed])} คน",
-        "- กำลังรักษาทั้งหมด #{to_delimited(data[:healings])} คน",
-        "- รักษาหายแล้วทั้งหมด #{to_delimited(data[:recovered])} คน",
-        "- เสียชีวิตแล้วทั้งหมด #{to_delimited(data[:deaths])} คน"
+        "ติดเชื้อทั้งหมด #{to_delimited(data[:confirmed])} คน",
+        "กำลังรักษาทั้งหมด #{to_delimited(data[:healings])} คน",
+        "รักษาหายแล้วทั้งหมด #{to_delimited(data[:recovered])} คน",
+        "เสียชีวิตแล้วทั้งหมด #{to_delimited(data[:deaths])} คน"
     ]
     end
       
@@ -213,7 +213,7 @@ class LineBot
           text: text,
           gravity: "center",
           flex: 4,
-          size: "md",
+          size: "sm",
           weight: "bold",
           wrap: true
         }],
