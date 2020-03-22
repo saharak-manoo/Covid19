@@ -5,6 +5,7 @@ covid_hospitals_host: https://spreadsheets.google.com/feeds/list/1X1bXChhDm0ymr7
 covid_safe_zone_host: https://spreadsheets.google.com/feeds/list/1X1bXChhDm0ymr7pZ5g7uomlEFJqvao5nfHqEY4RWzlc/5/public/values?alt=json
 covid_thai_summary_host: https://spreadsheets.google.com/feeds/list/1X1bXChhDm0ymr7pZ5g7uomlEFJqvao5nfHqEY4RWzlc/8/public/values?alt=json
 covid_hospital_labs_host: https://map.longdo.com/covid19-hospital/hospital-lab-covid19.json
+line_notify_token: zEEjy0TBSVM66PDy4gRzPK6leQHxiyFFGESSwd9uiWV
 line_channel_id: '1653946879'
 line_channel_secret: cea83883ecfcdc8ba8887cfe4bdb7d8b
 line_channel_token: v+zlCsRn9DJPCjYzBooWfN9Hko3zymHqNG7+V8cBCtcNcr9+WIaN4vIA1+EztWnVsVmma52BvVIWjNE6yTtomdEaKggvkD2pV3KAU38zbY64h+LXpGiKfikwiD5vI+7aOel2PSwZ6S8WevgvJBh1zAdB04t89/1O/w1cDnyilFU=
@@ -18,6 +19,7 @@ production:
   covid_safe_zone_host: https://spreadsheets.google.com/feeds/list/1X1bXChhDm0ymr7pZ5g7uomlEFJqvao5nfHqEY4RWzlc/5/public/values?alt=json
   covid_thai_summary_host: https://spreadsheets.google.com/feeds/list/1X1bXChhDm0ymr7pZ5g7uomlEFJqvao5nfHqEY4RWzlc/8/public/values?alt=json
   covid_hospital_labs_host: https://map.longdo.com/covid19-hospital/hospital-lab-covid19.json
+  line_notify_token: zEEjy0TBSVM66PDy4gRzPK6leQHxiyFFGESSwd9uiWV
   line_channel_id: '1653946879'
   line_channel_secret: cea83883ecfcdc8ba8887cfe4bdb7d8b
   line_channel_token: v+zlCsRn9DJPCjYzBooWfN9Hko3zymHqNG7+V8cBCtcNcr9+WIaN4vIA1+EztWnVsVmma52BvVIWjNE6yTtomdEaKggvkD2pV3KAU38zbY64h+LXpGiKfikwiD5vI+7aOel2PSwZ6S8WevgvJBh1zAdB04t89/1O/w1cDnyilFU=
