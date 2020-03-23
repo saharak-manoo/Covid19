@@ -62,7 +62,7 @@ class LineBot
           "การเดินทาง: #{world[:travel]}"
         ]
 
-        return flex(flex_msg(header, contents, "* ข้อมูลนี้ #{world_data[:last_updated]}", thai_infecteds[:infected_color]), header[:title])
+        return flex(flex_msg(header, contents, "* ข้อมูลนี้ #{world_data[:last_updated]}", world[:confirmed_color]), header[:title])
       else
         return { type: 'text', text: "ขออภัยไม่มีข้อมูลของ #{location} โปรดลองเป็น ชื่อจังหวัด เช่น เชียงใหม่, กรุงเทพ" }
       end  
