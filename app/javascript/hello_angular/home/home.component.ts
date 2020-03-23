@@ -46,7 +46,11 @@ export class HomeComponent {
 		confirmed: 0,
 		healings: 0,
 		recovered: 0,
-		deaths: 0
+		deaths: 0,
+		watch_out_collectors: 0,
+		severed: 0,
+		case_management_admit: 0,
+		case_management_observation: 0
 	};
 	total: any = {
 		confirmed: 0,
