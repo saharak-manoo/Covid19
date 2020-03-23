@@ -23,6 +23,7 @@ Rails.application.routes.draw do
         get 'infected_by_province'
         get 'hospital_and_labs'
         get 'thai_ddc'
+        get 'thai_separate_province'
       end
     end
   end

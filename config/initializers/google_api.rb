@@ -42,10 +42,12 @@ class GoogleApi
     rows.each_with_index do |row, index|
       next if index == 0
 
+      infected = row[2].to_i || 0
       data << {
         name: row[0],
         name_eng: row[1],
-        infected: row[2],
+        infected: infected,
+        infected_color: infected.to_covid_color,
       }
     end
 

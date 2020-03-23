@@ -147,7 +147,7 @@ export class HomeComponent {
 	cases: any = [];
 	safeZones: any = [];
 
-	infectedByProvinceDisplayedColumns: string[] = ['province', 'infected'];
+	infectedByProvinceDisplayedColumns: string[] = ['name', 'infected'];
 	infectedByProvinceDataSource: any = [];
 	@ViewChild('infectedByProvince', { read: MatSort, static: true }) infectedByProvinceSort: MatSort;
 	@ViewChild('infectedByProvincePaginator', { static: true })
@@ -370,10 +370,10 @@ export class HomeComponent {
 	}
 
 	loadInfectedByProvince() {
-		this.appService.all('api/covids/infected_by_province').subscribe(
+		this.appService.all('api/covids/thai_separate_province').subscribe(
 			resp => {
 				let response: any = resp;
-				this.infectedByProvinceDataSource = new MatTableDataSource<any>(response.data);
+				this.infectedByProvinceDataSource = new MatTableDataSource<any>(response.data.provinces);
 				this.infectedByProvinceDataSource.paginator = this.infectedByProvincePaginator;
 				this.infectedByProvinceDataSource.sort = this.infectedByProvinceSort;
 			},
