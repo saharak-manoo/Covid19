@@ -39,16 +39,32 @@ class LineBot
       header[:sub_title_str] = "#{(data[:add_today_count] || 0).to_delimited} คน"
       contents = data_to_str(data, isConfirmed, isHealings, isRecovered, isDeaths)
     else
-      data = Covid.thai_summary
-      value = data.detect { |d| d[:province].include?(location) || d[:province_eng].include?(location) }
+      thai_separate_province = Covid.thai_separate_province
+      world_data = Covid.world
 
-      if value.present?
-        header[:title] = value[:province] || location
+      province = thai_separate_province[:provinces].detect { |d| d[:name].include?(location) || d[:name_eng].include?(location) }
+      world = world_data[:statistics].detect { |d| d[:country].include?(location) || d[:country_th].include?(location) }
+
+      if province.present?
+        header[:title] = province[:name] || location
         header[:sub_title] = "Province"
-        header[:sub_title_str] = value[:province_eng]
-        contents << "ติดเชื้อทั้งหมด #{value[:infected]} คน"
+        header[:sub_title_str] = province[:name_eng]
+        contents << "ติดเชื้อทั้งหมด #{province[:infected]} คน"
 
-        return flex(flex_msg(header, contents, "* ข้อมูลนี้ #{value[:last_updated]}", value[:infected_color]), header[:title])
+        return flex(flex_msg(header, contents, "* ข้อมูลนี้ #{thai_separate_province[:last_updated]}", province[:infected_color]), header[:title])
+      elsif world.present?
+        header[:title] = world[:country_th] || location
+        header[:sub_title] = "Country"
+        header[:sub_title_str] = world[:country]
+        contents = [
+          "ติดเชื้อทั้งหมด #{world[:confirmed].to_delimited} คน",
+          "กำลังรักษาทั้งหมด #{world[:healings].to_delimited} คน",
+          "รักษาหายแล้วทั้งหมด #{world[:recovered].to_delimited} คน",
+          "เสียชีวิตแล้วทั้งหมด #{world[:deaths].to_delimited} คน",
+          "การเดินทาง: #{world[:travel]}"
+        ]
+
+        return flex(flex_msg(header, contents, "* ข้อมูลนี้ #{world_data[:last_updated]}", world[:confirmed_color]), header[:title])
       else
         return { type: 'text', text: "ขออภัยไม่มีข้อมูลของ #{location} โปรดลองเป็น ชื่อจังหวัด เช่น เชียงใหม่, กรุงเทพ" }
       end  
@@ -161,9 +177,11 @@ class LineBot
     }
   end
 
-  def self.flex_msg(header, data, footer, color = "#0367D3")
+  def self.flex_msg(header, datas, footer, color = "#0367D3")
+    colors = ['#fcd35e', '#bffd59', '#5efcad', '#EF454D', '#ff4716', '#713ff9', '#29adfe', '#ffd816']
     contents = []
-    data.each do |text|
+
+    datas.each_with_index do |text, index|
       contents << {
         type: "box",
         layout: "horizontal",
@@ -185,7 +203,7 @@ class LineBot
             width: "12px",
             height: "12px",
             borderWidth: "2px",
-            borderColor: "#EF454D"
+            borderColor: datas.count == 1 ? '#EF454D' : colors[index]
           },
           {
             type: "filler"
@@ -293,7 +311,7 @@ class LineBot
         "กำลังรักษาทั้งหมด #{data[:healings].to_delimited} คน",
         "รักษาหายแล้วทั้งหมด #{data[:recovered].to_delimited} คน",
         "เสียชีวิตแล้วทั้งหมด #{data[:deaths].to_delimited} คน"
-    ]
+      ]
     end
   end  
 end

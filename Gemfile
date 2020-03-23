@@ -106,3 +106,10 @@ gem 'rufus-scheduler'
 
 # Cheerio
 gem 'ruby-cheerio'
+
+# Translate
+gem 'google-cloud-translate'
+gem 'easy_translate'
+
+# Google drive
+gem 'google_drive'
