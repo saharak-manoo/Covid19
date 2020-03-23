@@ -276,7 +276,7 @@ class LineBot
     }
   end
 
-  def data_to_str(data, isConfirmed, isHealings, isRecovered, isDeaths)
+  def self.data_to_str(data, isConfirmed, isHealings, isRecovered, isDeaths)
     contents = []
 
     if isConfirmed
