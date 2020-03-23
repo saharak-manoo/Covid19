@@ -22,6 +22,7 @@ Rails.application.routes.draw do
         get 'safe_zone'
         get 'infected_by_province'
         get 'hospital_and_labs'
+        get 'thai_ddc'
       end
     end
   end
