@@ -51,6 +51,42 @@
               </mat-card-content>
             </mat-card>
           </div>
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-3">
+            <mat-card class="card-text-data">
+              <mat-card-content>
+                <p class="text-center font-size-22">เฝ้าระวัง 
+                  <strong class="font-size-26 watch-out-collectors">{{ totalLocal.watch_out_collectors.toLocaleString('en') }}</strong> คน
+                </p>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-3">
+            <mat-card class="card-text-data">
+              <mat-card-content>
+                <p class="text-center font-size-22">อาการหนัก 
+                  <strong class="font-size-26 severed">{{ totalLocal.severed.toLocaleString('en') }}</strong> คน
+                </p>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-3">
+            <mat-card class="card-text-data">
+              <mat-card-content>
+                <p class="text-center font-size-22">อยู่ที่ รพ. 
+                  <strong class="font-size-26 case-management-admit">{{ totalLocal.case_management_admit.toLocaleString('en') }}</strong> คน
+                </p>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-3">
+            <mat-card class="card-text-data">
+              <mat-card-content>
+                <p class="text-center font-size-22">สังเกตอาการที่ รพ. 
+                  <strong class="font-size-26 case-management-observation">{{ totalLocal.case_management_observation.toLocaleString('en') }}</strong> คน
+                </p>
+              </mat-card-content>
+            </mat-card>
+          </div>
 
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
             <mat-card class="card-chart">
@@ -66,6 +102,7 @@
               </mat-card-content>
             </mat-card>
           </div>
+
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
             <mat-card class="card-chart">
               <mat-card-content>
@@ -80,6 +117,7 @@
               </mat-card-content>
             </mat-card>
           </div>
+
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <mat-card class="card-chart">
               <mat-card-content>
@@ -145,7 +183,7 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <mat-card class="card-chart">
               <mat-card-content>
-                <p class="text-center font-size-26">ข้อมูลผู้ป่วยในประเทศที่ยืนยันแล้ว ({{ patientInformationCount }} คน)</p>
+                <p class="text-center font-size-26">ข้อมูลผู้ป่วยในประเทศที่ยืนยันแล้ว ({{ patientInformationCount || 0 }} คน)</p>
                 <mat-form-field>
                   <mat-label>ค้นหา...</mat-label>
                   <input matInput (keyup)="searchPatientInformation($event)" placeholder="ตัวอย่าง. เชียงใหม่">
@@ -406,7 +444,7 @@
               <mat-card-content>
                 <p class="text-center">พัฒนาโดย 
                   <a href="https://github.com/Saharak-Dove"><strong>Saharak Manoo</strong></a> 
-                  ใช้ข้อมูลจาก <a href="https://github.com/CSSEGISandData/COVID-19">CSSEGISandData</a>
+                  ใช้ข้อมูลจาก <a href="https://ddc.moph.go.th/viralpneumonia">กรมควบคุมโรค</a> , <a href="https://github.com/CSSEGISandData/COVID-19">CSSEGISandData</a>
                   และ <a href="https://covid19.workpointnews.com/">Workpointnews</a>
                 </p>
               </mat-card-content>

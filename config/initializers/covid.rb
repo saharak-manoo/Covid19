@@ -210,13 +210,13 @@ class Covid
         country: resp['name'],
         country_flag: "/#{resp['alpha2'].downcase}.png",
         confirmed: confirmed,
-        confirmed_color: covid_color(confirmed),
+        confirmed_color: confirmed.to_covid_color,
         healings: healings,
-        healings_color: covid_color(healings),
+        healings_color: healings.to_covid_color,
         deaths: deaths,
-        deaths_color: covid_color(deaths),
+        deaths_color: deaths.to_covid_color,
         recovered: recovered,
-        recovered_color: covid_color(recovered),
+        recovered_color: recovered.to_covid_color,
         travel: travel,
         travel_color: travel_color
       }
@@ -278,7 +278,8 @@ class Covid
         date = Date.strptime(resp['gsx$date']['$t'], "%m/%d/%Y")
       rescue Exception
         date = DateTime.parse(resp['gsx$date']['$t'])
-      end  
+      end
+
       status_color = "#000"
       status = resp['gsx$status']['$t']
 
@@ -303,7 +304,7 @@ class Covid
         placename_eng: resp['gsx$placenameeng']['$t'],
         latitude: resp['gsx$lat']['$t'].to_f,
         longitude: resp['gsx$lng']['$t'].to_f,
-        pin: map_pin('/red-zone-radius.svg'),
+        pin: '/red-zone-radius.svg'.to_map_pin,
         note: resp['gsx$note']['$t'],
         source: resp['gsx$source']['$t'],
         updated_at: updated_at,
@@ -328,7 +329,7 @@ class Covid
         price: resp['gsx$price']['$t'].present? ? resp['gsx$price']['$t'] : 'ไม่มีข้อมูล',
         latitude: resp['gsx$lat']['$t'].to_f,
         longitude: resp['gsx$lng']['$t'].to_f,
-        pin: map_pin('/hospital-zone.svg'),
+        pin: '/hospital-zone.svg'.to_map_pin,
         updated_at: updated_at,
         last_updated: updated_at.to_difference_str,
       }
@@ -365,7 +366,7 @@ class Covid
         latitude: resp['gsx$lat']['$t'].to_f,
         longitude: resp['gsx$lng']['$t'].to_f,
         source: resp['gsx$source']['$t'],
-        pin: map_pin('/sterilized-zone.svg'),
+        pin: '/sterilized-zone.svg'.to_map_pin,
         updated_at: updated_at,
         last_updated: updated_at.to_difference_str,
       }
@@ -387,7 +388,7 @@ class Covid
         province: resp['gsx$provinceth']['$t'],
         province_eng: resp['gsx$provinceeng']['$t'],
         infected: infected,
-        infected_color: covid_color(infected),
+        infected_color: infected.to_covid_color,
         updated_at: updated_at,
         last_updated: updated_at.to_difference_str,
       }
@@ -419,7 +420,7 @@ class Covid
         name: properties['NAME'],
         type: properties['TYPE'],
         source: properties['source'],
-        pin: map_pin('/hospital-zone.svg'),
+        pin: '/hospital-zone.svg'.to_map_pin,
         latitude: properties['Lat'].to_f,
         longitude: properties['Long'].to_f,
       }
@@ -428,65 +429,76 @@ class Covid
     data
   end
 
-  def self.map_pin(image)
-    {
-      url: image,
-      scaledSize: {
-        width: 30,
-        height: 30
-      }
-    }
-  end
-  
-  def self.covid_color(count = 0)
-    color = "#000"
-
-    case count
-    when 1..100
-      color = "#FECB2A"
-    when 101..500
-      color = "#FC9613"
-    when 501..1000
-      color = "#FE702A"
-    when 1001..2500
-      color = "#FC4B13"
-    when 2501..5000
-      color = "#FC3313"
-    when 5001..7500
-      color = "#FE120A"
-    when 7501..12500
-      color = "#FE0A37"
-    when 12501..17500
-      color = "#772AFE"
-    when 17501..10000000
-      color = "#9412F5"
-    when 0
-      color = "#32DA4B"
-    end
-  end
-
   def self.api_ddc
-    RubyCheerio.new((RestClient.get "https://ddc.moph.go.th/viralpneumonia/eng/").to_str)
+    RubyCheerio.new((RestClient.get ENV['covid_thai_ddc_host']).to_str)
   end
 
-  def self.ddc_thai
+  def self.ddc_retry
     jQuery = api_ddc
+    # Date
+    date_time_str = jQuery.find('td.popup_hh').map { |td| td.text }.uniq.join(' ')
+    updated_at = DateTime.strptime("#{date_time_str} +07:00", '%d %B %Y At %H:%M %Z').localtime
+
+    return jQuery, date_time_str, updated_at
+  end
+
+  def self.thai_ddc
+    begin
+      jQuery, date_time_str, updated_at = ddc_retry
+    rescue Exception
+      jQuery, date_time_str, updated_at = ddc_retry
+    end
 
     # Infected
-    infected_keys = jQuery.find('td.popup_subhead').map { |td| td.text.to_key }
-    infected_values = jQuery.find('td.popup_num').map { |td| td.text.tap { |s| s.delete!(',') }.to_i }
+    infected_keys = jQuery.find('td.popup_subhead').take(10).map.with_index do |td, index|
+      case index
+      when 0..4
+        "Confirmed case #{td.text}".to_key
+      when 5
+        "PUI #{td.text}".to_key
+      when 7..9
+        "Case Management #{td.text}".to_key
+      else
+        td.text.to_key
+      end
+    end
+
+    infected_values = jQuery.find('td.popup_num').take(infected_keys.count).map { |td| td.text.tap { |s| s.delete!(',') }.to_i }
     infecteds = Hash[infected_keys.zip(infected_values)]
 
     # Traveler
     traveler_keys = jQuery.find('td.popup_subhead2').map { |td| td.text.to_key }
-    traveler_values = jQuery.find('td.popup_num2').map { |td| td.text.tap { |s| s.delete!(',') }.to_i }
+    traveler_values = jQuery.find('td.popup_num2').take(traveler_keys.count).map { |td| td.text.tap { |s| s.delete!(',') }.to_i }
     travelers = Hash[traveler_keys.zip(traveler_values)]
 
-    ap 'infecteds'
-    ap infecteds
-    ap 'travelers'
-    ap travelers
-    ap 'medicals'
-    ap medicals
+    confirmed = infecteds['confirmed_case_total'].to_i || 0
+    deaths = infecteds['confirmed_case_death'].to_i || 0
+    recovered = infecteds['confirmed_case_discharged'].to_i || 0
+    severed = infecteds['confirmed_case_severe'].to_i || 0
+
+    {
+      name: 'Corona Virus Disease (COVID-19)',
+      country: 'Thailand',
+      confirmed: confirmed,
+      healings: (confirmed - recovered) - deaths || 0,
+      deaths: deaths,
+      recovered: recovered,
+      severed: severed,
+      add_today_count: infecteds['confirmed_case_new_case'].to_i || 0,
+      watch_out_collectors: infecteds['pui_total'].to_i || 0,
+      new_watch_out: infecteds['new_pui'].to_i || 0,
+      case_management_admit: infecteds['case_management_admit'].to_i || 0,
+      case_management_discharged: infecteds['case_management_discharged'].to_i || 0,
+      case_management_observation: infecteds['case_management_observation'].to_i || 0,
+      airport: travelers['airport'].to_i || 0,
+      sea_port: travelers['sea_port'].to_i || 0,
+      ground_port: travelers['ground_port'].to_i || 0,
+      at_chaeng_wattana: travelers['at_chaeng_wattana'].to_i || 0,
+      date_time_str: date_time_str,
+      updated_at: updated_at,
+      last_updated: updated_at.to_difference_str,
+      source: 'กรมควบคุมโรค Department of Disease Control',
+      data_source: 'https://ddc.moph.go.th/viralpneumonia',
+    }
   end
 end

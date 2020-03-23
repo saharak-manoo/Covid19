@@ -254,7 +254,7 @@ export class HomeComponent {
 	}
 
 	dailyTotalLocal() {
-		this.appService.all('api/covids/constants').subscribe(
+		this.appService.all('api/covids/thai_ddc').subscribe(
 			resp => {
 				let response: any = resp;
 				this.localAddTodayCount = response.data.add_today_count;

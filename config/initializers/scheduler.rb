@@ -9,8 +9,8 @@ scheduler.every '1m' do
 end
 
 def thai
-  data = Covid.constants
-  meesage = "\n\nจำนวนผู้ติดเชื้อ Covid19 \n- ประเทศไทย \n- เพิ่มขึ้น #{to_delimited(data[:add_today_count])} คน \n\n- ติดเชื้อ #{to_delimited(data[:confirmed])} คน \n- กำลังรักษา #{to_delimited(data[:healings])} คน \n- หายแล้ว #{to_delimited(data[:recovered])} คน \n- เสียชีวิต #{to_delimited(data[:deaths])} คน \n\n* #{data[:last_updated]}"
+  data = Covid.thai_ddc
+  meesage = "\n\nจำนวนผู้ติดเชื้อ Covid19 \n- ประเทศไทย \n- เพิ่มขึ้น #{data[:add_today_count].to_delimited} คน \n\n- ติดเชื้อ #{data[:confirmed].to_delimited} คน \n- กำลังรักษา #{data[:healings].to_delimited} คน \n- อาการหนัก #{data[:severed].to_delimited} คน \n- หายแล้ว #{data[:recovered].to_delimited} คน \n- เสียชีวิต #{data[:deaths].to_delimited} คน \n- เฝ้าระวัง #{data[:watch_out_collectors].to_delimited} คน \n- อยู่ที่ รพ. #{data[:case_management_admit].to_delimited} คน \n- สังเกตอาการที่ รพ. #{data[:case_management_observation].to_delimited} คน \n\n* #{data[:last_updated]}"
 
   ap "=> scheduler thai"
 
