@@ -23,7 +23,7 @@ end
 
 def world
   data = Covid.world
-  meesage = "\n\nจำนวนผู้ติดเชื้อ Covid19 \n- ทั่วโลก \n- เพิ่มขึ้น #{to_delimited(data[:add_today_count])} คน \n\n- ติดเชื้อ #{to_delimited(data[:confirmed])} คน \n- กำลังรักษา #{to_delimited(data[:healings])} คน \n- หายแล้ว #{to_delimited(data[:recovered])} คน \n- เสียชีวิต #{to_delimited(data[:deaths])} คน \n\n* #{data[:last_updated]}"
+  meesage = "\n\nจำนวนผู้ติดเชื้อ Covid19 \n- ทั่วโลก \n- เพิ่มขึ้น #{data[:add_today_count].to_delimited} คน \n\n- ติดเชื้อ #{data[:confirmed].to_delimited} คน \n- กำลังรักษา #{data[:healings].to_delimited} คน \n- หายแล้ว #{data[:recovered].to_delimited} คน \n- เสียชีวิต #{data[:deaths].to_delimited} คน \n\n* #{data[:last_updated]}"
 
   ap "=> scheduler world"
 
@@ -32,8 +32,4 @@ def world
     ap "=> scheduler world send"
     $world_last_updated = data[:confirmed]
   end
-end
-
-def to_delimited(number)
-  ActiveSupport::NumberHelper.number_to_delimited(number)
 end

@@ -123,9 +123,10 @@ export class HomeComponent {
 
 	patientInformationDisplayedColumns: string[] = [
 		'detected_at',
-		'origin',
+		'statement_date_str',
 		'treat_at',
 		'status',
+		'recovered_date_str',
 		'job',
 		'gender',
 		'age',
