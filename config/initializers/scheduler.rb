@@ -1,11 +1,21 @@
 scheduler = Rufus::Scheduler::singleton
 
+$deploy_noti = false
 $thai_last_updated = 0
 $world_last_updated = 0
 
 scheduler.every '1m' do
-  # thai
-  # world
+  deploy_noti
+  thai
+  world
+end
+
+def deploy_noti
+  unless $deploy_noti
+    LineNoti.send('มีการปรับปรุงเว็ป หรือ Line Bot')
+    ap "=> deploy notification send"
+    $deploy_noti = true
+  end
 end
 
 def thai
