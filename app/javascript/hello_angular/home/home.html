@@ -132,15 +132,14 @@
                       <h5>{{ case.place }}</h5>
                       <div class="row">
                         <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                          <h6>จังหวัด : {{ case.province }}</h6>
+                          <p class="font-size-16">สถานะ :
+                            <strong class="font-size-16" [style.color]="case.status_color">{{ case.status }}</strong>
+                          </p>
                         </div>
                         <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                           <p class="text-right">{{ case.date_diff_str }}</p>
                         </div>
                       </div>
-                      <p class="font-size-16">สถานะ :
-                        <strong class="font-size-16" [style.color]="case.status_color">{{ case.status }}</strong>
-                      </p>
                       <h6>ข้อมูล : {{ case.note }}</h6>
                     </agm-info-window>
                   </agm-marker>
@@ -261,9 +260,9 @@
                   <div class="table-container">
                     <table mat-table #infectedByProvince [dataSource]="infectedByProvinceDataSource" matSort matSortActive="infected" matSortDirection="desc">
 
-                      <ng-container matColumnDef="province">
+                      <ng-container matColumnDef="name">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> จังหวัด </th>
-                        <td mat-cell *matCellDef="let element"> {{element.province}} </td>
+                        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
                       </ng-container>
 
                       <ng-container matColumnDef="infected">
@@ -379,9 +378,9 @@
                         </td>
                       </ng-container>
 
-                      <ng-container matColumnDef="country">
+                      <ng-container matColumnDef="country_th">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> ประเทศ </th>
-                        <td mat-cell *matCellDef="let element"> {{element.country}} </td>
+                        <td mat-cell *matCellDef="let element"> {{element.country_th}} </td>
                       </ng-container>
 
                       <ng-container matColumnDef="travel">

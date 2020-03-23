@@ -63,4 +63,8 @@ class Api::CovidsController < Api::ApplicationController
   def thai_ddc
     render json: { data: Covid.thai_ddc }, status: :ok
   end
+
+  def thai_separate_province
+    render json: { data: Covid.thai_separate_province }, status: :ok
+  end
 end
