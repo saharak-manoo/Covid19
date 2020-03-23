@@ -58,5 +58,9 @@ class Api::CovidsController < Api::ApplicationController
 
   def hospital_and_labs
     render json: { data: Covid.hospital_and_labs }, status: :ok
-  end  
+  end
+
+  def thai_ddc
+    render json: { data: Covid.thai_ddc }, status: :ok
+  end
 end

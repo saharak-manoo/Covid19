@@ -103,3 +103,6 @@ gem 'line_notify', '~> 1.0'
 
 # Scheduler
 gem 'rufus-scheduler'
+
+# Cheerio
+gem 'ruby-cheerio'

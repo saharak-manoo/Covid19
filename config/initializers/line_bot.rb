@@ -1,6 +1,6 @@
 class LineBot
-  THAI = ['ไทย', 'ไท', 'ประเทศไทย', 'ทั่วไทย']
-  WORLD = ['โลก', 'ทั่วโลก', 'บนโลก', 'โลก', 'ทุกทวีป', 'ทุกประเทศ']
+  THAI = ['ไทย', 'ไท', 'ประเทศไทย', 'ทั่วไทย', 'ทั่วไท', 'สยาม', 'เมืิองยิ้ม', 'เมืองไทย', 'ทั้งไทย', 'ทุกจังหวัด']
+  WORLD = ['โลก', 'ทั่วโลก', 'บนโลก', 'โลก', 'ทุกทวีป', 'ทุกประเทศ', 'ทั้งโลก', 'ทั้งหมด']
 
   def self.client
     lient ||= Line::Bot::Client.new { |config|
@@ -27,20 +27,26 @@ class LineBot
 
     if THAI.include?(location)
       color = "#0367D3"
-      data = Covid.constants
-      header[:sub_title_str] = "#{data[:add_today_count]} คน"
+      data = Covid.thai_ddc
+      header[:sub_title_str] = "#{data[:add_today_count].to_delimited} คน"
+      contents = data_to_str(data, isConfirmed, isHealings, isRecovered, isDeaths)
+      contents << "อาการหนักทั้งหมด #{data[:severed].to_delimited} คน"
+      contents << "เฝ้าระวังทั้งหมด #{data[:watch_out_collectors].to_delimited} คน"
+      contents << "อยู่ที่ รพ. ทั้งหมด #{data[:case_management_admit].to_delimited} คน"
+      contents << "สังเกตอาการที่ รพ. ทั้งหมด #{data[:case_management_observation].to_delimited} คน"
     elsif WORLD.include?(location)
-
       data = Covid.world
-      header[:sub_title_str] = "#{data[:add_today_count]} คน"
+      header[:sub_title_str] = "#{(data[:add_today_count] || 0).to_delimited} คน"
+      contents = data_to_str(data, isConfirmed, isHealings, isRecovered, isDeaths)
     else
       data = Covid.thai_summary
       value = data.detect { |d| d[:province].include?(location) || d[:province_eng].include?(location) }
 
       if value.present?
-        contents << "- ติดเชื้อทั้งหมด #{value[:infected]} คน"
+        header[:title] = value[:province] || location
         header[:sub_title] = "Province"
-        header[:sub_title_str] = "#{value[:province_eng]}"
+        header[:sub_title_str] = value[:province_eng]
+        contents << "ติดเชื้อทั้งหมด #{value[:infected]} คน"
 
         return flex(flex_msg(header, contents, "* ข้อมูลนี้ #{value[:last_updated]}", value[:infected_color]), header[:title])
       else
@@ -49,29 +55,7 @@ class LineBot
     end
 
     footer = "* ข้อมูลนี้ #{data[:last_updated]}"
-
-    if isConfirmed
-      contents << "- ติดเชื้อทั้งหมด #{to_delimited(data[:confirmed])} คน"
-    elsif isHealings
-      contents <<  "- กำลังรักษาทั้งหมด #{to_delimited(data[:healings])} คน"
-    elsif isRecovered
-      contents <<  "- รักษาหายแล้วทั้งหมด #{to_delimited(data[:recovered])} คน"
-    elsif isDeaths
-      contents <<  "- เสียชีวิตแล้วทั้งหมด #{to_delimited(data[:deaths])} คน"
-    elsif !isConfirmed && !isHealings && !isRecovered && !isDeaths
-      contents = [
-        "- ติดเชื้อทั้งหมด #{to_delimited(data[:confirmed])} คน",
-        "- กำลังรักษาทั้งหมด #{to_delimited(data[:healings])} คน",
-        "- รักษาหายแล้วทั้งหมด #{to_delimited(data[:recovered])} คน",
-        "- เสียชีวิตแล้วทั้งหมด #{to_delimited(data[:deaths])} คน"
-    ]
-    end
-      
     flex(flex_msg(header, contents, footer, color), header[:title])
-  end
-
-  def self.to_delimited(number)
-    ActiveSupport::NumberHelper.number_to_delimited(number)
   end
 
   def self.data_hospital(hospitals)
@@ -213,7 +197,7 @@ class LineBot
           text: text,
           gravity: "center",
           flex: 4,
-          size: "md",
+          size: "sm",
           weight: "bold",
           wrap: true
         }],
@@ -291,4 +275,25 @@ class LineBot
       }
     }
   end
+
+  def data_to_str(data, isConfirmed, isHealings, isRecovered, isDeaths)
+    contents = []
+
+    if isConfirmed
+      contents << "ติดเชื้อทั้งหมด #{data[:confirmed].to_delimited} คน"
+    elsif isHealings
+      contents <<  "กำลังรักษาทั้งหมด #{data[:healings].to_delimited} คน"
+    elsif isRecovered
+      contents <<  "รักษาหายแล้วทั้งหมด #{data[:recovered].to_delimited} คน"
+    elsif isDeaths
+      contents <<  "เสียชีวิตแล้วทั้งหมด #{data[:deaths].to_delimited} คน"
+    elsif !isConfirmed && !isHealings && !isRecovered && !isDeaths
+      contents = [
+        "ติดเชื้อทั้งหมด #{data[:confirmed].to_delimited} คน",
+        "กำลังรักษาทั้งหมด #{data[:healings].to_delimited} คน",
+        "รักษาหายแล้วทั้งหมด #{data[:recovered].to_delimited} คน",
+        "เสียชีวิตแล้วทั้งหมด #{data[:deaths].to_delimited} คน"
+    ]
+    end
+  end  
 end

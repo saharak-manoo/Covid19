@@ -46,7 +46,11 @@ export class HomeComponent {
 		confirmed: 0,
 		healings: 0,
 		recovered: 0,
-		deaths: 0
+		deaths: 0,
+		watch_out_collectors: 0,
+		severed: 0,
+		case_management_admit: 0,
+		case_management_observation: 0
 	};
 	total: any = {
 		confirmed: 0,
@@ -123,9 +127,10 @@ export class HomeComponent {
 
 	patientInformationDisplayedColumns: string[] = [
 		'detected_at',
-		'origin',
+		'statement_date_str',
 		'treat_at',
 		'status',
+		'recovered_date_str',
 		'job',
 		'gender',
 		'age',
@@ -136,9 +141,12 @@ export class HomeComponent {
 	@ViewChild('patientInformationPaginator', { static: true })
 	patientInformationPaginator: MatPaginator;
 	patientInformationCount: number = 0;
+
 	localAddTodayCount: number = 0;
+	worldAddTodayCount: number = 0;
 	cases: any = [];
 	safeZones: any = [];
+
 	infectedByProvinceDisplayedColumns: string[] = ['province', 'infected'];
 	infectedByProvinceDataSource: any = [];
 	@ViewChild('infectedByProvince', { read: MatSort, static: true }) infectedByProvinceSort: MatSort;
@@ -250,7 +258,7 @@ export class HomeComponent {
 	}
 
 	dailyTotalLocal() {
-		this.appService.all('api/covids/constants').subscribe(
+		this.appService.all('api/covids/thai_ddc').subscribe(
 			resp => {
 				let response: any = resp;
 				this.localAddTodayCount = response.data.add_today_count;
@@ -309,6 +317,7 @@ export class HomeComponent {
 		this.appService.all('api/covids/world').subscribe(
 			resp => {
 				let response: any = resp;
+				this.worldAddTodayCount = response.data.add_today_count;
 				this.allCountryDataSource = new MatTableDataSource<any>(response.data.statistics);
 				this.allCountryDataSource.paginator = this.allCountryPaginator;
 				this.allCountryDataSource.sort = this.allCountrySort;
