@@ -4,8 +4,8 @@ $thai_last_updated = 0
 $world_last_updated = 0
 
 scheduler.every '1m' do
-  thai
-  world
+  # thai
+  # world
 end
 
 def thai

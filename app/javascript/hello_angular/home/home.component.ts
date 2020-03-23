@@ -114,7 +114,7 @@ export class HomeComponent {
 	hospitals: any = [];
 	allCountryDisplayedColumns: string[] = [
 		'country_flag',
-		'country',
+		'country_th',
 		'travel',
 		'confirmed',
 		'healings',
