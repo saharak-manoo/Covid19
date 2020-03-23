@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "covid19-271100",
+  "private_key_id": "239405853de26ce778479fdeb131a5d2505fe183",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC6yGmXdn7z+d4C\nTrP2yFwzFrzqKLqfmx/GRUiMMGv0kMgp52iXFXY2xRUpROHUtsZJ9RXe3HlnDkY8\nY7Cq75wbAUG0sDn7Ugc8/Y+GB4Eub9PIELDMNVTquHzCDwFcfpWH1aIRXL+r/thQ\nOOGz11F4BKsjzPd+M3WBDgyVNwNiijUL2M/HaKqkyIFyWUBgEPMIrcKgkRMWyJZn\nuFQz0qJx//rRWmLQcYIHM2D5NBJuHOY59lZm9Kpq8jbtwgRzVOcAaR9zmdXKQNtF\n0oWFtjUFGaN92WkgPCHIQcWVeceoclOnFIbTiIU6XYuFjA4NolGJ2lD3nZiqbBGj\nVlyK81CjAgMBAAECggEADTHUvppSIJERYcrGg+8UM7ySrtzVj077023hGcEDW+GR\nk3FhZ0yXwXdyQSxKvlQFEPG0YpmZ3HrtKkHzKe7+A5qkn0Jm2+Kn6mMj/30TOpx9\nBPu2AHOVdOKAe/nVh/+wXBM3c+uJU55Y7AJuYicIIu/7NG7gXllrQ1/+Df3bZbbj\nIjj+VeTxxcKyhVDxoRMJ0DeJKID6t4QN8ENvwNi+FZUruYp93hx0BMFHB5MXBtzo\npIBhTWvE4WthcF0ckDJWflxASvli68Z/ZngQzyw4D94JXs5kQLwvoHHxrDfBevSH\nr+V1n3cS6oqJzeE1nE4zngn2ny/ZaRGKnSrg6K9JQQKBgQDs+AvKA7LSAZGdYBSK\n4zGnyVfRCz+oRMkVdF4qN2l9MpJqM6YHYSNp7VqCPpdFITubffAO6UbwEdol68rH\nyOf+IAcMS7X2XxK4vQ7LaZe16fZk9xRcu6iCHSWd4Yz3z4S6D25f3vqlUYwVgqGt\nSUC0Csm9a+hJd4ALxQA5AQxvQQKBgQDJyJFa5xB/nZ+Q8PNeKayhIKKXMzUsLqan\nWg4qtn5JwrW8k4y6GXribsfvC6NUQ6c1EUIDeOVBhCSncTrlPeOchpK0+n6CZ/Qv\n3sp9QmbrzAwdDbJkBJckg2thLosoCVnVbjVjF/vndXg63XvDXd6HYmvGJRzDM8kh\nCe8IE6wq4wKBgCWJIOzt6wxi3TrtdjONy1bFiNh/DKVNyABS/3t2bYo8UX7rEXiH\nxYFI7JZG7dUwb22w5C6oeukaGtD46ZT92OmjDxq+f2M4KhIDOG22GybgmXviu2H5\nA7cggM3iZV73ixGh0hzziAZZxXO+zndRbCNYth4AErpYaHr0yJU++kZBAoGAC80w\nOynSfDRC1d5RzYsQbqgS+lbjYD8mPhl1RKhBwJyjtnDGxUeiOUYTaXa7ybzfNapZ\nuwxCFE/fOO/VavzwqAHy6KTR61ybGoWkQCk3Dcl0V+qqKVFfaaJKEHgBaYkKeQIm\nGzKW6BWlv4OernF6B18JQKCBCyWnOMh083r7EdMCgYAPY5RHm7N09v1O1qqzG05/\nPAs5+faWY3OOarW6yO+F90V8kBffXhUITdoKsSkPW8UTwL9sB2+rmWtqIdb54bgQ\neLjp1PsM7004wif+sPR9nV65kTP9rU6UQBXVVDjfjKNYjBR2hlt/y90f/rJSevmq\n06whPlU4HTv/Bld/YGe+gg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "saharak-ruby-on-rails@covid19-271100.iam.gserviceaccount.com",
+  "client_id": "113157526818243572382",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/saharak-ruby-on-rails%40covid19-271100.iam.gserviceaccount.com"
+}

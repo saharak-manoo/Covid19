@@ -501,4 +501,16 @@ class Covid
       data_source: 'https://ddc.moph.go.th/viralpneumonia',
     }
   end
+
+  def self.thai_separate_province
+    response = GoogleApi.read
+    updated_at = response[:updated_at]
+
+    {
+      name: 'จำนวนผู้ติดเชื้อแบบแยกจังหวัด',
+      provinces: response[:provinces],
+      updated_at: updated_at,
+      last_updated: updated_at.to_difference_str,
+    }
+  end
 end
