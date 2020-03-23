@@ -178,8 +178,8 @@ class LineBot
   def self.flex_msg(header, datas, footer, color = "#0367D3")
     colors = ['#fcd35e', '#bffd59', '#5efcad', '#EF454D', '#ff4716', '#713ff9', '#29adfe', '#ffd816']
     contents = []
-    
-    datas.each_witn_index do |text, index|
+
+    datas.each_with_index do |text, index|
       contents << {
         type: "box",
         layout: "horizontal",
