@@ -571,7 +571,6 @@ class Covid
   end
 
   def self.global_summary
-    updated_at = DateTime.now.localtime
     confirmed = api_ddc_global(ENV['covid_thai_ddc_global_confirmed_host'])
     confirmed_add_today = api_ddc_global(ENV['covid_thai_ddc_global_confirmed_add_today_host'])
     recovered = api_ddc_global(ENV['covid_thai_ddc_global_recovered_host'])
@@ -579,27 +578,20 @@ class Covid
     deaths = api_ddc_global(ENV['covid_thai_ddc_global_deaths_host'])
     deaths_add_today = api_ddc_global(ENV['covid_thai_ddc_global_deaths_add_today_host'])
 
-    { 
-      confirmed: confirmed,
-      confirmed_add_today: confirmed_add_today,
-      healings: (confirmed - recovered) - deaths || 0,
-      recovered: recovered,
-      critical: critical,
-      deaths: deaths,
-      deaths_add_today: deaths_add_today,
-      updated_at: updated_at,
-      last_updated: updated_at.to_difference_str,
-    }
+    global_summary = if GlobalSummary.count.zero? 
+                        GlobalSummary.new
+                     else
+                        GlobalSummary.lasted
+                     end
+
+    global_summary.confirmed = confirmed
+    global_summary.confirmed_add_today = confirmed_add_today
+    global_summary.healings = (confirmed - recovered) - deaths || 0
+    global_summary.recovered = recovered
+    global_summary.critical = critical
+    global_summary.deaths = deaths
+    global_summary.deaths_add_today = deaths_add_today
+
+    global_summary.save
   end
-
-  def self.test
-    url_list = [ENV['covid_thai_ddc_global_confirmed_host'], ENV['covid_thai_ddc_global_confirmed_add_today_host'], ENV['covid_thai_ddc_global_recovered_host'], ENV['covid_thai_ddc_global_critical_host'], ENV['covid_thai_ddc_global_deaths_host'], ENV['covid_thai_ddc_global_deaths_add_today_host']]
-    responses = []
-
-    url_list.each do |url|
-      responses << api_ddc_global(url)
-    end
-
-    responses
-  end  
 end

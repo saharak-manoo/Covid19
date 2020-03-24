@@ -4,11 +4,11 @@ $deploy_noti = false
 $thai_last_updated = 0
 $world_last_updated = 0
 
-scheduler.every '1m' do
-  deploy_noti
-  thai
-  world
-end
+# scheduler.every '1m' do
+#   deploy_noti
+#   thai
+#   world
+# end
 
 def deploy_noti
   unless $deploy_noti

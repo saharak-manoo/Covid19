@@ -96,8 +96,4 @@ class Api::CovidsController < Api::ApplicationController
   def global_summary
     render json: { data: Covid.global_summary }, status: :ok
   end
-
-  def test
-    render json: { data: Covid.test }, status: :ok
-  end  
 end

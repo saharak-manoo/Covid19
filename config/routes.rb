@@ -31,7 +31,6 @@ Rails.application.routes.draw do
         get 'global_deaths'
         get 'global_deaths_add_today'
         get 'global_summary'
-        get 'test'
       end
     end
   end
