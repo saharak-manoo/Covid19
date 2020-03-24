@@ -15,7 +15,7 @@ class ThailandSummary < ApplicationRecord
   def as_json(options = {})
     if options[:api]
       json = super().except('id')
-      json['last_updated'] = last_updated
+      json[:last_updated] = last_updated
 
       json
     else
