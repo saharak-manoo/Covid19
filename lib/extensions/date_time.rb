@@ -12,7 +12,7 @@ class DateTime
   end
 
    def to_difference_str
-    time_difference = TimeDifference.between(self, DateTime.now).in_general
+    time_difference = TimeDifference.between(self, DateTime.now.localtime).in_general
     last_updated = "ปรับปรุงล่าสุดเมื่อ "
     last_updated += "#{time_difference[:hours]} ชั่วโมง " unless time_difference[:hours].zero?
     last_updated += "#{time_difference[:minutes]} นาที" unless time_difference[:minutes].zero?

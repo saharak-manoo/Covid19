@@ -27,31 +27,31 @@ class LineBot
 
     if THAI.include?(location)
       color = "#0367D3"
-      data = Covid.thai_ddc
-      header[:sub_title_str] = "#{data[:add_today_count].to_delimited} คน"
+      data = ThailandSummary.find_by(date: Date.today).as_json({api: true}).with_indifferent_access
+      header[:sub_title_str] = "#{data[:confirmed_add_today].to_delimited} คน"
       contents = data_to_str(data, isConfirmed, isHealings, isRecovered, isDeaths)
-      contents << "อาการหนักทั้งหมด #{data[:severed].to_delimited} คน"
+      contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน"
       contents << "เฝ้าระวังทั้งหมด #{data[:watch_out_collectors].to_delimited} คน"
       contents << "อยู่ที่ รพ. ทั้งหมด #{data[:case_management_admit].to_delimited} คน"
       contents << "สังเกตอาการที่ รพ. ทั้งหมด #{data[:case_management_observation].to_delimited} คน"
     elsif WORLD.include?(location)
-      data = Covid.world
-      header[:sub_title_str] = "#{(data[:add_today_count] || 0).to_delimited} คน"
+      data = GlobalSummary.find_by(date: Date.today).as_json({api: true}).with_indifferent_access
+      header[:sub_title_str] = "#{data[:confirmed_add_today].to_delimited} คน"
       contents = data_to_str(data, isConfirmed, isHealings, isRecovered, isDeaths)
+      contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน"
+      contents << "เสียชีวิตเพิ่มขึ้น #{data[:deaths_add_today].to_delimited} คน"
     else
-      thai_separate_province = Covid.thai_separate_province
       world_data = Covid.world
-
-      province = thai_separate_province[:provinces].detect { |d| d[:name].include?(location) || d[:name_eng].include?(location) }
+      thai_infecteds = Covid.thai_summary.detect { |d| d[:province].include?(location) || d[:province_eng].include?(location) }
       world = world_data[:statistics].detect { |d| d[:country].include?(location) || d[:country_th].include?(location) }
 
-      if province.present?
-        header[:title] = province[:name] || location
+      if thai_infecteds.present?
+        header[:title] = thai_infecteds[:province] || location
         header[:sub_title] = "Province"
-        header[:sub_title_str] = province[:name_eng]
-        contents << "ติดเชื้อทั้งหมด #{province[:infected]} คน"
+        header[:sub_title_str] = thai_infecteds[:province_eng]
+        contents << "ติดเชื้อทั้งหมด #{thai_infecteds[:infected]} คน"
 
-        return flex(flex_msg(header, contents, "* ข้อมูลนี้ #{thai_separate_province[:last_updated]}", province[:infected_color]), header[:title])
+        return flex(flex_msg(header, contents, "* ข้อมูลนี้ #{thai_infecteds[:last_updated]}", thai_infecteds[:infected_color]), header[:title])
       elsif world.present?
         header[:title] = world[:country_th] || location
         header[:sub_title] = "Country"
@@ -287,7 +287,8 @@ class LineBot
             text: footer,
             size: "md",
             weight: "bold",
-            style: "normal"
+            style: "normal",
+            wrap: true
           }
         ]
       }

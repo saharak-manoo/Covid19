@@ -33,30 +33,41 @@ export class HomeComponent {
 			position: 'bottom'
 		}
 	};
-	pieChartDataLocal: number[] = [0, 0, 0];
-	pieChartLabels: Label[] = [['ผู้ติดเชื้อ'], ['กำลังอยู่ในการรักษา'], ['รักษาหาย'], 'เสียชีวิต'];
-	pieChartData: number[] = [0, 0, 0];
+	pieChartDataLocal: number[] = [0, 0, 0, 0, 0];
+	pieChartLabels: Label[] = [
+		['ผู้ติดเชื้อ'],
+		['กำลังอยู่ในการรักษา'],
+		['อาการหนัก'],
+		['รักษาหาย'],
+		['เสียชีวิต']
+	];
+	pieChartData: number[] = [0, 0, 0, 0, 0];
 	pieChartType: ChartType = 'pie';
 	pieChartColors = [
 		{
-			backgroundColor: ['#FCD35E', '#BFFD59', '#5EFCAD', '#FC5E71']
+			backgroundColor: ['#FCD35E', '#BFFD59', '#713ff9', '#5EFCAD', '#FC5E71']
 		}
 	];
 	totalLocal: any = {
 		confirmed: 0,
+		confirmed_add_today: 0,
 		healings: 0,
 		recovered: 0,
 		deaths: 0,
+		deaths_add_today: 0,
 		watch_out_collectors: 0,
-		severed: 0,
+		critical: 0,
 		case_management_admit: 0,
 		case_management_observation: 0
 	};
 	total: any = {
 		confirmed: 0,
+		confirmed_add_today: 0,
 		healings: 0,
 		recovered: 0,
-		deaths: 0
+		deaths: 0,
+		deaths_add_today: 0,
+		critical: 0
 	};
 	barChartOptions: ChartOptions = {
 		responsive: true,
@@ -80,32 +91,38 @@ export class HomeComponent {
 	barChartDataLocal: any = [
 		{ data: [0, 0, 0, 0, 0, 0, 0], label: 'ผู้ติดเชื้อ' },
 		{ data: [0, 0, 0, 0, 0, 0, 0], label: 'กำลังอยู่ในการรักษา' },
+		{ data: [0, 0, 0, 0, 0, 0, 0], label: 'อาการหนัก' },
 		{ data: [0, 0, 0, 0, 0, 0, 0], label: 'รักษาหายแล้ว' },
 		{ data: [0, 0, 0, 0, 0, 0, 0], label: 'เสียชีวิต' }
 	];
 	barChartLabels: Label[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-	barChartType: ChartType = 'bar';
+	barChartType: ChartType = 'line';
 	barChartData: any = [
 		{ data: [0, 0, 0, 0, 0, 0, 0], label: 'ผู้ติดเชื้อ' },
 		{ data: [0, 0, 0, 0, 0, 0, 0], label: 'กำลังอยู่ในการรักษา' },
+		{ data: [0, 0, 0, 0, 0, 0, 0], label: 'อาการหนัก' },
 		{ data: [0, 0, 0, 0, 0, 0, 0], label: 'รักษาหายแล้ว' },
 		{ data: [0, 0, 0, 0, 0, 0, 0], label: 'เสียชีวิต' }
 	];
 	barChartColors = [
 		{
-			backgroundColor: '#FCD35E',
+			backgroundColor: 'rgb(252, 211, 94, 0.5)',
 			borderColor: '#FCD35E'
 		},
 		{
-			backgroundColor: '#BFFD59',
+			backgroundColor: 'rgb(191, 253, 89, 0.5)',
 			borderColor: '#BFFD59'
 		},
 		{
-			backgroundColor: '#5EFCAD',
+			backgroundColor: 'rgb(113, 63, 249, 0.5)',
+			borderColor: '#713ff9'
+		},
+		{
+			backgroundColor: 'rgb(94, 252, 173, 0.5)',
 			borderColor: '#5EFCAD'
 		},
 		{
-			backgroundColor: '#FC5E71',
+			backgroundColor: 'rgb(252, 94, 113, 0.5)',
 			borderColor: '#FC5E71'
 		}
 	];
@@ -142,12 +159,10 @@ export class HomeComponent {
 	patientInformationPaginator: MatPaginator;
 	patientInformationCount: number = 0;
 
-	localAddTodayCount: number = 0;
-	worldAddTodayCount: number = 0;
 	cases: any = [];
 	safeZones: any = [];
 
-	infectedByProvinceDisplayedColumns: string[] = ['name', 'infected'];
+	infectedByProvinceDisplayedColumns: string[] = ['province', 'infected'];
 	infectedByProvinceDataSource: any = [];
 	@ViewChild('infectedByProvince', { read: MatSort, static: true }) infectedByProvinceSort: MatSort;
 	@ViewChild('infectedByProvincePaginator', { static: true })
@@ -173,6 +188,10 @@ export class HomeComponent {
 						borderColor: '#BFFD59'
 					},
 					{
+						backgroundColor: 'rgb(113, 63, 249, 0.5)',
+						borderColor: '#713ff9'
+					},
+					{
 						backgroundColor: 'rgb(94, 252, 173, 0.5)',
 						borderColor: '#5EFCAD'
 					},
@@ -193,6 +212,10 @@ export class HomeComponent {
 						borderColor: '#BFFD59'
 					},
 					{
+						backgroundColor: '#713ff9',
+						borderColor: '#713ff9'
+					},
+					{
 						backgroundColor: '#5EFCAD',
 						borderColor: '#5EFCAD'
 					},
@@ -206,12 +229,13 @@ export class HomeComponent {
 	}
 
 	loadData() {
-		this.dailyTotalLocal();
-		this.countryRetroact();
-		this.retroact();
+		this.loadThailandSummary();
+		this.thailandRetroact();
+		this.globalRetroact();
 		this.loadCountryCases();
 		this.loadAllCountry();
 		this.loadInfectedByProvince();
+		this.loadGlobalSummary();
 	}
 
 	getLocation() {
@@ -228,7 +252,7 @@ export class HomeComponent {
 				this.cases = response.data;
 			},
 			e => {
-				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
+				this.app.openSnackBar('มีข้อผิดพลาด ในการโหลดข้อมูล', 'Close', 'red-snackbar');
 			}
 		);
 	}
@@ -240,7 +264,7 @@ export class HomeComponent {
 				this.hospitals = response.data;
 			},
 			e => {
-				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
+				this.app.openSnackBar('มีข้อผิดพลาด ในการโหลดข้อมูล', 'Close', 'red-snackbar');
 			}
 		);
 	}
@@ -252,63 +276,85 @@ export class HomeComponent {
 				this.safeZones = response.data;
 			},
 			e => {
-				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
+				this.app.openSnackBar('มีข้อผิดพลาด ในการโหลดข้อมูล', 'Close', 'red-snackbar');
 			}
 		);
 	}
 
-	dailyTotalLocal() {
-		this.appService.all('api/covids/thai_ddc').subscribe(
+	loadThailandSummary() {
+		this.appService.all('api/covids/thailand_summary').subscribe(
 			resp => {
 				let response: any = resp;
-				this.localAddTodayCount = response.data.add_today_count;
 				this.localLastUpdated = response.data.last_updated;
 				this.totalLocal = response.data;
 				this.pieChartDataLocal = [
 					this.totalLocal.confirmed,
 					this.totalLocal.healings,
+					this.totalLocal.critical,
 					this.totalLocal.recovered,
 					this.totalLocal.deaths
 				];
 			},
 			e => {
-				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
+				this.app.openSnackBar('มีข้อผิดพลาด ในการโหลดข้อมูล', 'Close', 'red-snackbar');
 			}
 		);
 	}
 
-	countryRetroact() {
-		this.appService.all('api/covids/country_retroact').subscribe(
+	thailandRetroact() {
+		this.appService.all('api/covids/thailand_retroact').subscribe(
 			resp => {
 				let response: any = resp;
 				this.barChartLabels = Object.keys(response.data);
 				Object.keys(response.data).forEach((key, index) => {
 					this.barChartDataLocal[0].data[index] = response.data[key].confirmed;
 					this.barChartDataLocal[1].data[index] = response.data[key].healings;
-					this.barChartDataLocal[2].data[index] = response.data[key].recovered;
-					this.barChartDataLocal[3].data[index] = response.data[key].deaths;
+					this.barChartDataLocal[2].data[index] = response.data[key].critical;
+					this.barChartDataLocal[3].data[index] = response.data[key].recovered;
+					this.barChartDataLocal[4].data[index] = response.data[key].deaths;
 				});
 			},
 			e => {
-				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
+				this.app.openSnackBar('มีข้อผิดพลาด ในการโหลดข้อมูล', 'Close', 'red-snackbar');
 			}
 		);
 	}
 
-	retroact() {
-		this.appService.all('api/covids/retroact').subscribe(
+	globalRetroact() {
+		this.appService.all('api/covids/global_retroact').subscribe(
 			resp => {
 				let response: any = resp;
 				this.barChartLabels = Object.keys(response.data);
 				Object.keys(response.data).forEach((key, index) => {
 					this.barChartData[0].data[index] = response.data[key].confirmed;
 					this.barChartData[1].data[index] = response.data[key].healings;
-					this.barChartData[2].data[index] = response.data[key].recovered;
-					this.barChartData[3].data[index] = response.data[key].deaths;
+					this.barChartData[2].data[index] = response.data[key].critical;
+					this.barChartData[3].data[index] = response.data[key].recovered;
+					this.barChartData[4].data[index] = response.data[key].deaths;
 				});
 			},
 			e => {
-				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
+				this.app.openSnackBar('มีข้อผิดพลาด ในการโหลดข้อมูล', 'Close', 'red-snackbar');
+			}
+		);
+	}
+
+	loadGlobalSummary() {
+		this.appService.all('api/covids/global_summary').subscribe(
+			resp => {
+				let response: any = resp;
+				this.globleLastUpdated = response.data.last_updated;
+				this.total = response.data;
+				this.pieChartData = [
+					this.total.confirmed,
+					this.total.healings,
+					this.total.critical,
+					this.total.recovered,
+					this.total.deaths
+				];
+			},
+			e => {
+				this.app.openSnackBar('มีข้อผิดพลาด ในการโหลดข้อมูล', 'Close', 'red-snackbar');
 			}
 		);
 	}
@@ -317,21 +363,12 @@ export class HomeComponent {
 		this.appService.all('api/covids/world').subscribe(
 			resp => {
 				let response: any = resp;
-				this.worldAddTodayCount = response.data.add_today_count;
 				this.allCountryDataSource = new MatTableDataSource<any>(response.data.statistics);
 				this.allCountryDataSource.paginator = this.allCountryPaginator;
 				this.allCountryDataSource.sort = this.allCountrySort;
-				this.globleLastUpdated = response.data.last_updated;
-				this.total = response.data;
-				this.pieChartData = [
-					this.total.confirmed,
-					this.total.healings,
-					this.total.recovered,
-					this.total.deaths
-				];
 			},
 			e => {
-				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
+				this.app.openSnackBar('มีข้อผิดพลาด ในการโหลดข้อมูล', 'Close', 'red-snackbar');
 			}
 		);
 	}
@@ -346,7 +383,7 @@ export class HomeComponent {
 				this.patientInformationDataSource.sort = this.patientInformationSort;
 			},
 			e => {
-				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
+				this.app.openSnackBar('มีข้อผิดพลาด ในการโหลดข้อมูล', 'Close', 'red-snackbar');
 			}
 		);
 	}
@@ -370,15 +407,15 @@ export class HomeComponent {
 	}
 
 	loadInfectedByProvince() {
-		this.appService.all('api/covids/thai_separate_province').subscribe(
+		this.appService.all('api/covids/infected_by_province').subscribe(
 			resp => {
 				let response: any = resp;
-				this.infectedByProvinceDataSource = new MatTableDataSource<any>(response.data.provinces);
+				this.infectedByProvinceDataSource = new MatTableDataSource<any>(response.data);
 				this.infectedByProvinceDataSource.paginator = this.infectedByProvincePaginator;
 				this.infectedByProvinceDataSource.sort = this.infectedByProvinceSort;
 			},
 			e => {
-				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
+				this.app.openSnackBar('มีข้อผิดพลาด ในการโหลดข้อมูล', 'Close', 'red-snackbar');
 			}
 		);
 	}
