@@ -260,9 +260,9 @@
                   <div class="table-container">
                     <table mat-table #infectedByProvince [dataSource]="infectedByProvinceDataSource" matSort matSortActive="infected" matSortDirection="desc">
 
-                      <ng-container matColumnDef="name">
+                      <ng-container matColumnDef="province">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> จังหวัด </th>
-                        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                        <td mat-cell *matCellDef="let element"> {{element.province}} </td>
                       </ng-container>
 
                       <ng-container matColumnDef="infected">
