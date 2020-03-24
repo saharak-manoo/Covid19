@@ -86,7 +86,7 @@ mat-card-title {
 }
 
 .map-full {
-	height: 93%;
+	height: 93vh;
 	width: auto;
 }
 
@@ -226,7 +226,7 @@ button:focus {
 
 .app-toolbar {
 	position: sticky;
-	position: -webkit-sticky; /* For macOS/iOS Safari */
-	top: 0; /* Sets the sticky toolbar to be on top */
-	z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
+	position: -webkit-sticky;
+	top: 0;
+	z-index: 1000;
 }
