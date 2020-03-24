@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { environment } from '../environment';
 import { NgModule } from '@angular/core';
 import { enableProdMode } from '@angular/core';
 import { AppComponent } from './app.component';
@@ -123,7 +124,7 @@ const appRoutes: Routes = [
 		LoadingBarHttpClientModule,
 		FlexLayoutModule,
 		AgmCoreModule.forRoot({
-			apiKey: 'AIzaSyByaaldtl6PxcbsTkdwbcsbknjWQenVx9Y'
+			apiKey: environment.googleApiKey
 		})
 	],
 	providers: [{ provide: APP_BASE_HREF, useValue: '/' }],
