@@ -619,7 +619,7 @@ class Covid
 
   def self.thailand_summary
     workpoint = constants
-    ddc = thai_ddcLineNoti.send_to_dev("ไม่สามารถเข้าถึงเว็ป DDC Thailand ได้ \n #{e.message}")
+    ddc = thai_ddc
     data = {}
 
     # use workpoint
