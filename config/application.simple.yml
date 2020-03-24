@@ -12,13 +12,6 @@ covid_thai_ddc_global_recovered_host: https://ddcportal.ddc.moph.go.th/arcgis/re
 covid_thai_ddc_global_critical_host: https://ddcportal.ddc.moph.go.th/arcgis/rest/services/iT_Neillgis/summary_covid19_global_point/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=%5B%7B%22statisticType%22%3A%22sum%22%2C%22onStatisticField%22%3A%22Critical%22%2C%22outStatisticFieldName%22%3A%22value%22%7D%5D
 covid_thai_ddc_global_deaths_host: https://ddcportal.ddc.moph.go.th/arcgis/rest/services/iT_Neillgis/summary_covid19_global_point/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=%5B%7B%22statisticType%22%3A%22sum%22%2C%22onStatisticField%22%3A%22TotalDeaths%22%2C%22outStatisticFieldName%22%3A%22value%22%7D%5D
 covid_thai_ddc_global_deaths_add_today_host: https://ddcportal.ddc.moph.go.th/arcgis/rest/services/iT_Neillgis/summary_covid19_global_point/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=%5B%7B%22statisticType%22%3A%22sum%22%2C%22onStatisticField%22%3A%22NewDeaths%22%2C%22outStatisticFieldName%22%3A%22value%22%7D%5D
-line_notify_token: zEEjy0TBSVM66PDy4gRzPK6leQHxiyFFGESSwd9uiWV
-line_channel_id: '1653946879'
-line_channel_secret: cea83883ecfcdc8ba8887cfe4bdb7d8b
-line_channel_token: v+zlCsRn9DJPCjYzBooWfN9Hko3zymHqNG7+V8cBCtcNcr9+WIaN4vIA1+EztWnVsVmma52BvVIWjNE6yTtomdEaKggvkD2pV3KAU38zbY64h+LXpGiKfikwiD5vI+7aOel2PSwZ6S8WevgvJBh1zAdB04t89/1O/w1cDnyilFU=
-dialogflow_client_access_token: 286cf35508e64489b0c025d767e28e83
-google_api_key: AIzaSyByaaldtl6PxcbsTkdwbcsbknjWQenVx9Y
-google_key_id: 239405853de26ce778479fdeb131a5d2505fe183
 
 production:
   covid_api_host: https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/
@@ -35,10 +28,3 @@ production:
   covid_thai_ddc_global_critical_host: https://ddcportal.ddc.moph.go.th/arcgis/rest/services/iT_Neillgis/summary_covid19_global_point/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=%5B%7B%22statisticType%22%3A%22sum%22%2C%22onStatisticField%22%3A%22Critical%22%2C%22outStatisticFieldName%22%3A%22value%22%7D%5D
   covid_thai_ddc_global_deaths_host: https://ddcportal.ddc.moph.go.th/arcgis/rest/services/iT_Neillgis/summary_covid19_global_point/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=%5B%7B%22statisticType%22%3A%22sum%22%2C%22onStatisticField%22%3A%22TotalDeaths%22%2C%22outStatisticFieldName%22%3A%22value%22%7D%5D
   covid_thai_ddc_global_deaths_add_today_host: https://ddcportal.ddc.moph.go.th/arcgis/rest/services/iT_Neillgis/summary_covid19_global_point/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=%5B%7B%22statisticType%22%3A%22sum%22%2C%22onStatisticField%22%3A%22NewDeaths%22%2C%22outStatisticFieldName%22%3A%22value%22%7D%5D
-  line_notify_token: E02Wl2DnPrbktHGtCadBzh2rBY5BjBw6YMHpSxV7ivG
-  line_channel_id: '1653946879'
-  line_channel_secret: cea83883ecfcdc8ba8887cfe4bdb7d8b
-  line_channel_token: v+zlCsRn9DJPCjYzBooWfN9Hko3zymHqNG7+V8cBCtcNcr9+WIaN4vIA1+EztWnVsVmma52BvVIWjNE6yTtomdEaKggvkD2pV3KAU38zbY64h+LXpGiKfikwiD5vI+7aOel2PSwZ6S8WevgvJBh1zAdB04t89/1O/w1cDnyilFU=
-  dialogflow_client_access_token: 286cf35508e64489b0c025d767e28e83
-  google_api_key: AIzaSyByaaldtl6PxcbsTkdwbcsbknjWQenVx9Y
-  google_key_id: 239405853de26ce778479fdeb131a5d2505fe183

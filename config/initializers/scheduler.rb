@@ -1,7 +1,5 @@
 scheduler = Rufus::Scheduler::singleton
 
-$use_workpoint_api = true
-
 scheduler.every '1m' do
   ap ">>> thailand summary"
 
@@ -24,10 +22,6 @@ scheduler.every '5m' do
     Covid.global_summary
     ap ">>> global summary done"
   rescue Exception
-    if $use_workpoint_api
-      Covid.global_summary_workpoint
-      $use_workpoint_api = false
-    end  
     ap ">>> global summary Exception"
     line_notify = LineNotify.new('zEEjy0TBSVM66PDy4gRzPK6leQHxiyFFGESSwd9uiWV')
     options = { message: 'Global summary มี error' }
