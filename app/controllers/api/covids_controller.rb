@@ -1,4 +1,5 @@
 class Api::CovidsController < Api::ApplicationController
+  respond_to :json
 
   def index
     render json: { data: Covid.daily_reports }, status: :ok
@@ -67,4 +68,36 @@ class Api::CovidsController < Api::ApplicationController
   def thai_separate_province
     render json: { data: Covid.thai_separate_province }, status: :ok
   end
+
+  def global_confirmed
+    render json: { data: Covid.global_confirmed }, status: :ok
+  end
+
+  def global_confirmed_add_today
+    render json: { data: Covid.global_confirmed_add_today }, status: :ok
+  end
+
+  def global_recovered
+    render json: { data: Covid.global_recovered }, status: :ok
+  end
+
+  def global_critical
+    render json: { data: Covid.global_critical }, status: :ok
+  end
+
+  def global_deaths
+    render json: { data: Covid.global_deaths }, status: :ok
+  end
+
+  def global_deaths_add_today
+    render json: { data: Covid.global_deaths_add_today }, status: :ok
+  end
+
+  def global_summary
+    render json: { data: Covid.global_summary }, status: :ok
+  end
+
+  def test
+    render json: { data: Covid.test }, status: :ok
+  end  
 end

@@ -19,8 +19,9 @@ def deploy_noti
 end
 
 def thai
-  data = Covid.thai_ddc
-  meesage = "\n\nจำนวนผู้ติดเชื้อ Covid19 \n- ประเทศไทย \n- เพิ่มขึ้น #{data[:add_today_count].to_delimited} คน \n\n- ติดเชื้อ #{data[:confirmed].to_delimited} คน \n- กำลังรักษา #{data[:healings].to_delimited} คน \n- อาการหนัก #{data[:severed].to_delimited} คน \n- หายแล้ว #{data[:recovered].to_delimited} คน \n- เสียชีวิต #{data[:deaths].to_delimited} คน \n- เฝ้าระวัง #{data[:watch_out_collectors].to_delimited} คน \n- อยู่ที่ รพ. #{data[:case_management_admit].to_delimited} คน \n- สังเกตอาการที่ รพ. #{data[:case_management_observation].to_delimited} คน \n\n* #{data[:last_updated]}"
+  data = Covid.constants
+
+  meesage = "\n\nจำนวนผู้ติดเชื้อ Covid19 \n- ประเทศไทย \n- เพิ่มขึ้น #{data[:add_today_count].to_delimited} คน \n\n- ติดเชื้อ #{data[:confirmed].to_delimited} คน \n- กำลังรักษา #{data[:healings].to_delimited} คน \n- หายแล้ว #{data[:recovered].to_delimited} คน \n- เสียชีวิต #{data[:deaths].to_delimited} คน \n\n* #{data[:last_updated]}"
 
   ap "=> scheduler thai"
 
@@ -32,8 +33,9 @@ def thai
 end
 
 def world
-  data = Covid.world
-  meesage = "\n\nจำนวนผู้ติดเชื้อ Covid19 \n- ทั่วโลก \n- เพิ่มขึ้น #{data[:add_today_count].to_delimited} คน \n\n- ติดเชื้อ #{data[:confirmed].to_delimited} คน \n- กำลังรักษา #{data[:healings].to_delimited} คน \n- หายแล้ว #{data[:recovered].to_delimited} คน \n- เสียชีวิต #{data[:deaths].to_delimited} คน \n\n* #{data[:last_updated]}"
+  data = Covid.global_summary
+
+  meesage = "\n\nจำนวนผู้ติดเชื้อ Covid19 \n- ทั่วโลก \n- เพิ่มขึ้น #{data[:confirmed_add_today].to_delimited} คน \n\n- ติดเชื้อ #{data[:confirmed].to_delimited} คน \n- กำลังรักษา #{data[:healings].to_delimited} คน \n- อาการหนัก #{data[:critical].to_delimited} คน \n- หายแล้ว #{data[:recovered].to_delimited} คน \n- เสียชีวิต #{data[:deaths].to_delimited} คน \n- เสียชีวิตเพิ่มขึ้น #{data[:deaths_add_today].to_delimited} คน \n\n* #{data[:last_updated]}"
 
   ap "=> scheduler world"
 

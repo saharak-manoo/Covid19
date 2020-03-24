@@ -35,9 +35,11 @@ class LineBot
       contents << "อยู่ที่ รพ. ทั้งหมด #{data[:case_management_admit].to_delimited} คน"
       contents << "สังเกตอาการที่ รพ. ทั้งหมด #{data[:case_management_observation].to_delimited} คน"
     elsif WORLD.include?(location)
-      data = Covid.world
-      header[:sub_title_str] = "#{(data[:add_today_count] || 0).to_delimited} คน"
+      data = Covid.global_summary
+      header[:sub_title_str] = "#{(data[:confirmed_add_today] || 0).to_delimited} คน"
       contents = data_to_str(data, isConfirmed, isHealings, isRecovered, isDeaths)
+      contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน"
+      contents << "เสียชีวิตเพิ่มขึ้น #{data[:deaths_add_today].to_delimited} คน"
     else
       world_data = Covid.world
       thai_infecteds = Covid.thai_summary.detect { |d| d[:province].include?(location) || d[:province_eng].include?(location) }
@@ -285,7 +287,8 @@ class LineBot
             text: footer,
             size: "md",
             weight: "bold",
-            style: "normal"
+            style: "normal",
+            wrap: true
           }
         ]
       }

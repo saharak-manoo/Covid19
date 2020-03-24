@@ -212,6 +212,7 @@ export class HomeComponent {
 		this.loadCountryCases();
 		this.loadAllCountry();
 		this.loadInfectedByProvince();
+		this.loadGlobalSummary();
 	}
 
 	getLocation() {
@@ -313,14 +314,11 @@ export class HomeComponent {
 		);
 	}
 
-	loadAllCountry() {
-		this.appService.all('api/covids/world').subscribe(
+	loadGlobalSummary() {
+		this.appService.all('api/covids/global_summary').subscribe(
 			resp => {
 				let response: any = resp;
-				this.worldAddTodayCount = response.data.add_today_count;
-				this.allCountryDataSource = new MatTableDataSource<any>(response.data.statistics);
-				this.allCountryDataSource.paginator = this.allCountryPaginator;
-				this.allCountryDataSource.sort = this.allCountrySort;
+				this.worldAddTodayCount = response.data.confirmed_add_today;
 				this.globleLastUpdated = response.data.last_updated;
 				this.total = response.data;
 				this.pieChartData = [
@@ -329,6 +327,20 @@ export class HomeComponent {
 					this.total.recovered,
 					this.total.deaths
 				];
+			},
+			e => {
+				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');
+			}
+		);
+	}
+
+	loadAllCountry() {
+		this.appService.all('api/covids/world').subscribe(
+			resp => {
+				let response: any = resp;
+				this.allCountryDataSource = new MatTableDataSource<any>(response.data.statistics);
+				this.allCountryDataSource.paginator = this.allCountryPaginator;
+				this.allCountryDataSource.sort = this.allCountrySort;
 			},
 			e => {
 				this.app.openSnackBar(e.message, 'Close', 'red-snackbar');

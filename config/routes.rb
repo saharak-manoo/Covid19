@@ -24,6 +24,14 @@ Rails.application.routes.draw do
         get 'hospital_and_labs'
         get 'thai_ddc'
         get 'thai_separate_province'
+        get 'global_confirmed'
+        get 'global_confirmed_add_today'
+        get 'global_recovered'
+        get 'global_critical'
+        get 'global_deaths'
+        get 'global_deaths_add_today'
+        get 'global_summary'
+        get 'test'
       end
     end
   end

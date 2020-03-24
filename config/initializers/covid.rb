@@ -7,7 +7,7 @@ class Covid
       method: :get,
       url: "#{ENV['covid_api_host']}#{path}"
     }).execute do |response, request, result|
-      return JSON.parse(CSV.parse(response.to_str).to_json)
+      return JSON.parse(CSV.parse(response.to_str, headers: true).map { |x| x.to_h }.to_json)
     end
   end
 
@@ -16,20 +16,31 @@ class Covid
     reports = rest_api("csse_covid_19_daily_reports/#{date_str}.csv")
 
     data = []
-    reports.each_with_index do |report, index|
-      next if index.zero?
+    reports.each do |report|
+      province = report['Province/State'] || report['Province_State']
+      country = report['Country/Region'] || report['Country_Region']
+      updated_at = DateTime.parse(report['Last Update'] || report['Last_Update']).localtime
+      confirmed = report['Confirmed'].to_i || 0
+      deaths = report['Deaths'].to_i || 0
+      recovered = report['Recovered'].to_i || 0
+      active = report['Active'].to_i || 0
+      latitude = report['Latitude'] || report['Lat']
+      longitude = report['Longitude'] || report['Long_']
 
-      country_id = ISO3166::Country.find_country_by_name(report[0])&.alpha2 || ISO3166::Country.find_country_by_name(report[1])&.alpha2
-      updated_at = DateTime.parse(report[2]).localtime
+      country_id = ISO3166::Country.find_country_by_name(province)&.alpha2 || ISO3166::Country.find_country_by_name(country)&.alpha2
+
       time_difference = TimeDifference.between(updated_at, Time.now).in_general
       data << {
-        country: report[1],
+        country: country,
         country_id: country_id,
-        province: report[0] || 0,
-        confirmed: report[3].to_i || 0,
-        healings: (report[3].to_i - report[5].to_i) - report[4].to_i || 0,
-        deaths: report[4].to_i || 0,
-        recovered: report[5].to_i || 0,
+        province: province || nil,
+        confirmed: confirmed,
+        healings: (confirmed - recovered) - deaths || 0,
+        deaths: deaths,
+        recovered: recovered,
+        active: active,
+        latitude: latitude,
+        longitude: longitude,
         updated_at: updated_at,
         last_updated: updated_at.to_difference_str,
       }
@@ -513,4 +524,82 @@ class Covid
       last_updated: updated_at.to_difference_str,
     }
   end
+
+  def self.api_ddc_global(url)
+    response = RestClient::Request.new({
+      method: :get,
+      url: url
+    }).execute do |response, request, result|
+      return JSON.parse(response.to_str)['features'].first['attributes']['value']
+    end
+  end
+
+  def self.global_confirmed
+    { 
+      confirmed: api_ddc_global(ENV['covid_thai_ddc_global_confirmed_host'])
+    }
+  end
+
+  def self.global_confirmed_add_today
+    { 
+      confirmed_add_today: api_ddc_global(ENV['covid_thai_ddc_global_confirmed_add_today_host'])
+    }
+  end
+
+  def self.global_recovered
+    { 
+      recovered: api_ddc_global(ENV['covid_thai_ddc_global_recovered_host'])
+    }
+  end
+
+  def self.global_critical
+    { 
+      critical: api_ddc_global(ENV['covid_thai_ddc_global_critical_host'])
+    }
+  end
+
+  def self.global_deaths
+    { 
+      deaths: api_ddc_global(ENV['covid_thai_ddc_global_deaths_host'])
+    }
+  end
+
+  def self.global_deaths_add_today
+    { 
+      deaths_add_today: api_ddc_global(ENV['covid_thai_ddc_global_deaths_add_today_host'])
+    }
+  end
+
+  def self.global_summary
+    updated_at = DateTime.now.localtime
+    confirmed = api_ddc_global(ENV['covid_thai_ddc_global_confirmed_host'])
+    confirmed_add_today = api_ddc_global(ENV['covid_thai_ddc_global_confirmed_add_today_host'])
+    recovered = api_ddc_global(ENV['covid_thai_ddc_global_recovered_host'])
+    critical = api_ddc_global(ENV['covid_thai_ddc_global_critical_host'])
+    deaths = api_ddc_global(ENV['covid_thai_ddc_global_deaths_host'])
+    deaths_add_today = api_ddc_global(ENV['covid_thai_ddc_global_deaths_add_today_host'])
+
+    { 
+      confirmed: confirmed,
+      confirmed_add_today: confirmed_add_today,
+      healings: (confirmed - recovered) - deaths || 0,
+      recovered: recovered,
+      critical: critical,
+      deaths: deaths,
+      deaths_add_today: deaths_add_today,
+      updated_at: updated_at,
+      last_updated: updated_at.to_difference_str,
+    }
+  end
+
+  def self.test
+    url_list = [ENV['covid_thai_ddc_global_confirmed_host'], ENV['covid_thai_ddc_global_confirmed_add_today_host'], ENV['covid_thai_ddc_global_recovered_host'], ENV['covid_thai_ddc_global_critical_host'], ENV['covid_thai_ddc_global_deaths_host'], ENV['covid_thai_ddc_global_deaths_add_today_host']]
+    responses = []
+
+    url_list.each do |url|
+      responses << api_ddc_global(url)
+    end
+
+    responses
+  end  
 end
