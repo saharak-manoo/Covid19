@@ -30,6 +30,7 @@ Rails.application.routes.draw do
         get 'global_critical'
         get 'global_deaths'
         get 'global_deaths_add_today'
+        get 'thailand_summary'
         get 'global_summary'
       end
     end

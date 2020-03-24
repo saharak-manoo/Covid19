@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_24_033601) do
+ActiveRecord::Schema.define(version: 2020_03_24_052326) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,26 @@ ActiveRecord::Schema.define(version: 2020_03_24_033601) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
+  end
+
+  create_table "thailand_summaries", force: :cascade do |t|
+    t.integer "confirmed"
+    t.integer "healings"
+    t.integer "deaths"
+    t.integer "recovered"
+    t.integer "critical"
+    t.integer "confirmed_add_today"
+    t.integer "watch_out_collectors"
+    t.integer "new_watch_out"
+    t.integer "case_management_admit"
+    t.integer "case_management_discharged"
+    t.integer "case_management_observation"
+    t.integer "airport"
+    t.integer "sea_port"
+    t.integer "ground_port"
+    t.integer "at_chaeng_wattana"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", force: :cascade do |t|

@@ -48,7 +48,7 @@ export class HomeComponent {
 		recovered: 0,
 		deaths: 0,
 		watch_out_collectors: 0,
-		severed: 0,
+		critical: 0,
 		case_management_admit: 0,
 		case_management_observation: 0
 	};
@@ -259,10 +259,10 @@ export class HomeComponent {
 	}
 
 	dailyTotalLocal() {
-		this.appService.all('api/covids/thai_ddc').subscribe(
+		this.appService.all('api/covids/thailand_summary').subscribe(
 			resp => {
 				let response: any = resp;
-				this.localAddTodayCount = response.data.add_today_count;
+				this.localAddTodayCount = response.data.confirmed_add_today;
 				this.localLastUpdated = response.data.last_updated;
 				this.totalLocal = response.data;
 				this.pieChartDataLocal = [

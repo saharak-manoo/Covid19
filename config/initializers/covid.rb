@@ -127,7 +127,7 @@ class Covid
       healings: response['กำลังรักษา'].to_i || 0,
       deaths: response['เสียชีวิต'].to_i || 0,
       recovered: response['หายแล้ว'].to_i || 0,
-      add_today_count: response['เพิ่มวันนี้'].to_i || 0,
+      confirmed_add_today: response['เพิ่มวันนี้'].to_i || 0,
       add_date: date,
       updated_at: DateTime.now.localtime,
       last_updated: "ข้อมูล ณ วันที่ #{I18n.l(date, format: '%d %B')}",
@@ -494,8 +494,8 @@ class Covid
       healings: (confirmed - recovered) - deaths || 0,
       deaths: deaths,
       recovered: recovered,
-      severed: severed,
-      add_today_count: infecteds['confirmed_case_new_case'].to_i || 0,
+      critical: severed,
+      confirmed_add_today: infecteds['confirmed_case_new_case'].to_i || 0,
       watch_out_collectors: infecteds['pui_total'].to_i || 0,
       new_watch_out: infecteds['new_pui'].to_i || 0,
       case_management_admit: infecteds['case_management_admit'].to_i || 0,
@@ -593,5 +593,42 @@ class Covid
     global_summary.deaths_add_today = deaths_add_today
 
     global_summary.save
+  end
+
+  def self.thailand_summary
+    workpoint = constants
+    ddc = thai_ddc
+    data = {}
+
+    # use workpoint
+    if workpoint[:confirmed] > ddc[:confirmed]
+      data = workpoint
+    else
+      data = ddc
+    end
+
+    thailand_summary = if ThailandSummary.count.zero? 
+                          ThailandSummary.new
+                       else
+                          ThailandSummary.lasted
+                       end
+
+    thailand_summary.confirmed = data[:confirmed]
+    thailand_summary.confirmed_add_today = data[:confirmed_add_today]
+    thailand_summary.healings = data[:healings]
+    thailand_summary.recovered = data[:recovered]
+    thailand_summary.deaths = data[:deaths]
+    thailand_summary.critical = ddc[:critical]
+    thailand_summary.watch_out_collectors = ddc[:watch_out_collectors]
+    thailand_summary.new_watch_out = ddc[:new_watch_out]
+    thailand_summary.case_management_admit = ddc[:case_management_admit]
+    thailand_summary.case_management_discharged = ddc[:case_management_discharged]
+    thailand_summary.case_management_observation = ddc[:case_management_observation]
+    thailand_summary.airport = ddc[:airport]
+    thailand_summary.sea_port = ddc[:sea_port]
+    thailand_summary.ground_port = ddc[:ground_port]
+    thailand_summary.at_chaeng_wattana = ddc[:at_chaeng_wattana]
+
+    thailand_summary.save
   end
 end

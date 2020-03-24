@@ -93,7 +93,11 @@ class Api::CovidsController < Api::ApplicationController
     render json: { data: Covid.global_deaths_add_today }, status: :ok
   end
 
+  def thailand_summary
+    render json: { data: ThailandSummary.lasted.as_json({api: true}) }, status: :ok
+  end  
+
   def global_summary
-    render json: { data: Covid.global_summary }, status: :ok
+    render json: { data: GlobalSummary.lasted.as_json({api: true}) }, status: :ok
   end
 end
