@@ -104,7 +104,7 @@ class Api::CovidsController < Api::ApplicationController
   def thailand_retroact
     days = params[:days] || 6
     data = {}
-    ThailandSummary.where(date: Date.today - days..Date.today).each do |thailand_summary|
+    ThailandSummary.where(date: Date.today - days..Date.today).order(date: :asc).each do |thailand_summary|
       data[thailand_summary.date.strftime("%a")] = thailand_summary.as_json({api: true})
     end
 
@@ -114,7 +114,7 @@ class Api::CovidsController < Api::ApplicationController
   def global_retroact
     days = params[:days] || 6
     data = {}
-    GlobalSummary.where(date: Date.today - days..Date.today).each do |global_summary|
+    GlobalSummary.where(date: Date.today - days..Date.today).order(date: :asc).each do |global_summary|
       data[global_summary.date.strftime("%a")] = global_summary.as_json({api: true})
     end
 
