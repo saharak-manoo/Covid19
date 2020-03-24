@@ -581,18 +581,23 @@ class Covid
     global_summary = if GlobalSummary.count.zero? 
                         GlobalSummary.new
                      else
-                        GlobalSummary.lasted
+                        GlobalSummary.today
                      end
+     
+    global_summary.date = Date.today if global_summary.new_record?
 
-    global_summary.confirmed = confirmed
-    global_summary.confirmed_add_today = confirmed_add_today
-    global_summary.healings = (confirmed - recovered) - deaths || 0
-    global_summary.recovered = recovered
-    global_summary.critical = critical
-    global_summary.deaths = deaths
-    global_summary.deaths_add_today = deaths_add_today
+    date = Date.today
+    if date == global_summary.date 
+      global_summary.confirmed = confirmed
+      global_summary.confirmed_add_today = confirmed_add_today
+      global_summary.healings = (confirmed - recovered) - deaths || 0
+      global_summary.recovered = recovered
+      global_summary.critical = critical
+      global_summary.deaths = deaths
+      global_summary.deaths_add_today = deaths_add_today
 
-    global_summary.save
+      global_summary.save
+    end
   end
 
   def self.thailand_summary
@@ -610,25 +615,30 @@ class Covid
     thailand_summary = if ThailandSummary.count.zero? 
                           ThailandSummary.new
                        else
-                          ThailandSummary.lasted
+                          ThailandSummary.today
                        end
+    
+    thailand_summary.date = Date.today if global_summary.new_record?
 
-    thailand_summary.confirmed = data[:confirmed]
-    thailand_summary.confirmed_add_today = data[:confirmed_add_today]
-    thailand_summary.healings = data[:healings]
-    thailand_summary.recovered = data[:recovered]
-    thailand_summary.deaths = data[:deaths]
-    thailand_summary.critical = ddc[:critical]
-    thailand_summary.watch_out_collectors = ddc[:watch_out_collectors]
-    thailand_summary.new_watch_out = ddc[:new_watch_out]
-    thailand_summary.case_management_admit = ddc[:case_management_admit]
-    thailand_summary.case_management_discharged = ddc[:case_management_discharged]
-    thailand_summary.case_management_observation = ddc[:case_management_observation]
-    thailand_summary.airport = ddc[:airport]
-    thailand_summary.sea_port = ddc[:sea_port]
-    thailand_summary.ground_port = ddc[:ground_port]
-    thailand_summary.at_chaeng_wattana = ddc[:at_chaeng_wattana]
+    date = Date.today
+    if date == thailand_summary.date 
+      thailand_summary.confirmed = data[:confirmed]
+      thailand_summary.confirmed_add_today = data[:confirmed_add_today]
+      thailand_summary.healings = data[:healings]
+      thailand_summary.recovered = data[:recovered]
+      thailand_summary.deaths = data[:deaths]
+      thailand_summary.critical = ddc[:critical]
+      thailand_summary.watch_out_collectors = ddc[:watch_out_collectors]
+      thailand_summary.new_watch_out = ddc[:new_watch_out]
+      thailand_summary.case_management_admit = ddc[:case_management_admit]
+      thailand_summary.case_management_discharged = ddc[:case_management_discharged]
+      thailand_summary.case_management_observation = ddc[:case_management_observation]
+      thailand_summary.airport = ddc[:airport]
+      thailand_summary.sea_port = ddc[:sea_port]
+      thailand_summary.ground_port = ddc[:ground_port]
+      thailand_summary.at_chaeng_wattana = ddc[:at_chaeng_wattana]
 
-    thailand_summary.save
+      thailand_summary.save
+    end
   end
 end

@@ -161,4 +161,23 @@ if Hospital.count.zero?
   hospitals.each do |hospital|
     Hospital.create(hospital)
   end  
-end  
+end
+
+country_retroacts = Covid.country_retroact('th')
+
+country_retroacts.each do |key|
+  country = key[1]
+  date = country[:updated_at].to_date
+  
+  ThailandSummary.create(date: date, confirmed: country[:confirmed], healings: country[:healings], deaths: country[:deaths], recovered: country[:recovered], created_at: country[:updated_at], updated_at: country[:updated_at])
+  ap "Create Thailand Summary #{date}" unless date == Date.today
+end
+
+retroacts = Covid.retroact
+
+retroacts.each do |key|
+  retroact = key[1]
+  date = retroact[:updated_at].to_date
+  GlobalSummary.create(date: date, confirmed: retroact[:confirmed], healings: retroact[:healings], deaths: retroact[:country], recovered: retroact[:recovered], created_at: retroact[:updated_at], updated_at: retroact[:updated_at])
+  ap "Create Global Summary #{date}" unless date == Date.today
+end

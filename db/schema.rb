@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_24_052326) do
+ActiveRecord::Schema.define(version: 2020_03_24_090750) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,15 +56,16 @@ ActiveRecord::Schema.define(version: 2020_03_24_052326) do
   end
 
   create_table "global_summaries", force: :cascade do |t|
-    t.integer "confirmed"
-    t.integer "confirmed_add_today"
-    t.integer "healings"
-    t.integer "recovered"
-    t.integer "critical"
-    t.integer "deaths"
-    t.integer "deaths_add_today"
+    t.integer "confirmed", default: 0
+    t.integer "confirmed_add_today", default: 0
+    t.integer "healings", default: 0
+    t.integer "recovered", default: 0
+    t.integer "critical", default: 0
+    t.integer "deaths", default: 0
+    t.integer "deaths_add_today", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.date "date"
   end
 
   create_table "hospitals", force: :cascade do |t|
@@ -87,23 +88,24 @@ ActiveRecord::Schema.define(version: 2020_03_24_052326) do
   end
 
   create_table "thailand_summaries", force: :cascade do |t|
-    t.integer "confirmed"
-    t.integer "healings"
-    t.integer "deaths"
-    t.integer "recovered"
-    t.integer "critical"
-    t.integer "confirmed_add_today"
-    t.integer "watch_out_collectors"
-    t.integer "new_watch_out"
-    t.integer "case_management_admit"
-    t.integer "case_management_discharged"
-    t.integer "case_management_observation"
-    t.integer "airport"
-    t.integer "sea_port"
-    t.integer "ground_port"
-    t.integer "at_chaeng_wattana"
+    t.integer "confirmed", default: 0
+    t.integer "healings", default: 0
+    t.integer "deaths", default: 0
+    t.integer "recovered", default: 0
+    t.integer "critical", default: 0
+    t.integer "confirmed_add_today", default: 0
+    t.integer "watch_out_collectors", default: 0
+    t.integer "new_watch_out", default: 0
+    t.integer "case_management_admit", default: 0
+    t.integer "case_management_discharged", default: 0
+    t.integer "case_management_observation", default: 0
+    t.integer "airport", default: 0
+    t.integer "sea_port", default: 0
+    t.integer "ground_port", default: 0
+    t.integer "at_chaeng_wattana", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.date "date"
   end
 
   create_table "users", force: :cascade do |t|

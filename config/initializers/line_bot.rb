@@ -27,7 +27,7 @@ class LineBot
 
     if THAI.include?(location)
       color = "#0367D3"
-      data = ThailandSummary.lasted.as_json({api: true}).with_indifferent_access
+      data = ThailandSummary.today.as_json({api: true}).with_indifferent_access
       header[:sub_title_str] = "#{data[:confirmed_add_today].to_delimited} คน"
       contents = data_to_str(data, isConfirmed, isHealings, isRecovered, isDeaths)
       contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน"
@@ -35,7 +35,7 @@ class LineBot
       contents << "อยู่ที่ รพ. ทั้งหมด #{data[:case_management_admit].to_delimited} คน"
       contents << "สังเกตอาการที่ รพ. ทั้งหมด #{data[:case_management_observation].to_delimited} คน"
     elsif WORLD.include?(location)
-      data = GlobalSummary.lasted.as_json({api: true}).with_indifferent_access
+      data = GlobalSummary.today.as_json({api: true}).with_indifferent_access
       header[:sub_title_str] = "#{data[:confirmed_add_today].to_delimited} คน"
       contents = data_to_str(data, isConfirmed, isHealings, isRecovered, isDeaths)
       contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน"
