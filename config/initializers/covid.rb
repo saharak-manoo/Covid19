@@ -609,17 +609,17 @@ class Covid
     global_summary = GlobalSummary.new if global_summary.nil?
 
     global_summary.date = date
-    global_summary.confirmed = date[:confirmed]
-    global_summary.healings = date[:healings]
-    global_summary.recovered = date[:recovered]
-    global_summary.deaths = date[:deaths]
+    global_summary.confirmed = data[:confirmed] if global_summary.confirmed < data[:confirmed]
+    global_summary.healings = data[:healings] if global_summary.healings < data[:healings]
+    global_summary.recovered = data[:recovered] if global_summary.recovered < data[:recovered]
+    global_summary.deaths = data[:deaths] if global_summary.deaths < data[:deaths]
 
     global_summary.save
   end
 
   def self.thailand_summary
     workpoint = constants
-    ddc = thai_ddc
+    ddc = thai_ddcLineNoti.send_to_dev("ไม่สามารถเข้าถึงเว็ป DDC Thailand ได้ \n #{e.message}")
     data = {}
 
     # use workpoint

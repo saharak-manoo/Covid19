@@ -6,12 +6,9 @@ scheduler.every '1m' do
   begin
     Covid.thailand_summary
     ap ">>> thailand summary done"
-  rescue Exception
-    Covid.thailand_summary
+  rescue => e
     ap ">>> thailand summary Exception"
-    line_notify = LineNotify.new('zEEjy0TBSVM66PDy4gRzPK6leQHxiyFFGESSwd9uiWV')
-    options = { message: 'Thailand summary มี error' }
-    line_notify.ping(options)
+    LineNoti.send_to_dev("ไม่สามารถเข้าถึงเว็ป DDC Thailand ได้ \n #{e.message}")
   end
 end
 
@@ -21,10 +18,9 @@ scheduler.every '5m' do
   begin
     Covid.global_summary
     ap ">>> global summary done"
-  rescue Exception
+  rescue => e
+    Covid.global_summary_workpoint
     ap ">>> global summary Exception"
-    line_notify = LineNotify.new('zEEjy0TBSVM66PDy4gRzPK6leQHxiyFFGESSwd9uiWV')
-    options = { message: 'Global summary มี error' }
-    line_notify.ping(options)
+    LineNoti.send_to_dev("ไม่สามารถเข้าถึงเว็ป DDC Global ได้ \n #{e.message}")
   end
 end
