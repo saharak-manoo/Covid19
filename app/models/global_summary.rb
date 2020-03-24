@@ -1,5 +1,4 @@
 class GlobalSummary < ApplicationRecord
-  scope :today, -> { find_by(date: Date.today) }
   before_save :send_notification
 
   def send_notification
@@ -9,7 +8,7 @@ class GlobalSummary < ApplicationRecord
   end
 
   def last_updated
-    updated_at.localtime.to_difference_str
+    (updated_at || DateTime.now).localtime.to_difference_str
   end
 
   def as_json(options = {})

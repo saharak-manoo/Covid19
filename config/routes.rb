@@ -32,6 +32,8 @@ Rails.application.routes.draw do
         get 'global_deaths_add_today'
         get 'thailand_summary'
         get 'global_summary'
+        get 'thailand_retroact'
+        get 'global_retroact'
       end
     end
   end

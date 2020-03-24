@@ -1,5 +1,4 @@
 class ThailandSummary < ApplicationRecord
-  scope :today, -> { find_by(date: Date.today) }
   before_save :send_notification
 
   def send_notification
@@ -9,13 +8,13 @@ class ThailandSummary < ApplicationRecord
   end
 
   def last_updated
-    updated_at.localtime.to_difference_str
+    (updated_at || DateTime.now).localtime.to_difference_str
   end
 
   def as_json(options = {})
     if options[:api]
       json = super().except('id')
-      json[:deaths_add_today] = deaths - ThailandSummary.find_by(Date.yesterday)&.deaths || 0
+      json[:deaths_add_today] = deaths - (ThailandSummary.find_by(date: Date.yesterday)&.deaths || 0)
       json[:last_updated] = last_updated
 
       json

@@ -166,18 +166,39 @@ end
 country_retroacts = Covid.country_retroact('th')
 
 country_retroacts.each do |key|
-  country = key[1]
-  date = country[:updated_at].to_date
-  
-  ThailandSummary.create(date: date, confirmed: country[:confirmed], healings: country[:healings], deaths: country[:deaths], recovered: country[:recovered], created_at: country[:updated_at], updated_at: country[:updated_at])
-  ap "Create Thailand Summary #{date}" unless date == Date.today
+  retroact = key[1]
+  date = retroact[:date]
+
+  thailand_summary = ThailandSummary.find_by(date: date)
+  thailand_summary = ThailandSummary.new if thailand_summary.nil?
+
+  thailand_summary.date = date
+  thailand_summary.confirmed = retroact[:confirmed]
+  thailand_summary.healings = retroact[:healings]
+  thailand_summary.recovered = retroact[:recovered]
+  thailand_summary.deaths = retroact[:deaths]
+  thailand_summary.created_at = retroact[:updated_at]
+  thailand_summary.updated_at = retroact[:updated_at]
+
+  ap "Create Thailand Summary #{date}" if thailand_summary.save
 end
 
 retroacts = Covid.retroact
 
 retroacts.each do |key|
   retroact = key[1]
-  date = retroact[:updated_at].to_date
-  GlobalSummary.create(date: date, confirmed: retroact[:confirmed], healings: retroact[:healings], deaths: retroact[:country], recovered: retroact[:recovered], created_at: retroact[:updated_at], updated_at: retroact[:updated_at])
-  ap "Create Global Summary #{date}" unless date == Date.today
+  date = retroact[:date]
+
+  global_summary = GlobalSummary.find_by(date: date)
+  global_summary = GlobalSummary.new if global_summary.nil?
+
+  global_summary.date = date
+  global_summary.confirmed = retroact[:confirmed]
+  global_summary.healings = retroact[:healings]
+  global_summary.recovered = retroact[:recovered]
+  global_summary.deaths = retroact[:deaths]
+  global_summary.created_at = retroact[:updated_at]
+  global_summary.updated_at = retroact[:updated_at]
+
+  ap "Create Global Summary #{date}" if global_summary.save
 end

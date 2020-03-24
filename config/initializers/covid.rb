@@ -5,7 +5,8 @@ class Covid
   def self.rest_api(path)
     response = RestClient::Request.new({
       method: :get,
-      url: "#{ENV['covid_api_host']}#{path}"
+      url: "#{ENV['covid_api_host']}#{path}",
+      timeout: 200
     }).execute do |response, request, result|
       return JSON.parse(CSV.parse(response.to_str, headers: true).map { |x| x.to_h }.to_json)
     end
@@ -66,6 +67,7 @@ class Covid
       healings: (confirmed - recovered) - deaths || 0,
       deaths: deaths || 0,
       recovered: recovered || 0,
+      date: date,
       updated_at: updated_at,
       last_updated: updated_at.to_difference_str,
     }
@@ -93,6 +95,7 @@ class Covid
       healings: nations.pluck(:healings).sum || 0,
       deaths: nations.pluck(:deaths).sum || 0,
       recovered: nations.pluck(:recovered).sum || 0,
+      date: date,
       updated_at: updated_at,
       last_updated: updated_at.to_difference_str,
     }
@@ -112,7 +115,8 @@ class Covid
   def self.api_workpoint(path)
     response = RestClient::Request.new({
       method: :get,
-      url: "#{ENV['covid_workpoint_api_host']}#{path}.json"
+      url: "#{ENV['covid_workpoint_api_host']}#{path}.json",
+      timeout: 200
     }).execute do |response, request, result|
       return JSON.parse(response.to_str)
     end
@@ -275,7 +279,8 @@ class Covid
   def self.api_spreadsheets(path)
     response = RestClient::Request.new({
       method: :get,
-      url: "#{ENV["covid_#{path}_host"]}"
+      url: "#{ENV["covid_#{path}_host"]}",
+      timeout: 200
     }).execute do |response, request, result|
       return JSON.parse(response.to_str)['feed']['entry']
     end
@@ -411,7 +416,8 @@ class Covid
   def self.api_hospital_lab
     response = RestClient::Request.new({
       method: :get,
-      url: "#{ENV["covid_hospital_labs_host"]}"
+      url: "#{ENV["covid_hospital_labs_host"]}",
+      timeout: 200
     }).execute do |response, request, result|
       response_str = response.to_str
       response_str.gsub! 'var covid19 = ', ''
@@ -528,7 +534,8 @@ class Covid
   def self.api_ddc_global(url)
     response = RestClient::Request.new({
       method: :get,
-      url: url
+      url: url,
+      timeout: 200
     }).execute do |response, request, result|
       return JSON.parse(response.to_str)['features'].first['attributes']['value']
     end
@@ -578,26 +585,36 @@ class Covid
     deaths = api_ddc_global(ENV['covid_thai_ddc_global_deaths_host'])
     deaths_add_today = api_ddc_global(ENV['covid_thai_ddc_global_deaths_add_today_host'])
 
-    global_summary = if GlobalSummary.count.zero? 
-                        GlobalSummary.new
-                     else
-                        GlobalSummary.today
-                     end
-     
-    global_summary.date = Date.today if global_summary.new_record?
+    date = Date.today
+    global_summary = GlobalSummary.find_by(date: date)
+    global_summary = GlobalSummary.new if global_summary.nil?
+
+    global_summary.date = date
+    global_summary.confirmed = confirmed
+    global_summary.confirmed_add_today = confirmed_add_today
+    global_summary.healings = (confirmed - recovered) - deaths || 0
+    global_summary.recovered = recovered
+    global_summary.critical = critical
+    global_summary.deaths = deaths
+    global_summary.deaths_add_today = deaths_add_today
+
+    global_summary.save
+  end
+
+  def self.global_summary_workpoint
+    data = world
 
     date = Date.today
-    if date == global_summary.date 
-      global_summary.confirmed = confirmed
-      global_summary.confirmed_add_today = confirmed_add_today
-      global_summary.healings = (confirmed - recovered) - deaths || 0
-      global_summary.recovered = recovered
-      global_summary.critical = critical
-      global_summary.deaths = deaths
-      global_summary.deaths_add_today = deaths_add_today
+    global_summary = GlobalSummary.find_by(date: date)
+    global_summary = GlobalSummary.new if global_summary.nil?
 
-      global_summary.save
-    end
+    global_summary.date = date
+    global_summary.confirmed = date[:confirmed]
+    global_summary.healings = date[:healings]
+    global_summary.recovered = date[:recovered]
+    global_summary.deaths = date[:deaths]
+
+    global_summary.save
   end
 
   def self.thailand_summary
@@ -612,33 +629,27 @@ class Covid
       data = ddc
     end
 
-    thailand_summary = if ThailandSummary.count.zero? 
-                          ThailandSummary.new
-                       else
-                          ThailandSummary.today
-                       end
-    
-    thailand_summary.date = Date.today if global_summary.new_record?
-
     date = Date.today
-    if date == thailand_summary.date 
-      thailand_summary.confirmed = data[:confirmed]
-      thailand_summary.confirmed_add_today = data[:confirmed_add_today]
-      thailand_summary.healings = data[:healings]
-      thailand_summary.recovered = data[:recovered]
-      thailand_summary.deaths = data[:deaths]
-      thailand_summary.critical = ddc[:critical]
-      thailand_summary.watch_out_collectors = ddc[:watch_out_collectors]
-      thailand_summary.new_watch_out = ddc[:new_watch_out]
-      thailand_summary.case_management_admit = ddc[:case_management_admit]
-      thailand_summary.case_management_discharged = ddc[:case_management_discharged]
-      thailand_summary.case_management_observation = ddc[:case_management_observation]
-      thailand_summary.airport = ddc[:airport]
-      thailand_summary.sea_port = ddc[:sea_port]
-      thailand_summary.ground_port = ddc[:ground_port]
-      thailand_summary.at_chaeng_wattana = ddc[:at_chaeng_wattana]
+    thailand_summary = ThailandSummary.find_by(date: date)
+    thailand_summary = ThailandSummary.new if thailand_summary.nil?
 
-      thailand_summary.save
-    end
+    thailand_summary.date = date
+    thailand_summary.confirmed = data[:confirmed]
+    thailand_summary.confirmed_add_today = data[:confirmed_add_today]
+    thailand_summary.healings = data[:healings]
+    thailand_summary.recovered = data[:recovered]
+    thailand_summary.deaths = data[:deaths]
+    thailand_summary.critical = ddc[:critical]
+    thailand_summary.watch_out_collectors = ddc[:watch_out_collectors]
+    thailand_summary.new_watch_out = ddc[:new_watch_out]
+    thailand_summary.case_management_admit = ddc[:case_management_admit]
+    thailand_summary.case_management_discharged = ddc[:case_management_discharged]
+    thailand_summary.case_management_observation = ddc[:case_management_observation]
+    thailand_summary.airport = ddc[:airport]
+    thailand_summary.sea_port = ddc[:sea_port]
+    thailand_summary.ground_port = ddc[:ground_port]
+    thailand_summary.at_chaeng_wattana = ddc[:at_chaeng_wattana]
+
+    thailand_summary.save
   end
 end
