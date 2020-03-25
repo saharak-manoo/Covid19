@@ -592,12 +592,22 @@ class Covid
   end
 
   def self.global_summary
-    yesterday =  GlobalSummary.find_by(date: Date.yesterday)
+    total = Covid.total
     confirmed = Covid.api_arcgis_global(ENV['arcgis_global_confirmed_host'])
-    recovered = Covid.api_arcgis_global(ENV['arcgis_global_recovered_host'])
-    deaths = Covid.api_arcgis_global(ENV['arcgis_global_deaths_host'])
+
+    yesterday = GlobalSummary.find_by(date: Date.yesterday)
+
+    if total[:confirmed] > confirmed
+      confirmed = total[:confirmed]
+      recovered = total[:recovered]
+      deaths = total[:deaths]
+    else
+      recovered = Covid.api_arcgis_global(ENV['arcgis_global_recovered_host'])
+      deaths = Covid.api_arcgis_global(ENV['arcgis_global_deaths_host'])
+    end
+
     confirmed_add_today = (confirmed - yesterday.confirmed) || 0
-    deaths_add_today = (confirmed - yesterday.deaths) || 0
+    deaths_add_today = (deaths - yesterday.deaths) || 0
 
     date = Date.today
     global_summary = GlobalSummary.find_by(date: date)
@@ -608,7 +618,6 @@ class Covid
     global_summary.confirmed_add_today = confirmed_add_today
     global_summary.healings = (confirmed - recovered) - deaths || 0
     global_summary.recovered = recovered
-    global_summary.critical = critical
     global_summary.deaths = deaths
     global_summary.deaths_add_today = deaths_add_today
 
