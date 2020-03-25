@@ -41,7 +41,7 @@ class LineBot
       contents << "เสียชีวิตเพิ่มขึ้น #{data[:deaths_add_today].to_delimited} คน"
     else
       thai_infecteds = Covid.thai_summary.detect { |d| d[:province].include?(location) || d[:province_eng].include?(location) }
-      world = World.find_by("country ILIKE :keyword OR country_th ILIKE :keyword", keyword: "%#{location}%").as_json({api: true})
+      world = World.find_by("country ILIKE :keyword OR country_th ILIKE :keyword", keyword: "%#{location}%").as_json({api: true}).with_indifferent_access
 
       if thai_infecteds.present?
         header[:title] = thai_infecteds[:province] || location
