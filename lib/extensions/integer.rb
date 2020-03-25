@@ -29,4 +29,8 @@ class Integer
       color = "#32DA4B"
     end
   end
+
+  def nil_or_zero?
+    (self.nil? or self == 0)
+  end
 end

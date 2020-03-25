@@ -641,6 +641,7 @@ class Covid
   end
 
   def self.thailand_summary
+    yesterday = ThailandSummary.find_by(date: Date.yesterday)
     workpoint = constants
     data = {}
     ddc = nil
@@ -665,7 +666,7 @@ class Covid
     thailand_summary.confirmed = data[:confirmed]
     thailand_summary.confirmed_add_today = data[:confirmed_add_today]
     thailand_summary.healings = data[:healings]
-    thailand_summary.recovered = data[:recovered]
+    thailand_summary.recovered = data[:recovered].zero? ? yesterday.recovered : data[:recovered]
     thailand_summary.deaths = data[:deaths]
     
     unless ddc.nil?
