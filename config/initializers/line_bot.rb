@@ -38,7 +38,6 @@ class LineBot
       data = GlobalSummary.find_by(date: Date.today).as_json({api: true}).with_indifferent_access
       header[:sub_title_str] = "#{data[:confirmed_add_today].to_delimited} คน"
       contents = data_to_str(data, isConfirmed, isHealings, isRecovered, isDeaths)
-      contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน"
       contents << "เสียชีวิตเพิ่มขึ้น #{data[:deaths_add_today].to_delimited} คน"
     else
       world_data = Covid.world

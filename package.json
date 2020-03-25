@@ -24,6 +24,7 @@
 		"@rails/ujs": "^6.0.0-alpha",
 		"@rails/webpacker": "^4.0.7",
 		"@swimlane/ngx-datatable": "^15.0.2",
+		"angular-count-to": "^0.0.3",
 		"angular-material": "^1.1.19",
 		"angular-material-multilevel-menu": "^1.5.1",
 		"babel-runtime": "^6.26.0",

@@ -28,4 +28,8 @@ class DateTime
   def to_year_month_day
     self.strftime('%Y-%m-%d')
   end
+
+  def last_updated
+    self.localtime.to_difference_str
+  end
 end

@@ -56,6 +56,7 @@ import {
 import { AgmCoreModule } from '@agm/core';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { CountToModule } from 'angular-count-to';
 
 enableProdMode();
 
@@ -123,6 +124,7 @@ const appRoutes: Routes = [
 		MaterialModule,
 		LoadingBarHttpClientModule,
 		FlexLayoutModule,
+		CountToModule,
 		AgmCoreModule.forRoot({
 			apiKey: environment.googleApiKey
 		})
