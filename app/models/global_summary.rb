@@ -2,7 +2,7 @@ class GlobalSummary < ApplicationRecord
   before_save :send_notification
 
   def send_notification
-    meesage = "\n\nจำนวนผู้ติดเชื้อ Covid19 \n- ทั่วโลก \n- เพิ่มขึ้น #{confirmed_add_today&.to_delimited || 0} คน \n\n- ติดเชื้อ #{confirmed&.to_delimited || 0} คน \n- กำลังรักษา #{healings&.to_delimited || 0} คน \n- หายแล้ว #{recovered&.to_delimited || 0} คน \n- เสียชีวิต #{deaths&.to_delimited || 0} คน \n- เสียชีวิตเพิ่มขึ้น #{deaths_add_today&.to_delimited || 0} คน \n\n* #{last_updated}"
+    meesage = "\n\nจำนวนผู้ติดเชื้อ Covid19 \n- ทั่วโลก \n- เพิ่มขึ้น #{confirmed_add_today&.to_delimited || 0} คน \n\n- ติดเชื้อ #{confirmed&.to_delimited || 0} คน \n- กำลังรักษา #{healings&.to_delimited || 0} คน \n- หายแล้ว #{recovered&.to_delimited || 0} คน \n- เสียชีวิต #{deaths&.to_delimited || 0} คน \n- เสียชีวิตเพิ่มขึ้น #{deaths_add_today&.to_delimited || 0} คน \n\n* #{DateTime.now.last_updated}"
 
     LineNoti.send(meesage) if self.changed?
   end
