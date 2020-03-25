@@ -577,13 +577,27 @@ class Covid
     }
   end
 
+  def self.api_arcgis_global(url)
+    response = RestClient::Request.new({
+      method: :get,
+      url: url,
+      headers: {
+        authority: ENV['arcgis_authority'],
+        referer: ENV['arcgis_referer']
+      },
+      timeout: 200
+    }).execute do |response, request, result|
+      return JSON.parse(response.to_str)['features'].first['attributes']['value']
+    end
+  end
+
   def self.global_summary
-    confirmed = api_ddc_global(ENV['covid_thai_ddc_global_confirmed_host'])
-    confirmed_add_today = api_ddc_global(ENV['covid_thai_ddc_global_confirmed_add_today_host'])
-    recovered = api_ddc_global(ENV['covid_thai_ddc_global_recovered_host'])
-    critical = api_ddc_global(ENV['covid_thai_ddc_global_critical_host'])
-    deaths = api_ddc_global(ENV['covid_thai_ddc_global_deaths_host'])
-    deaths_add_today = api_ddc_global(ENV['covid_thai_ddc_global_deaths_add_today_host'])
+    yesterday =  GlobalSummary.find_by(date: Date.yesterday)
+    confirmed = Covid.api_arcgis_global(ENV['arcgis_global_confirmed_host'])
+    recovered = Covid.api_arcgis_global(ENV['arcgis_global_recovered_host'])
+    deaths = Covid.api_arcgis_global(ENV['arcgis_global_deaths_host'])
+    confirmed_add_today = (confirmed - yesterday.confirmed) || 0
+    deaths_add_today = (confirmed - yesterday.deaths) || 0
 
     date = Date.today
     global_summary = GlobalSummary.find_by(date: date)
