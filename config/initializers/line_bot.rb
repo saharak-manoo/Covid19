@@ -40,9 +40,8 @@ class LineBot
       contents = data_to_str(data, isConfirmed, isHealings, isRecovered, isDeaths)
       contents << "เสียชีวิตเพิ่มขึ้น #{data[:deaths_add_today].to_delimited} คน"
     else
-      world_data = Covid.world
       thai_infecteds = Covid.thai_summary.detect { |d| d[:province].include?(location) || d[:province_eng].include?(location) }
-      world = world_data[:statistics].detect { |d| d[:country].include?(location) || d[:country_th].include?(location) }
+      world = World.find_by("country ILIKE :keyword OR country_th ILIKE :keyword", keyword: "%#{location}%")
 
       if thai_infecteds.present?
         header[:title] = thai_infecteds[:province] || location
@@ -63,7 +62,7 @@ class LineBot
           "การเดินทาง: #{world[:travel]}"
         ]
 
-        return flex(flex_msg(header, contents, "* ข้อมูลนี้ #{world_data[:last_updated]}", world[:confirmed_color]), header[:title])
+        return flex(flex_msg(header, contents, "* ข้อมูลนี้ #{world[:last_updated]}", world[:confirmed_color]), header[:title])
       else
         return { type: 'text', text: "ขออภัยไม่มีข้อมูลของ #{location} โปรดลองเป็น ชื่อจังหวัด เช่น เชียงใหม่, กรุงเทพ" }
       end  
