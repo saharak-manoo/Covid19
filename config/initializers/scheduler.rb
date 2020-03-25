@@ -8,7 +8,7 @@ scheduler.every '1m' do
     ap ">>> thailand summary done"
   rescue => e
     ap ">>> thailand summary Exception"
-    LineNoti.send_to_dev("ไม่สามารถเข้าถึงเว็ป DDC Thailand ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
+    LineNoti.send_to_dev("ไม่สามารถ Updated Thailand ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
   end
 end
 
@@ -21,6 +21,6 @@ scheduler.every '5m' do
   rescue => e
     Covid.global_summary_workpoint
     ap ">>> global summary Exception"
-    LineNoti.send_to_dev("ไม่สามารถเข้าถึงเว็ป DDC Global ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
+    LineNoti.send_to_dev("ไม่สามารถ Updated Global ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
   end
 end
