@@ -190,13 +190,20 @@ export class HomeComponent {
 	@ViewChild('infectedByProvince', { read: MatSort, static: true }) infectedByProvinceSort: MatSort;
 	@ViewChild('infectedByProvincePaginator', { static: true })
 	infectedByProvincePaginator: MatPaginator;
+	from = 0;
+	duration = 4;
+	refreshInterval = 30;
+	step = 0;
+	steps = 0;
+	num = 0;
+	increment = 0;
 
 	ngOnInit() {
 		this.getLocation();
-		this.loadData();
 		this.loadCasesThai();
 		this.loadHospital();
 		this.loadSafeZone();
+		this.loadData();
 
 		setInterval(() => {
 			if (this.barChartType === 'bar') {
@@ -287,6 +294,34 @@ export class HomeComponent {
 		}, 30000);
 	}
 
+	calculate(isLocal, name, to, from, duration, refreshInterval, step) {
+		duration = duration * 1000;
+		let steps = Math.ceil(duration / refreshInterval);
+		let increment = (to - from) / steps;
+		let num = from;
+		this.tick(isLocal, name, to, 0, 4, 30, 0, increment, num, steps);
+	}
+
+	tick(isLocal, name, to, from, duration, refreshInterval, step, increment, num, steps) {
+		let key = 'total';
+		if (isLocal) key += 'Local';
+		setTimeout(() => {
+			num += increment;
+			step++;
+			if (step >= steps) {
+				num = to;
+				try {
+					this[key][name] = to;
+				} catch {}
+			} else {
+				try {
+					this[key][name] = Math.round(num);
+				} catch {}
+				this.tick(isLocal, name, to, from, duration, refreshInterval, step, increment, num, steps);
+			}
+		}, refreshInterval);
+	}
+
 	loadData() {
 		this.loadThailandSummary();
 		this.thailandRetroact();
@@ -346,6 +381,9 @@ export class HomeComponent {
 				let response: any = resp;
 				this.localLastUpdated = response.data.last_updated;
 				this.totalLocal = response.data;
+				Object.keys(this.totalLocal).forEach(key => {
+					this.calculate(true, key, this.totalLocal[key], 0, 4, 30, 0);
+				});
 				this.pieChartDataLocal = [
 					this.totalLocal.confirmed,
 					this.totalLocal.healings,
@@ -403,6 +441,9 @@ export class HomeComponent {
 				let response: any = resp;
 				this.globleLastUpdated = response.data.last_updated;
 				this.total = response.data;
+				Object.keys(this.total).forEach(key => {
+					this.calculate(false, key, this.total[key], 0, 4, 30, 0);
+				});
 				this.pieChartData = [
 					this.total.confirmed,
 					this.total.healings,
@@ -484,5 +525,18 @@ export class HomeComponent {
 		if (this.infectedByProvinceDataSource.paginator) {
 			this.infectedByProvinceDataSource.paginator.firstPage();
 		}
+	}
+
+	animateValue(value, start, end, duration) {
+		var range = end - start;
+		var current = start;
+		var increment = end > start ? 1 : -1;
+		var stepTime = Math.abs(Math.floor(duration / range));
+		var timer = setInterval(function() {
+			value += increment;
+			if (value == end) {
+				clearInterval(timer);
+			}
+		}, stepTime);
 	}
 }
