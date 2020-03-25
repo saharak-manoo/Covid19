@@ -26,7 +26,7 @@ class Api::CovidsController < Api::ApplicationController
   end
 
   def world
-    render json: { data: Covid.world }, status: :ok
+    render json: { data: World.all.as_json({ api: true }) }, status: :ok
   end
 
   def cases

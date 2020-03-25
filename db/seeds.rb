@@ -7,7 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 if User.count.zero?
-  user = User.create!(email: 'admin@admin.com', first_name: 'admin', last_name: 'tester', phone_number: '0123456789',                         password: 'password', confirmed_at: Time.now)
+  user = User.create!(email: 'admin@admin.com', first_name: 'admin', last_name: 'tester', phone_number: '0123456789', password: 'password', confirmed_at: Time.now)
   user.add_role :admin
   ap "create admin user => #{user.full_name}"
 end
@@ -163,42 +163,50 @@ if Hospital.count.zero?
   end  
 end
 
-country_retroacts = Covid.country_retroact('th')
+if ThailandSummary.count.zero?
+  country_retroacts = Covid.country_retroact('th')
 
-country_retroacts.each do |key|
-  retroact = key[1]
-  date = retroact[:date]
+  country_retroacts.each do |key|
+    retroact = key[1]
+    date = retroact[:date]
 
-  thailand_summary = ThailandSummary.find_by(date: date)
-  thailand_summary = ThailandSummary.new if thailand_summary.nil?
+    thailand_summary = ThailandSummary.find_by(date: date)
+    thailand_summary = ThailandSummary.new if thailand_summary.nil?
 
-  thailand_summary.date = date
-  thailand_summary.confirmed = retroact[:confirmed]
-  thailand_summary.healings = retroact[:healings]
-  thailand_summary.recovered = retroact[:recovered]
-  thailand_summary.deaths = retroact[:deaths]
-  thailand_summary.created_at = retroact[:updated_at]
-  thailand_summary.updated_at = retroact[:updated_at]
+    thailand_summary.date = date
+    thailand_summary.confirmed = retroact[:confirmed]
+    thailand_summary.healings = retroact[:healings]
+    thailand_summary.recovered = retroact[:recovered]
+    thailand_summary.deaths = retroact[:deaths]
+    thailand_summary.created_at = retroact[:updated_at]
+    thailand_summary.updated_at = retroact[:updated_at]
 
-  ap "Create Thailand Summary #{date}" if thailand_summary.save
+    ap "Create Thailand Summary #{date}" if thailand_summary.save
+  end
 end
 
-retroacts = Covid.retroact
+if GlobalSummary.count.zero?
+  retroacts = Covid.retroact
 
-retroacts.each do |key|
-  retroact = key[1]
-  date = retroact[:date]
+  retroacts.each do |key|
+    retroact = key[1]
+    date = retroact[:date]
 
-  global_summary = GlobalSummary.find_by(date: date)
-  global_summary = GlobalSummary.new if global_summary.nil?
+    global_summary = GlobalSummary.find_by(date: date)
+    global_summary = GlobalSummary.new if global_summary.nil?
 
-  global_summary.date = date
-  global_summary.confirmed = retroact[:confirmed]
-  global_summary.healings = retroact[:healings]
-  global_summary.recovered = retroact[:recovered]
-  global_summary.deaths = retroact[:deaths]
-  global_summary.created_at = retroact[:updated_at]
-  global_summary.updated_at = retroact[:updated_at]
+    global_summary.date = date
+    global_summary.confirmed = retroact[:confirmed]
+    global_summary.healings = retroact[:healings]
+    global_summary.recovered = retroact[:recovered]
+    global_summary.deaths = retroact[:deaths]
+    global_summary.created_at = retroact[:updated_at]
+    global_summary.updated_at = retroact[:updated_at]
 
-  ap "Create Global Summary #{date}" if global_summary.save
+    ap "Create Global Summary #{date}" if global_summary.save
+  end
+end
+
+if World.count.zero?
+  Covid.save_world
 end

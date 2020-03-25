@@ -454,7 +454,7 @@ export class HomeComponent {
 		this.appService.all('api/covids/world').subscribe(
 			resp => {
 				let response: any = resp;
-				this.allCountryDataSource = new MatTableDataSource<any>(response.data.statistics);
+				this.allCountryDataSource = new MatTableDataSource<any>(response.data);
 				this.allCountryDataSource.paginator = this.allCountryPaginator;
 				this.allCountryDataSource.sort = this.allCountrySort;
 			},

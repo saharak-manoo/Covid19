@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_24_090750) do
+ActiveRecord::Schema.define(version: 2020_03_25_140925) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -144,6 +144,19 @@ ActiveRecord::Schema.define(version: 2020_03_24_090750) do
     t.index ["role_id"], name: "index_users_roles_on_role_id"
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
     t.index ["user_id"], name: "index_users_roles_on_user_id"
+  end
+
+  create_table "worlds", force: :cascade do |t|
+    t.string "country", null: false
+    t.string "country_th", null: false
+    t.string "country_flag", null: false
+    t.string "travel", null: false
+    t.integer "confirmed", default: 0, null: false
+    t.integer "healings", default: 0, null: false
+    t.integer "recovered", default: 0, null: false
+    t.integer "deaths", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

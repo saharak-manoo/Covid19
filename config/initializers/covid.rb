@@ -253,6 +253,25 @@ class Covid
     }
   end
 
+  def self.save_world
+    datas = world
+
+    datas[:statistics].each do |data|
+      world = World.find_by(country: data[:country])
+      world = World.new if world.nil?
+      world.country = data[:country]
+      world.country_th = data[:country_th]
+      world.country_flag = data[:country_flag]
+      world.confirmed = data[:confirmed]
+      world.healings = data[:healings]
+      world.deaths = data[:deaths]
+      world.recovered = data[:recovered]
+      world.travel = data[:travel]
+
+      world.save
+    end
+  end
+
   def self.trends
     api_workpoint('trend')
   end
