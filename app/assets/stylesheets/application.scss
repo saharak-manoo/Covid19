@@ -86,7 +86,7 @@ mat-card-title {
 }
 
 .map-full {
-	height: 93%;
+	height: 93vh;
 	width: auto;
 }
 
@@ -222,4 +222,11 @@ button:focus {
 
 .case-management-observation {
 	color: #ffd816;
+}
+
+.app-toolbar {
+	position: sticky;
+	position: -webkit-sticky;
+	top: 0;
+	z-index: 1000;
 }

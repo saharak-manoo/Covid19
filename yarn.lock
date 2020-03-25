@@ -1226,6 +1226,11 @@ angular-aria@^1.6.5:
   resolved "https://registry.yarnpkg.com/angular-aria/-/angular-aria-1.7.8.tgz#3954250ef516b57cdd3cdf41ff4ee6fcfdc84ceb"
   integrity sha512-facq/111sZKL2wUUqRA1GnGt+lZ8KAcX9Aw04cNA+OyEkoaoRC77NY4VSOTQxghlSd0OPAdLeFnmETnuiWrpLg==
 
+angular-count-to@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/angular-count-to/-/angular-count-to-0.0.3.tgz#d63d6f4220664b2a9420c30cb0fa22cd776a4d73"
+  integrity sha512-iEDLNpw21FyYfm3kvDkn8Bq3w86XXT0I7jgOUKYZNz3jsak8IDgF1p2/VCG6biEedC2X5+ZwYZTg6kAExYuRUA==
+
 angular-material-badge@^1.2.2:
   version "1.2.9"
   resolved "https://registry.yarnpkg.com/angular-material-badge/-/angular-material-badge-1.2.9.tgz#cf60a67d1fef9f1b4808f21ac8cea4879c08d080"

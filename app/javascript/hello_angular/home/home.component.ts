@@ -33,19 +33,25 @@ export class HomeComponent {
 			position: 'bottom'
 		}
 	};
-	pieChartDataLocal: number[] = [0, 0, 0, 0, 0];
-	pieChartLabels: Label[] = [
+	pieChartDataLocal: number[] = [0, 0, 0, 0];
+	pieChartLabelsLocal: Label[] = [
 		['ผู้ติดเชื้อ'],
 		['กำลังอยู่ในการรักษา'],
 		['อาการหนัก'],
 		['รักษาหาย'],
 		['เสียชีวิต']
 	];
-	pieChartData: number[] = [0, 0, 0, 0, 0];
+	pieChartLabels: Label[] = [['ผู้ติดเชื้อ'], ['กำลังอยู่ในการรักษา'], ['รักษาหาย'], ['เสียชีวิต']];
+	pieChartData: number[] = [0, 0, 0, 0];
 	pieChartType: ChartType = 'pie';
-	pieChartColors = [
+	pieChartColorsLocal = [
 		{
 			backgroundColor: ['#FCD35E', '#BFFD59', '#713ff9', '#5EFCAD', '#FC5E71']
+		}
+	];
+	pieChartColors = [
+		{
+			backgroundColor: ['#FCD35E', '#BFFD59', '#5EFCAD', '#FC5E71']
 		}
 	];
 	totalLocal: any = {
@@ -100,11 +106,10 @@ export class HomeComponent {
 	barChartData: any = [
 		{ data: [0, 0, 0, 0, 0, 0, 0], label: 'ผู้ติดเชื้อ' },
 		{ data: [0, 0, 0, 0, 0, 0, 0], label: 'กำลังอยู่ในการรักษา' },
-		{ data: [0, 0, 0, 0, 0, 0, 0], label: 'อาการหนัก' },
 		{ data: [0, 0, 0, 0, 0, 0, 0], label: 'รักษาหายแล้ว' },
 		{ data: [0, 0, 0, 0, 0, 0, 0], label: 'เสียชีวิต' }
 	];
-	barChartColors = [
+	barChartColorsLocal = [
 		{
 			backgroundColor: 'rgb(252, 211, 94, 0.5)',
 			borderColor: '#FCD35E'
@@ -116,6 +121,24 @@ export class HomeComponent {
 		{
 			backgroundColor: 'rgb(113, 63, 249, 0.5)',
 			borderColor: '#713ff9'
+		},
+		{
+			backgroundColor: 'rgb(94, 252, 173, 0.5)',
+			borderColor: '#5EFCAD'
+		},
+		{
+			backgroundColor: 'rgb(252, 94, 113, 0.5)',
+			borderColor: '#FC5E71'
+		}
+	];
+	barChartColors = [
+		{
+			backgroundColor: 'rgb(252, 211, 94, 0.5)',
+			borderColor: '#FCD35E'
+		},
+		{
+			backgroundColor: 'rgb(191, 253, 89, 0.5)',
+			borderColor: '#BFFD59'
 		},
 		{
 			backgroundColor: 'rgb(94, 252, 173, 0.5)',
@@ -170,15 +193,15 @@ export class HomeComponent {
 
 	ngOnInit() {
 		this.getLocation();
-		this.loadData();
 		this.loadCasesThai();
 		this.loadHospital();
 		this.loadSafeZone();
+		this.loadData();
 
 		setInterval(() => {
 			if (this.barChartType === 'bar') {
 				this.barChartType = 'line';
-				this.barChartColors = [
+				this.barChartColorsLocal = [
 					{
 						backgroundColor: 'rgb(252, 211, 94, 0.5)',
 						borderColor: '#FCD35E'
@@ -200,9 +223,27 @@ export class HomeComponent {
 						borderColor: '#FC5E71'
 					}
 				];
+				this.barChartColors = [
+					{
+						backgroundColor: 'rgb(252, 211, 94, 0.5)',
+						borderColor: '#FCD35E'
+					},
+					{
+						backgroundColor: 'rgb(191, 253, 89, 0.5)',
+						borderColor: '#BFFD59'
+					},
+					{
+						backgroundColor: 'rgb(94, 252, 173, 0.5)',
+						borderColor: '#5EFCAD'
+					},
+					{
+						backgroundColor: 'rgb(252, 94, 113, 0.5)',
+						borderColor: '#FC5E71'
+					}
+				];
 			} else {
 				this.barChartType = 'bar';
-				this.barChartColors = [
+				this.barChartColorsLocal = [
 					{
 						backgroundColor: '#FCD35E',
 						borderColor: '#FCD35E'
@@ -224,8 +265,54 @@ export class HomeComponent {
 						borderColor: '#FC5E71'
 					}
 				];
+				this.barChartColors = [
+					{
+						backgroundColor: '#FCD35E',
+						borderColor: '#FCD35E'
+					},
+					{
+						backgroundColor: '#BFFD59',
+						borderColor: '#BFFD59'
+					},
+					{
+						backgroundColor: '#5EFCAD',
+						borderColor: '#5EFCAD'
+					},
+					{
+						backgroundColor: '#FC5E71',
+						borderColor: '#FC5E71'
+					}
+				];
 			}
 		}, 30000);
+	}
+
+	calculate(isLocal, name, to, from, duration, refreshInterval, step) {
+		duration = duration * 1000;
+		let steps = Math.ceil(duration / refreshInterval);
+		let increment = (to - from) / steps;
+		let num = from;
+		this.tick(isLocal, name, to, 0, 4, 30, 0, increment, num, steps);
+	}
+
+	tick(isLocal, name, to, from, duration, refreshInterval, step, increment, num, steps) {
+		let key = 'total';
+		if (isLocal) key += 'Local';
+		setTimeout(() => {
+			num += increment;
+			step++;
+			if (step >= steps) {
+				num = to;
+				try {
+					this[key][name] = to;
+				} catch {}
+			} else {
+				try {
+					this[key][name] = Math.round(num);
+				} catch {}
+				this.tick(isLocal, name, to, from, duration, refreshInterval, step, increment, num, steps);
+			}
+		}, refreshInterval);
 	}
 
 	loadData() {
@@ -287,6 +374,9 @@ export class HomeComponent {
 				let response: any = resp;
 				this.localLastUpdated = response.data.last_updated;
 				this.totalLocal = response.data;
+				Object.keys(this.totalLocal).forEach(key => {
+					this.calculate(true, key, this.totalLocal[key], 0, 4, 30, 0);
+				});
 				this.pieChartDataLocal = [
 					this.totalLocal.confirmed,
 					this.totalLocal.healings,
@@ -328,9 +418,8 @@ export class HomeComponent {
 				Object.keys(response.data).forEach((key, index) => {
 					this.barChartData[0].data[index] = response.data[key].confirmed;
 					this.barChartData[1].data[index] = response.data[key].healings;
-					this.barChartData[2].data[index] = response.data[key].critical;
-					this.barChartData[3].data[index] = response.data[key].recovered;
-					this.barChartData[4].data[index] = response.data[key].deaths;
+					this.barChartData[2].data[index] = response.data[key].recovered;
+					this.barChartData[3].data[index] = response.data[key].deaths;
 				});
 			},
 			e => {
@@ -345,10 +434,12 @@ export class HomeComponent {
 				let response: any = resp;
 				this.globleLastUpdated = response.data.last_updated;
 				this.total = response.data;
+				Object.keys(this.total).forEach(key => {
+					this.calculate(false, key, this.total[key], 0, 4, 30, 0);
+				});
 				this.pieChartData = [
 					this.total.confirmed,
 					this.total.healings,
-					this.total.critical,
 					this.total.recovered,
 					this.total.deaths
 				];
@@ -427,5 +518,18 @@ export class HomeComponent {
 		if (this.infectedByProvinceDataSource.paginator) {
 			this.infectedByProvinceDataSource.paginator.firstPage();
 		}
+	}
+
+	animateValue(value, start, end, duration) {
+		var range = end - start;
+		var current = start;
+		var increment = end > start ? 1 : -1;
+		var stepTime = Math.abs(Math.floor(duration / range));
+		var timer = setInterval(function() {
+			value += increment;
+			if (value == end) {
+				clearInterval(timer);
+			}
+		}, stepTime);
 	}
 }
