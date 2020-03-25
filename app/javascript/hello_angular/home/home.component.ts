@@ -211,6 +211,10 @@ export class HomeComponent {
 						borderColor: '#BFFD59'
 					},
 					{
+						backgroundColor: 'rgb(113, 63, 249, 0.5)',
+						borderColor: '#713ff9'
+					},
+					{
 						backgroundColor: 'rgb(94, 252, 173, 0.5)',
 						borderColor: '#5EFCAD'
 					},
@@ -227,10 +231,6 @@ export class HomeComponent {
 					{
 						backgroundColor: 'rgb(191, 253, 89, 0.5)',
 						borderColor: '#BFFD59'
-					},
-					{
-						backgroundColor: 'rgb(113, 63, 249, 0.5)',
-						borderColor: '#713ff9'
 					},
 					{
 						backgroundColor: 'rgb(94, 252, 173, 0.5)',
@@ -253,6 +253,10 @@ export class HomeComponent {
 						borderColor: '#BFFD59'
 					},
 					{
+						backgroundColor: '#713ff9',
+						borderColor: '#713ff9'
+					},
+					{
 						backgroundColor: '#5EFCAD',
 						borderColor: '#5EFCAD'
 					},
@@ -269,10 +273,6 @@ export class HomeComponent {
 					{
 						backgroundColor: '#BFFD59',
 						borderColor: '#BFFD59'
-					},
-					{
-						backgroundColor: '#713ff9',
-						borderColor: '#713ff9'
 					},
 					{
 						backgroundColor: '#5EFCAD',
