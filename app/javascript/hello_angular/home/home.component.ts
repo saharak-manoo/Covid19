@@ -190,13 +190,6 @@ export class HomeComponent {
 	@ViewChild('infectedByProvince', { read: MatSort, static: true }) infectedByProvinceSort: MatSort;
 	@ViewChild('infectedByProvincePaginator', { static: true })
 	infectedByProvincePaginator: MatPaginator;
-	from = 0;
-	duration = 4;
-	refreshInterval = 30;
-	step = 0;
-	steps = 0;
-	num = 0;
-	increment = 0;
 
 	ngOnInit() {
 		this.getLocation();
