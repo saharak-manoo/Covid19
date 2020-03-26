@@ -2,9 +2,21 @@ class GlobalSummary < ApplicationRecord
   before_save :send_notification
 
   def send_notification
-    meesage = "\n\nจำนวนผู้ติดเชื้อ Covid19 \n- ทั่วโลก \n- เพิ่มขึ้น #{confirmed_add_today&.to_delimited || 0} คน \n\n- ติดเชื้อ #{confirmed&.to_delimited || 0} คน \n- กำลังรักษา #{healings&.to_delimited || 0} คน \n- หายแล้ว #{recovered&.to_delimited || 0} คน \n- เสียชีวิต #{deaths&.to_delimited || 0} คน \n- เสียชีวิตเพิ่มขึ้น #{deaths_add_today&.to_delimited || 0} คน \n\n* #{DateTime.now.last_updated}"
+    meesage = "\n\nจำนวนผู้ติดเชื้อ Covid19 \n- ทั่วโลก \n- เพิ่มขึ้น #{confirmed_add_today&.to_delimited || 0} คน \n\n- ติดเชื้อ #{confirmed&.to_delimited || 0} คน \n- กำลังรักษา #{healings&.to_delimited || 0} คน \n- หายแล้ว #{recovered&.to_delimited || 0} คน \n- หายแล้วเพิ่มขึ้น #{recovered_add_today&.to_delimited || 0} คน \n- เสียชีวิต #{deaths&.to_delimited || 0} คน \n- เสียชีวิตเพิ่มขึ้น #{deaths_add_today&.to_delimited || 0} คน \n\n* #{DateTime.now.last_updated}"
 
     LineNoti.send(meesage) if self.changed?
+  end
+
+  def yesterday
+    yesterday = GlobalSummary.find_by(date: Date.yesterday)
+  end
+
+  def healings_add_today
+    healings - (yesterday&.healings || 0)
+  end
+
+  def recovered_add_today
+    recovered - (yesterday&.recovered || 0)
   end
 
   def last_updated
@@ -14,6 +26,8 @@ class GlobalSummary < ApplicationRecord
   def as_json(options = {})
     if options[:api]
       json = super().except('id')
+      json[:healings] = healings_add_today
+      json[:recovered_add_today] = recovered_add_today
       json[:last_updated] = last_updated
 
       json
