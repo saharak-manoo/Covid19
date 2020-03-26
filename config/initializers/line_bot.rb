@@ -297,7 +297,7 @@ class LineBot
     contents = []
 
     if isConfirmed
-      contents << "ติดเชื้อทั้งหมด #{data[:confirmed].to_delimited} คน \n(เพิ่มขึ้น #{data[:confirmed_add_today].to_delimited} คน)"
+      contents << "ติดเชื้อทั้งหมด #{data[:confirmed].to_delimited} คน"
     elsif isHealings
       contents <<  "กำลังรักษาทั้งหมด #{data[:healings].to_delimited} คน \n(เพิ่มขึ้น #{data[:healings_add_today].to_delimited} คน)"
     elsif isRecovered
@@ -306,7 +306,7 @@ class LineBot
       contents <<  "เสียชีวิตแล้วทั้งหมด #{data[:deaths].to_delimited} คน \n(เพิ่มขึ้น #{data[:deaths_add_today].to_delimited} คน)"
     elsif !isConfirmed && !isHealings && !isRecovered && !isDeaths
       contents = [
-        "ติดเชื้อทั้งหมด #{data[:confirmed].to_delimited} คน \n(เพิ่มขึ้น #{data[:confirmed_add_today].to_delimited} คน)",
+        "ติดเชื้อทั้งหมด #{data[:confirmed].to_delimited} คน",
         "กำลังรักษาทั้งหมด #{data[:healings].to_delimited} คน \n(เพิ่มขึ้น #{data[:healings_add_today].to_delimited} คน)",
         "รักษาหายแล้วทั้งหมด #{data[:recovered].to_delimited} คน \n(เพิ่มขึ้น #{data[:recovered_add_today].to_delimited} คน)",
         "เสียชีวิตแล้วทั้งหมด #{data[:deaths].to_delimited} คน \n(เพิ่มขึ้น #{data[:deaths_add_today].to_delimited} คน)"

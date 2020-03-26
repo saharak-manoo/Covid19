@@ -94,7 +94,7 @@ class Api::CovidsController < Api::ApplicationController
   end
 
   def thailand_summary
-    render json: { data: ThailandSummary.find_by(date: Date.today).as_json({api: true}) || ThailandSummary.find_by(date: Date.yesterday).as_json({api: true})  }, status: :ok
+    render json: { data: ThailandSummary.find_by(date: Date.today).as_json({api: true}) || ThailandSummary.find_by(date: Date.yesterday).as_json({api: true}) }, status: :ok
   end  
 
   def global_summary
