@@ -592,12 +592,13 @@ class Covid
       global_summary = GlobalSummary.new if global_summary.nil?
 
       confirmed = global_confirmed
+      confirmed_add_today = ((confirmed - yesterday.confirmed) || 0).non_negative
       recovered = global_recovered
       deaths = global_deaths
       deaths_add_today = ((deaths - yesterday.deaths) || 0).non_negative
 
       global_summary.confirmed = confirmed
-      global_summary.confirmed_add_today = global_confirmed_add_today
+      global_summary.confirmed_add_today = confirmed_add_today
       global_summary.healings = ((confirmed - recovered) - deaths || 0).non_negative
       global_summary.recovered = global_recovered
       global_summary.critical = global_critical
