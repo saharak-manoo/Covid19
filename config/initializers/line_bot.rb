@@ -27,7 +27,7 @@ class LineBot
 
     if THAI.include?(location)
       color = "#0367D3"
-      data = ThailandSummary.find_by(date: Date.today).as_json({api: true}).with_indifferent_access
+      data = ThailandSummary.find_by(date: Date.today).as_json({api: true})&.with_indifferent_access
       header[:sub_title_str] = "#{data[:confirmed_add_today].to_delimited} คน"
       contents = data_to_str(data, isConfirmed, isHealings, isRecovered, isDeaths)
       contents << "เฝ้าระวังทั้งหมด #{data[:watch_out_collectors].to_delimited} คน \n(เพิ่มขึ้น #{data[:watch_out_collectors_add_today].to_delimited} คน)"
@@ -35,13 +35,13 @@ class LineBot
       contents << "อยู่ที่ รพ. ทั้งหมด #{data[:case_management_admit].to_delimited} คน \n(เพิ่มขึ้น #{data[:case_management_admit_add_today].to_delimited} คน)"
       contents << "สังเกตอาการที่ รพ. ทั้งหมด #{data[:case_management_observation].to_delimited} คน \n(เพิ่มขึ้น #{data[:case_management_observation_add_today].to_delimited} คน)"
     elsif WORLD.include?(location)
-      data = GlobalSummary.find_by(date: Date.today).as_json({api: true}).with_indifferent_access
+      data = GlobalSummary.find_by(date: Date.today).as_json({api: true})&.with_indifferent_access
       header[:sub_title_str] = "#{data[:confirmed_add_today].to_delimited} คน"
       contents = data_to_str(data, isConfirmed, isHealings, isRecovered, isDeaths)
       contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน \n(เพิ่มขึ้น #{data[:critical_add_today].to_delimited} คน)"
     else
       thai_infecteds = Covid.thai_summary.detect { |d| d[:province].include?(location) || d[:province_eng].include?(location) }
-      world = World.find_by("country ILIKE :keyword OR country_th ILIKE :keyword", keyword: "%#{location}%").as_json({api: true}).with_indifferent_access
+      world = World.find_by("country ILIKE :keyword OR country_th ILIKE :keyword", keyword: "%#{location}%").as_json({api: true})&.with_indifferent_access
 
       if thai_infecteds.present?
         header[:title] = thai_infecteds[:province] || location
