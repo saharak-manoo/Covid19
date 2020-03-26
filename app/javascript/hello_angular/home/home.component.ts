@@ -36,12 +36,12 @@ export class HomeComponent {
 	pieChartDataLocal: number[] = [0, 0, 0, 0];
 	pieChartLabelsLocal: Label[] = [
 		['ผู้ติดเชื้อ'],
-		['กำลังอยู่ในการรักษา'],
+		['กำลังรักษา'],
 		['อาการหนัก'],
 		['รักษาหาย'],
 		['เสียชีวิต']
 	];
-	pieChartLabels: Label[] = [['ผู้ติดเชื้อ'], ['กำลังอยู่ในการรักษา'], ['รักษาหาย'], ['เสียชีวิต']];
+	pieChartLabels: Label[] = [['ผู้ติดเชื้อ'], ['กำลังรักษา'], ['รักษาหาย'], ['เสียชีวิต']];
 	pieChartData: number[] = [0, 0, 0, 0];
 	pieChartType: ChartType = 'pie';
 	pieChartColorsLocal = [
@@ -64,7 +64,13 @@ export class HomeComponent {
 		watch_out_collectors: 0,
 		critical: 0,
 		case_management_admit: 0,
-		case_management_observation: 0
+		case_management_observation: 0,
+		healings_add_today: 0,
+		critical_add_today: 0,
+		recovered_add_today: 0,
+		watch_out_collectors_add_today: 0,
+		case_management_admit_add_today: 0,
+		case_management_observation_add_today: 0
 	};
 	total: any = {
 		confirmed: 0,
@@ -73,7 +79,9 @@ export class HomeComponent {
 		recovered: 0,
 		deaths: 0,
 		deaths_add_today: 0,
-		critical: 0
+		critical: 0,
+		recovered_add_today: 0,
+		healings_add_today: 0
 	};
 	barChartOptions: ChartOptions = {
 		responsive: true,
@@ -96,7 +104,7 @@ export class HomeComponent {
 	};
 	barChartDataLocal: any = [
 		{ data: [0, 0, 0, 0, 0, 0, 0], label: 'ผู้ติดเชื้อ' },
-		{ data: [0, 0, 0, 0, 0, 0, 0], label: 'กำลังอยู่ในการรักษา' },
+		{ data: [0, 0, 0, 0, 0, 0, 0], label: 'กำลังรักษา' },
 		{ data: [0, 0, 0, 0, 0, 0, 0], label: 'อาการหนัก' },
 		{ data: [0, 0, 0, 0, 0, 0, 0], label: 'รักษาหายแล้ว' },
 		{ data: [0, 0, 0, 0, 0, 0, 0], label: 'เสียชีวิต' }
@@ -105,7 +113,7 @@ export class HomeComponent {
 	barChartType: ChartType = 'line';
 	barChartData: any = [
 		{ data: [0, 0, 0, 0, 0, 0, 0], label: 'ผู้ติดเชื้อ' },
-		{ data: [0, 0, 0, 0, 0, 0, 0], label: 'กำลังอยู่ในการรักษา' },
+		{ data: [0, 0, 0, 0, 0, 0, 0], label: 'กำลังรักษา' },
 		{ data: [0, 0, 0, 0, 0, 0, 0], label: 'รักษาหายแล้ว' },
 		{ data: [0, 0, 0, 0, 0, 0, 0], label: 'เสียชีวิต' }
 	];
@@ -454,7 +462,7 @@ export class HomeComponent {
 		this.appService.all('api/covids/world').subscribe(
 			resp => {
 				let response: any = resp;
-				this.allCountryDataSource = new MatTableDataSource<any>(response.data.statistics);
+				this.allCountryDataSource = new MatTableDataSource<any>(response.data);
 				this.allCountryDataSource.paginator = this.allCountryPaginator;
 				this.allCountryDataSource.sort = this.allCountrySort;
 			},

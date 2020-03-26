@@ -6,6 +6,8 @@ scheduler.every '1m' do
   begin
     Covid.thailand_summary
     ap ">>> thailand summary done"
+    Covid.save_world
+    ap ">>> Save world done"
   rescue => e
     ap ">>> thailand summary Exception"
     LineNoti.send_to_dev("ไม่สามารถ Updated Thailand ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
