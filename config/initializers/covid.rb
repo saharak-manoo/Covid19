@@ -516,7 +516,7 @@ class Covid
       name: 'Corona Virus Disease (COVID-19)',
       country: 'Thailand',
       confirmed: confirmed,
-      healings: (confirmed - recovered) - deaths || 0,
+      healings: ((confirmed - recovered) - deaths || 0).non_negative,
       deaths: deaths,
       recovered: recovered,
       critical: severed,
@@ -637,6 +637,9 @@ class Covid
     global_summary.confirmed_add_today = confirmed_add_today
     global_summary.healings = ((confirmed - recovered) - deaths || 0).non_negative
     global_summary.recovered = recovered
+    begin
+      global_summary.critical = Covid.global_critical[:critical]
+    end
     global_summary.deaths = deaths
     global_summary.deaths_add_today = deaths_add_today
 
@@ -659,20 +662,85 @@ class Covid
     global_summary.save
   end
 
+  def self.api_thai_fight_covid
+    RubyCheerio.new((RestClient.get 'https://thaifightcovid.depa.or.th/index.php').to_str)
+  end
+
+  def self.thai_fight_covid
+    begin
+      jQuery = api_thai_fight_covid
+    rescue Exception
+      jQuery = api_thai_fight_covid
+    end
+
+    thai_covid_data = {
+      confirmed: 0,
+      confirmed_add_today: 0,
+      healings: 0,
+      critical: 0,
+      deaths: 0,
+      recovered: 0,
+      updated_at: nil,
+      last_updated: nil
+    }
+
+    jQuery.find('div.info-box-4').each_with_index do |info_box, index|
+      content = info_box.find('div.content').first
+      if index.zero?
+        date_str = content.find('div.text')[0].text
+        updated_at = DateTime.strptime("#{date_str} +07:00", 'ข้อมูลล่าสุดวันที่ %d-%m-%Y').localtime - 543.year
+
+        thai_covid_data[:updated_at] = updated_at
+        thai_covid_data[:last_updated] = DateTime.now.to_difference_str
+      else
+        key = content.find('div.text')[0].text
+        value = content.find('div.number')[0].text.to_i
+
+        case key
+        when 'จำนวนผู้ติดเชื้อ'
+          thai_covid_data[:confirmed] = value
+        when 'ผู้ป่วยกลับบ้านแล้ว'
+          thai_covid_data[:recovered] = value
+        when 'รายใหม่'
+          thai_covid_data[:confirmed_add_today] = value
+        when 'รุนแรง'
+          thai_covid_data[:critical] = value
+        when 'เสียชีวิต'
+          thai_covid_data[:deaths] = value
+        end
+      end
+    end
+
+    thai_covid_data[:healings] = ((thai_covid_data[:confirmed] - thai_covid_data[:recovered]) - thai_covid_data[:deaths] || 0).non_negative
+
+    thai_covid_data
+  end
+
   def self.thailand_summary
     yesterday = ThailandSummary.find_by(date: Date.yesterday)
     workpoint = constants
+
     data = {}
     ddc = nil
+    thai_covid = nil
+
     begin
+      thai_covid = thai_fight_covid
       ddc = thai_ddc
-      # use workpoint
-      if workpoint[:confirmed] > ddc[:confirmed]
+      
+      # use thai fight covid or workpoint
+      if thai_covid[:confirmed] > ddc[:confirmed]
+        ap "Use data >>> thai fight covid"
+        data = thai_covid
+      elsif workpoint[:confirmed] > ddc[:confirmed]
+        ap "Use data >>> workpoint covid"
         data = workpoint
       else
+        ap "Use data >>> ddc covid"
         data = ddc
       end
     rescue => e
+      ap "Use data >>> workpoint covid"
       data = workpoint
     end
 
