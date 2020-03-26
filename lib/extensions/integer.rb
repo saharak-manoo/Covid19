@@ -33,4 +33,8 @@ class Integer
   def nil_or_zero?
     (self.nil? or self == 0)
   end
+
+  def non_negative
+    self.negative? ? 0 : self
+  end
 end

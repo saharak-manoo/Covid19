@@ -26,7 +26,7 @@ class Api::CovidsController < Api::ApplicationController
   end
 
   def world
-    render json: { data: Covid.world }, status: :ok
+    render json: { data: World.all.as_json({ api: true }) }, status: :ok
   end
 
   def cases
@@ -94,11 +94,11 @@ class Api::CovidsController < Api::ApplicationController
   end
 
   def thailand_summary
-    render json: { data: ThailandSummary.find_by(date: Date.today).as_json({api: true}) || ThailandSummary.new.as_json({api: true})  }, status: :ok
+    render json: { data: ThailandSummary.find_by(date: Date.today).as_json({api: true}) || ThailandSummary.find_by(date: Date.yesterday).as_json({api: true}) }, status: :ok
   end  
 
   def global_summary
-    render json: { data: GlobalSummary.find_by(date: Date.today).as_json({api: true}) || GlobalSummary.new.as_json({api: true}) }, status: :ok
+    render json: { data: GlobalSummary.find_by(date: Date.today).as_json({api: true}) || GlobalSummary.find_by(date: Date.yesterday).as_json({api: true}) }, status: :ok
   end
 
   def thailand_retroact

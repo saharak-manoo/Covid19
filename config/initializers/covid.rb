@@ -1,6 +1,6 @@
 class Covid
   CATEGORIES = ['Confirmed', 'Deaths', 'Recovered']
-  COUNTRY_TH = ["ประเทศไทย", "ประเทศญี่ปุ่น", "สิงคโปร์", "ประเทศเนปาล", "ประเทศมาเลเซีย", "แคนาดา", "ออสเตรเลีย", "กัมพูชา", "ศรีลังกา", "ประเทศเยอรมัน", "ฟินแลนด์", "สหรัฐอาหรับเอมิเรตส์", "ฟิลิปปินส์", "อินเดีย", "อิตาลี", "สวีเดน", "สเปน", "เบลเยียม", "อียิปต์", "เลบานอน", "อิรัก", "โอมาน", "อัฟกานิสถาน", "บาห์เรน", "คูเวต", "แอลจีเรีย", "โครเอเชีย", "ประเทศสวิสเซอร์แลนด์", "ออสเตรีย", "อิสราเอล", "ปากีสถาน", "บราซิล", "จอร์เจีย", "กรีซ", "มาซิโดเนียตอนเหนือ", "นอร์เวย์", "โรมาเนีย", "เอสโตเนีย", "ซานมาริโน", "เบลารุส", "ประเทศไอซ์แลนด์", "ประเทศลิธัวเนีย", "เม็กซิโก", "นิวซีแลนด์", "ประเทศไนจีเรีย", "ไอร์แลนด์", "ลักเซมเบิร์ก", "โมนาโก", "กาตาร์", "เอกวาดอร์", "อาเซอร์ไบจาน", "อาร์เมเนีย", "สาธารณรัฐโดมินิกัน", "อินโดนีเซีย", "โปรตุเกส", "อันดอร์รา", "ลัตเวีย", "โมร็อกโก", "ซาอุดิอาระเบีย", "ประเทศเซเนกัล", "อาร์เจนตินา", "ชิลี", "จอร์แดน", "ยูเครน", "ฮังการี", "นสไตน์", "โปแลนด์", "ตูนิเซีย", "บอสเนียและเฮอร์เซโก", "สโลวีเนีย", "แอฟริกาใต้", "ภูฏาน", "แคเมอรูน", "โคลอมเบีย", "คอสตาริกา", "เปรู", "เซอร์เบีย", "สโลวะเกีย", "ไป", "เกาะมอลตา", "มาร์ตินีก", "บัลแกเรีย", "มัลดีฟส์", "บังคลาเทศ", "ประเทศปารากวัย", "แอลเบเนีย", "ประเทศไซปรัส", "บรูไน", "สหรัฐ", "บูร์กินาฟาโซ", "เมืองวาติกัน", "ประเทศมองโกเลีย", "ปานามา", "ประเทศจีน", "อิหร่าน", "เกาหลีใต้", "ฝรั่งเศส", "เรือสำราญ", "เดนมาร์ก", "เช็ก", "ไต้หวัน", "เวียดนาม", "รัสเซีย", "มอลโดวา", "โบลิเวีย", "ฮอนดูรัส", "ประเทศอังกฤษ", "สาธารณรัฐคองโก", "ชายฝั่งงาช้าง", "เกาะจาเมกา", "ไก่งวง", "คิวบา", "กายอานา", "คาซัคสถาน", "สาธารณรัฐเอธิโอเปีย", "ซูดาน", "ประเทศกินี", "ประเทศเคนย่า", "แอนติกาและบาร์บูดา", "อุรุกวัย", "ประเทศกานา", "นามิเบีย", "เซเชลส์", "ตรินิแดดและโตเบโก", "เวเนซุเอลา", "สวาซิแลนด์", "ประเทศกาบอง", "กัวเตมาลา", "ประเทศมอริเตเนีย", "รวันดา", "เซนต์ลูเซีย", "เซนต์วินเซนต์และเกรนาดีนส์", "ซูรินาเม", "โคโซโว", "สาธารณรัฐอัฟริกากลาง", "สาธารณรัฐคองโก", "อิเควทอเรียลกินี", "อุซเบกิ", "เนเธอร์แลนด์", "ประเทศเบนิน", "ประเทศไลบีเรีย", "โซมาเลีย", "ประเทศแทนซาเนีย", "บาร์เบโดส", "มอนเตเนโก", "คีร์กีสถาน", "มอริเชียส", "แซมเบีย", "จิบูตี", "แกมเบีย", "บาฮามาส", "ชาด", "เอลซัลวาดอร์", "ฟิจิ", "นิการากัว", "มาดากัสการ์", "ไฮติ", "แองโกลา", "เคปเวิร์ด", "ประเทศไนเธอร์", "ปาปัวนิวกินี", "ประเทศซิมบับเว", "ติมอร์ตะวันออก", "เอริเทรี", "ยูกันดา", "โดมินิกา", "เกรเนดา", "ประเทศโมซัมบิก", "ซีเรีย", "ประเทศติมอร์ตะวันออก", "อารูบา", "แองกวิลลา", "หมู่เกาะโอลันด์", "อเมริกันซามัว", "ทวิปแอนตาร์กติกา", "ดินแดนทางใต้ของฝรั่งเศสและแอนตาร์กติก", "บุรุนดี", "เซนต์บาร์เธเลมี", "เซนต์เฮเลน่า, แอสเซ็นชันและทริสตันดาคันฮา", "เบลีซ", "เบอร์มิวดา", "แคริบเบียนเนเธอร์แลนด์", "เกาะบูเวต", "บอตสวานา", "หมู่เกาะโคโคส (คีลิง)", "หมู่เกาะคุก", "คอโมโรส", "คูราเซา", "เกาะคริสต์มาส", "หมู่เกาะเคย์เเมน", "ซาฮาร่าตะวันตก", "หมู่เกาะฟอล์คแลนด์", "หมู่เกาะแฟโร", "ไมโครนีเซีย", "เสื้อไหมพรม", "ยิบรอลตา", "ลุป", "กินีบิสเซา", "เกาะกรีนแลนด์", "เฟรนช์เกีย", "กวม", "ฮ่องกง", "เกาะ Heard และ McDonald Islands", "ไอล์ออฟแมน", "เขตมหาสมุทรบริติชอินเดีย", "นิวเจอร์ซีย์", "ประเทศคิริบาส", "เซนต์คิตส์และเนวิส", "ลาว", "ประเทศลิบยา", "เลโซโท", "มาเก๊า", "เซนต์มาร์ติน", "หมู่เกาะมาร์แชลล์", "มาลี", "พม่า", "หมู่เกาะมาเรียนาเหนือ", "มอนต์เซอร์รัต", "มาลาวี", "มายอต", "นิวแคลิโดเนีย", "เกาะนอร์โฟล์ค", "นีอูเอ", "ประเทศนาอูรู", "หมู่เกาะพิตแคร์น", "ปาเลา", "เปอร์โตริโก", "เกาหลีเหนือ", "ปาเลสไตน์", "เฟรนช์โปลินีเซีย", "ประชุม", "เซาท์จอร์เจีย", "สฟาลบาร์และยานไมเอน", "หมู่เกาะโซโลมอน", "เซียร์ราลีโอน", "แซงปีแยร์และมีเกอลง", "ซูดานใต้", "เซาตูเมและปรินซิปี", "เซนต์มาร์ติน", "หมู่เกาะเติกส์และหมู่เกาะเคคอส", "ทาจิกิสถาน", "โตเกเลา", "เติร์กเมนิสถาน", "ตองกา", "ตูวาลู", "หมู่เกาะเล็กรอบนอกของสหรัฐอเมริกา", "หมู่เกาะบริติชเวอร์จิน", "หมู่เกาะเวอร์จินของสหรัฐอเมริกา", "วานูอาตู", "วอลลิซและฟูทานา", "ซามัว", "เยเมน"]
+  COUNTRY_TH = ["อัฟกานิสถาน", "แอลเบเนีย", "แอลจีเรีย", "อเมริกันซามัว", "อันดอร์รา", "แองโกลา", "แองกวิลลา", "ทวิปแอนตาร์กติกา", "แอนติกาและบาร์บูดา", "อาร์เจนตินา", "อาร์เมเนีย", "อารูบา", "ออสเตรเลีย", "ออสเตรีย", "อาเซอร์ไบจาน", "บาฮามาส", "บาห์เรน", "บังคลาเทศ", "บาร์เบโดส", "เบลารุส", "เบลเยียม", "เบลีซ", "ประเทศเบนิน", "เบอร์มิวดา", "ภูฏาน", "โบลิเวีย", "บอสเนียและเฮอร์เซโก", "บอตสวานา", "เกาะบูเวต", "บราซิล", "เขตมหาสมุทรบริติชอินเดีย", "หมู่เกาะบริติชเวอร์จิน", "บรูไน", "บัลแกเรีย", "บูร์กินาฟาโซ", "บุรุนดี", "กัมพูชา", "แคเมอรูน", "แคนาดา", "เคปเวิร์ด", "แคริบเบียนเนเธอร์แลนด์", "หมู่เกาะเคย์เเมน", "สาธารณรัฐอัฟริกากลาง", "ชาด", "ชิลี", "ประเทศจีน", "เกาะคริสต์มาส", "หมู่เกาะโคโคส (คีลิง)", "โคลอมเบีย", "คอโมโรส", "หมู่เกาะคุก", "คอสตาริกา", "โครเอเชีย", "คิวบา", "คูราเซา", "ประเทศไซปรัส", "เช็ก", "สาธารณรัฐคองโก", "เดนมาร์ก", "เจ้าหญิงไดมอนด์", "จิบูตี", "โดมินิกา", "สาธารณรัฐโดมินิกัน", "เอกวาดอร์", "อียิปต์", "เอลซัลวาดอร์", "อิเควทอเรียลกินี", "เอริเทรี", "เอสโตเนีย", "สวาซิแลนด์", "สาธารณรัฐเอธิโอเปีย", "หมู่เกาะฟอล์คแลนด์", "หมู่เกาะแฟโร", "ฟิจิ", "ฟินแลนด์", "ฝรั่งเศส", "เฟรนช์เกีย", "เฟรนช์โปลินีเซีย", "ดินแดนทางใต้ของฝรั่งเศสและแอนตาร์กติก", "ประเทศกาบอง", "แกมเบีย", "จอร์เจีย", "ประเทศเยอรมัน", "ประเทศกานา", "ยิบรอลตา", "กรีซ", "เกาะกรีนแลนด์", "เกรเนดา", "ลุป", "กวม", "กัวเตมาลา", "เสื้อไหมพรม", "ประเทศกินี", "กินีบิสเซา", "กายอานา", "ไฮติ", "เกาะ Heard และ McDonald Islands", "ฮอนดูรัส", "ฮ่องกง", "ฮังการี", "ประเทศไอซ์แลนด์", "อินเดีย", "อินโดนีเซีย", "อิหร่าน", "อิรัก", "ไอร์แลนด์", "ไอล์ออฟแมน", "อิสราเอล", "อิตาลี", "ชายฝั่งงาช้าง", "เกาะจาเมกา", "ประเทศญี่ปุ่น", "นิวเจอร์ซีย์", "จอร์แดน", "คาซัคสถาน", "ประเทศเคนย่า", "ประเทศคิริบาส", "โคโซโว", "คูเวต", "คีร์กีสถาน", "ลาว", "ลัตเวีย", "เลบานอน", "เลโซโท", "ประเทศไลบีเรีย", "ประเทศลิบยา", "นสไตน์", "ประเทศลิธัวเนีย", "ลักเซมเบิร์ก", "มาเก๊า", "มาดากัสการ์", "มาลาวี", "ประเทศมาเลเซีย", "มัลดีฟส์", "มาลี", "เกาะมอลตา", "หมู่เกาะมาร์แชลล์", "มาร์ตินีก", "ประเทศมอริเตเนีย", "มอริเชียส", "มายอต", "เม็กซิโก", "ไมโครนีเซีย", "มอลโดวา", "โมนาโก", "ประเทศมองโกเลีย", "มอนเตเนโก", "มอนต์เซอร์รัต", "โมร็อกโก", "ประเทศโมซัมบิก", "พม่า", "นามิเบีย", "ประเทศนาอูรู", "ประเทศเนปาล", "เนเธอร์แลนด์", "นิวแคลิโดเนีย", "นิวซีแลนด์", "นิการากัว", "ประเทศไนเธอร์", "ประเทศไนจีเรีย", "นีอูเอ", "เกาะนอร์โฟล์ค", "เกาหลีเหนือ", "มาซิโดเนียตอนเหนือ", "หมู่เกาะมาเรียนาเหนือ", "นอร์เวย์", "โอมาน", "ปากีสถาน", "ปาเลา", "ปาเลสไตน์", "ปานามา", "ปาปัวนิวกินี", "ประเทศปารากวัย", "เปรู", "ฟิลิปปินส์", "หมู่เกาะพิตแคร์น", "โปแลนด์", "โปรตุเกส", "เปอร์โตริโก", "กาตาร์", "สาธารณรัฐคองโก", "โรมาเนีย", "รัสเซีย", "รวันดา", "ประชุม", "เซนต์บาร์เธเลมี", "เซนต์เฮเลน่า, แอสเซ็นชันและทริสตันดาคันฮา", "เซนต์คิตส์และเนวิส", "เซนต์ลูเซีย", "เซนต์มาร์ติน", "แซงปีแยร์และมีเกอลง", "เซนต์วินเซนต์และเกรนาดีนส์", "ซามัว", "ซานมาริโน", "ซาอุดิอาระเบีย", "ประเทศเซเนกัล", "เซอร์เบีย", "เซเชลส์", "เซียร์ราลีโอน", "สิงคโปร์", "เซนต์มาร์ติน", "สโลวะเกีย", "สโลวีเนีย", "หมู่เกาะโซโลมอน", "โซมาเลีย", "แอฟริกาใต้", "เซาท์จอร์เจีย", "เกาหลีใต้", "ซูดานใต้", "สเปน", "ศรีลังกา", "ซูดาน", "ซูรินาเม", "สฟาลบาร์และยานไมเอน", "สวีเดน", "ประเทศสวิสเซอร์แลนด์", "ซีเรีย", "เซาตูเมและปรินซิปี", "ไต้หวัน", "ทาจิกิสถาน", "ประเทศแทนซาเนีย", "ประเทศไทย", "ฝั่งตะวันตกและฉนวนกาซา", "ประเทศติมอร์ตะวันออก", "ไป", "โตเกเลา", "ตองกา", "ตรินิแดดและโตเบโก", "ตูนิเซีย", "ไก่งวง", "เติร์กเมนิสถาน", "หมู่เกาะเติกส์และหมู่เกาะเคคอส", "ตูวาลู", "ยูกันดา", "ยูเครน", "สหรัฐอาหรับเอมิเรตส์", "ประเทศอังกฤษ", "สหรัฐ", "เกาะเล็กรอบนอกของสหรัฐอเมริกา", "หมู่เกาะเวอร์จินของสหรัฐอเมริกา", "อุรุกวัย", "อุซเบกิ", "วานูอาตู", "เมืองวาติกัน", "เวเนซุเอลา", "เวียดนาม", "วอลลิซและฟูทานา", "ซาฮาร่าตะวันตก", "เยเมน", "แซมเบีย", "ประเทศซิมบับเว", "หมู่เกาะโอลันด์"]
 
   def self.rest_api(path)
     response = RestClient::Request.new({
@@ -36,7 +36,7 @@ class Covid
         country_id: country_id,
         province: province || nil,
         confirmed: confirmed,
-        healings: (confirmed - recovered) - deaths || 0,
+        healings: ((confirmed - recovered) - deaths || 0).non_negative,
         deaths: deaths,
         recovered: recovered,
         active: active,
@@ -64,7 +64,7 @@ class Covid
 
     { 
       confirmed: confirmed || 0,
-      healings: (confirmed - recovered) - deaths || 0,
+      healings: ((confirmed - recovered) - deaths || 0).non_negative,
       deaths: deaths || 0,
       recovered: recovered || 0,
       date: date,
@@ -206,7 +206,7 @@ class Covid
     data = []
     response = api_workpoint('world')
 
-    response['statistics'].each_with_index do |resp, index|
+    response['statistics'].sort_by { |hash| hash['name'].to_s }.each_with_index do |resp, index|
       travel = resp['travel'] || 'ยังไม่มีความเสี่ยง'
       travel_color = "#000"
 
@@ -218,7 +218,7 @@ class Covid
       end
 
       confirmed = resp['confirmed'].to_i || 0
-      healings = (resp['confirmed'].to_i - resp['recovered'].to_i ) - resp['deaths'].to_i || 0
+      healings = ((resp['confirmed'].to_i - resp['recovered'].to_i ) - resp['deaths'].to_i || 0).non_negative
       deaths = resp['deaths'].to_i || 0
       recovered = resp['recovered'].to_i || 0
 
@@ -243,14 +243,33 @@ class Covid
 
     {
       confirmed: response['totalConfirmed'] || 0,
-      add_today_count: ((response['totalConfirmed'] || 0) - total[:confirmed]) || 0,
-      healings: (response['totalConfirmed'].to_i - response['totalRecovered'].to_i ) - response['totalDeaths'].to_i || 0,
+      add_today_count: (((response['totalConfirmed'] || 0) - total[:confirmed]) || 0).non_negative,
+      healings: ((response['totalConfirmed'].to_i - response['totalRecovered'].to_i ) - response['totalDeaths'].to_i || 0).non_negative,
       deaths: response['totalDeaths'] || 0,
       recovered: response['totalRecovered'] || 0,
       statistics: data,
       updated_at: updated_at,
       last_updated: updated_at.to_difference_str,
     }
+  end
+
+  def self.save_world
+    datas = world
+
+    datas[:statistics].each do |data|
+      world = World.find_by(country: data[:country])
+      world = World.new if world.nil?
+      world.country = data[:country]
+      world.country_th = data[:country_th]
+      world.country_flag = data[:country_flag]
+      world.confirmed = data[:confirmed]
+      world.healings = data[:healings]
+      world.deaths = data[:deaths]
+      world.recovered = data[:recovered]
+      world.travel = data[:travel]
+
+      world.save
+    end
   end
 
   def self.trends
@@ -497,7 +516,7 @@ class Covid
       name: 'Corona Virus Disease (COVID-19)',
       country: 'Thailand',
       confirmed: confirmed,
-      healings: (confirmed - recovered) - deaths || 0,
+      healings: ((confirmed - recovered) - deaths || 0).non_negative,
       deaths: deaths,
       recovered: recovered,
       critical: severed,
@@ -606,8 +625,8 @@ class Covid
       deaths = Covid.api_arcgis_global(ENV['arcgis_global_deaths_host'])
     end
 
-    confirmed_add_today = (confirmed - yesterday.confirmed) || 0
-    deaths_add_today = (deaths - yesterday.deaths) || 0
+    confirmed_add_today = ((confirmed - yesterday.confirmed) || 0).non_negative
+    deaths_add_today = ((deaths - yesterday.deaths) || 0).non_negative
 
     date = Date.today
     global_summary = GlobalSummary.find_by(date: date)
@@ -616,8 +635,11 @@ class Covid
     global_summary.date = date
     global_summary.confirmed = confirmed
     global_summary.confirmed_add_today = confirmed_add_today
-    global_summary.healings = (confirmed - recovered) - deaths || 0
+    global_summary.healings = ((confirmed - recovered) - deaths || 0).non_negative
     global_summary.recovered = recovered
+    begin
+      global_summary.critical = Covid.global_critical[:critical]
+    end
     global_summary.deaths = deaths
     global_summary.deaths_add_today = deaths_add_today
 
@@ -640,20 +662,85 @@ class Covid
     global_summary.save
   end
 
+  def self.api_thai_fight_covid
+    RubyCheerio.new((RestClient.get 'https://thaifightcovid.depa.or.th/index.php').to_str)
+  end
+
+  def self.thai_fight_covid
+    begin
+      jQuery = api_thai_fight_covid
+    rescue Exception
+      jQuery = api_thai_fight_covid
+    end
+
+    thai_covid_data = {
+      confirmed: 0,
+      confirmed_add_today: 0,
+      healings: 0,
+      critical: 0,
+      deaths: 0,
+      recovered: 0,
+      updated_at: nil,
+      last_updated: nil
+    }
+
+    jQuery.find('div.info-box-4').each_with_index do |info_box, index|
+      content = info_box.find('div.content').first
+      if index.zero?
+        date_str = content.find('div.text')[0].text
+        updated_at = DateTime.strptime("#{date_str} +07:00", 'ข้อมูลล่าสุดวันที่ %d-%m-%Y').localtime - 543.year
+
+        thai_covid_data[:updated_at] = updated_at
+        thai_covid_data[:last_updated] = DateTime.now.to_difference_str
+      else
+        key = content.find('div.text')[0].text
+        value = content.find('div.number')[0].text.to_i
+
+        case key
+        when 'จำนวนผู้ติดเชื้อ'
+          thai_covid_data[:confirmed] = value
+        when 'ผู้ป่วยกลับบ้านแล้ว'
+          thai_covid_data[:recovered] = value
+        when 'รายใหม่'
+          thai_covid_data[:confirmed_add_today] = value
+        when 'รุนแรง'
+          thai_covid_data[:critical] = value
+        when 'เสียชีวิต'
+          thai_covid_data[:deaths] = value
+        end
+      end
+    end
+
+    thai_covid_data[:healings] = ((thai_covid_data[:confirmed] - thai_covid_data[:recovered]) - thai_covid_data[:deaths] || 0).non_negative
+
+    thai_covid_data
+  end
+
   def self.thailand_summary
     yesterday = ThailandSummary.find_by(date: Date.yesterday)
     workpoint = constants
+
     data = {}
     ddc = nil
+    thai_covid = nil
+
     begin
+      thai_covid = thai_fight_covid
       ddc = thai_ddc
-      # use workpoint
-      if workpoint[:confirmed] > ddc[:confirmed]
+      
+      # use thai fight covid or workpoint
+      if thai_covid[:confirmed] > ddc[:confirmed]
+        ap "Use data >>> thai fight covid"
+        data = thai_covid
+      elsif workpoint[:confirmed] > ddc[:confirmed]
+        ap "Use data >>> workpoint covid"
         data = workpoint
       else
+        ap "Use data >>> ddc covid"
         data = ddc
       end
     rescue => e
+      ap "Use data >>> workpoint covid"
       data = workpoint
     end
 
@@ -670,16 +757,16 @@ class Covid
     thailand_summary.deaths = data[:deaths]
     
     unless ddc.nil?
-      thailand_summary.critical = ddc[:critical]
-      thailand_summary.watch_out_collectors = ddc[:watch_out_collectors]
-      thailand_summary.new_watch_out = ddc[:new_watch_out]
-      thailand_summary.case_management_admit = ddc[:case_management_admit]
-      thailand_summary.case_management_discharged = ddc[:case_management_discharged]
-      thailand_summary.case_management_observation = ddc[:case_management_observation]
-      thailand_summary.airport = ddc[:airport]
-      thailand_summary.sea_port = ddc[:sea_port]
-      thailand_summary.ground_port = ddc[:ground_port]
-      thailand_summary.at_chaeng_wattana = ddc[:at_chaeng_wattana]
+      thailand_summary.critical = data[:critical]
+      thailand_summary.watch_out_collectors = data[:watch_out_collectors]
+      thailand_summary.new_watch_out = data[:new_watch_out]
+      thailand_summary.case_management_admit = data[:case_management_admit]
+      thailand_summary.case_management_discharged = data[:case_management_discharged]
+      thailand_summary.case_management_observation = data[:case_management_observation]
+      thailand_summary.airport = data[:airport]
+      thailand_summary.sea_port = data[:sea_port]
+      thailand_summary.ground_port = data[:ground_port]
+      thailand_summary.at_chaeng_wattana = data[:at_chaeng_wattana]
     end  
 
     thailand_summary.save
