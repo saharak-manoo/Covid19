@@ -30,10 +30,10 @@ class LineBot
       data = ThailandSummary.find_by(date: Date.today).as_json({api: true}).with_indifferent_access
       header[:sub_title_str] = "#{data[:confirmed_add_today].to_delimited} คน"
       contents = data_to_str(data, isConfirmed, isHealings, isRecovered, isDeaths)
-      contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน"
-      contents << "เฝ้าระวังทั้งหมด #{data[:watch_out_collectors].to_delimited} คน"
-      contents << "อยู่ที่ รพ. ทั้งหมด #{data[:case_management_admit].to_delimited} คน"
-      contents << "สังเกตอาการที่ รพ. ทั้งหมด #{data[:case_management_observation].to_delimited} คน"
+      contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน (เพิ่มขึ้น #{data[:critical_add_today].to_delimited} คน)"
+      contents << "เฝ้าระวังทั้งหมด #{data[:watch_out_collectors].to_delimited} คน (เพิ่มขึ้น #{data[:critical_add_today].to_delimited} คน)"
+      contents << "อยู่ที่ รพ. ทั้งหมด #{data[:case_management_admit].to_delimited} คน (เพิ่มขึ้น #{data[:case_management_admit_add_today].to_delimited} คน)"
+      contents << "สังเกตอาการที่ รพ. ทั้งหมด #{data[:case_management_observation].to_delimited} คน (เพิ่มขึ้น #{data[:case_management_observation_add_today].to_delimited} คน)"
     elsif WORLD.include?(location)
       data = GlobalSummary.find_by(date: Date.today).as_json({api: true}).with_indifferent_access
       header[:sub_title_str] = "#{data[:confirmed_add_today].to_delimited} คน"
@@ -297,19 +297,19 @@ class LineBot
     contents = []
 
     if isConfirmed
-      contents << "ติดเชื้อทั้งหมด #{data[:confirmed].to_delimited} คน"
+      contents << "ติดเชื้อทั้งหมด #{data[:confirmed].to_delimited} คน (เพิ่มขึ้น #{data[:confirmed_add_today].to_delimited} คน)"
     elsif isHealings
-      contents <<  "กำลังรักษาทั้งหมด #{data[:healings].to_delimited} คน"
+      contents <<  "กำลังรักษาทั้งหมด #{data[:healings].to_delimited} คน (เพิ่มขึ้น #{data[:healings_add_today].to_delimited} คน)"
     elsif isRecovered
-      contents <<  "รักษาหายแล้วทั้งหมด #{data[:recovered].to_delimited} คน"
+      contents <<  "รักษาหายแล้วทั้งหมด #{data[:recovered].to_delimited} คน (เพิ่มขึ้น #{data[:recovered_add_today].to_delimited} คน)"
     elsif isDeaths
-      contents <<  "เสียชีวิตแล้วทั้งหมด #{data[:deaths].to_delimited} คน"
+      contents <<  "เสียชีวิตแล้วทั้งหมด #{data[:deaths].to_delimited} คน (เพิ่มขึ้น #{data[:deaths_add_today].to_delimited} คน)"
     elsif !isConfirmed && !isHealings && !isRecovered && !isDeaths
       contents = [
-        "ติดเชื้อทั้งหมด #{data[:confirmed].to_delimited} คน",
-        "กำลังรักษาทั้งหมด #{data[:healings].to_delimited} คน",
-        "รักษาหายแล้วทั้งหมด #{data[:recovered].to_delimited} คน",
-        "เสียชีวิตแล้วทั้งหมด #{data[:deaths].to_delimited} คน"
+        "ติดเชื้อทั้งหมด #{data[:confirmed].to_delimited} คน (เพิ่มขึ้น #{data[:confirmed_add_today].to_delimited} คน)",
+        "กำลังรักษาทั้งหมด #{data[:healings].to_delimited} คน (เพิ่มขึ้น #{data[:healings_add_today].to_delimited} คน)",
+        "รักษาหายแล้วทั้งหมด #{data[:recovered].to_delimited} คน (เพิ่มขึ้น #{data[:recovered_add_today].to_delimited} คน)",
+        "เสียชีวิตแล้วทั้งหมด #{data[:deaths].to_delimited} คน (เพิ่มขึ้น #{data[:deaths_add_today].to_delimited} คน)"
       ]
     end
   end  
