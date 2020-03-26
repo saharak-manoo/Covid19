@@ -12,11 +12,11 @@ class GlobalSummary < ApplicationRecord
   end
 
   def healings_add_today
-    healings - (yesterday&.healings || 0)
+    (healings - (yesterday&.healings || 0)).non_negative
   end
 
   def recovered_add_today
-    recovered - (yesterday&.recovered || 0)
+    (recovered - (yesterday&.recovered || 0)).non_negative
   end
 
   def last_updated

@@ -36,7 +36,7 @@ class Covid
         country_id: country_id,
         province: province || nil,
         confirmed: confirmed,
-        healings: (confirmed - recovered) - deaths || 0,
+        healings: ((confirmed - recovered) - deaths || 0).non_negative,
         deaths: deaths,
         recovered: recovered,
         active: active,
@@ -64,7 +64,7 @@ class Covid
 
     { 
       confirmed: confirmed || 0,
-      healings: (confirmed - recovered) - deaths || 0,
+      healings: ((confirmed - recovered) - deaths || 0).non_negative,
       deaths: deaths || 0,
       recovered: recovered || 0,
       date: date,
@@ -218,7 +218,7 @@ class Covid
       end
 
       confirmed = resp['confirmed'].to_i || 0
-      healings = (resp['confirmed'].to_i - resp['recovered'].to_i ) - resp['deaths'].to_i || 0
+      healings = ((resp['confirmed'].to_i - resp['recovered'].to_i ) - resp['deaths'].to_i || 0).non_negative
       deaths = resp['deaths'].to_i || 0
       recovered = resp['recovered'].to_i || 0
 
@@ -243,8 +243,8 @@ class Covid
 
     {
       confirmed: response['totalConfirmed'] || 0,
-      add_today_count: ((response['totalConfirmed'] || 0) - total[:confirmed]) || 0,
-      healings: (response['totalConfirmed'].to_i - response['totalRecovered'].to_i ) - response['totalDeaths'].to_i || 0,
+      add_today_count: (((response['totalConfirmed'] || 0) - total[:confirmed]) || 0).non_negative,
+      healings: ((response['totalConfirmed'].to_i - response['totalRecovered'].to_i ) - response['totalDeaths'].to_i || 0).non_negative,
       deaths: response['totalDeaths'] || 0,
       recovered: response['totalRecovered'] || 0,
       statistics: data,
@@ -625,8 +625,8 @@ class Covid
       deaths = Covid.api_arcgis_global(ENV['arcgis_global_deaths_host'])
     end
 
-    confirmed_add_today = (confirmed - yesterday.confirmed) || 0
-    deaths_add_today = (deaths - yesterday.deaths) || 0
+    confirmed_add_today = ((confirmed - yesterday.confirmed) || 0).non_negative
+    deaths_add_today = ((deaths - yesterday.deaths) || 0).non_negative
 
     date = Date.today
     global_summary = GlobalSummary.find_by(date: date)
@@ -635,7 +635,7 @@ class Covid
     global_summary.date = date
     global_summary.confirmed = confirmed
     global_summary.confirmed_add_today = confirmed_add_today
-    global_summary.healings = (confirmed - recovered) - deaths || 0
+    global_summary.healings = ((confirmed - recovered) - deaths || 0).non_negative
     global_summary.recovered = recovered
     global_summary.deaths = deaths
     global_summary.deaths_add_today = deaths_add_today

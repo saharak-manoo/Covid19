@@ -12,31 +12,31 @@ class ThailandSummary < ApplicationRecord
   end
 
   def healings_add_today
-    healings - (yesterday&.healings || 0)
+    (healings - (yesterday&.healings || 0)).non_negative
   end
 
   def critical_add_today
-    critical - (yesterday&.critical || 0)
+    (critical - (yesterday&.critical || 0)).non_negative
   end
 
   def recovered_add_today
-    recovered - (yesterday&.recovered || 0)
+    (recovered - (yesterday&.recovered || 0)).non_negative
   end
 
   def deaths_add_today
-    deaths - (yesterday&.deaths || 0)
+    (deaths - (yesterday&.deaths || 0)).non_negative
   end
 
   def watch_out_collectors_add_today
-    watch_out_collectors - (yesterday&.watch_out_collectors || 0)
+    (watch_out_collectors - (yesterday&.watch_out_collectors || 0)).non_negative
   end
 
   def case_management_admit_add_today
-    case_management_admit -  (yesterday&.case_management_admit || 0)
+    (case_management_admit -  (yesterday&.case_management_admit || 0)).non_negative
   end
 
   def case_management_observation_add_today
-    case_management_observation -  (yesterday&.case_management_observation || 0)
+    (case_management_observation -  (yesterday&.case_management_observation || 0)).non_negative
   end
 
   def last_updated
