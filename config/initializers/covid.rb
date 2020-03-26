@@ -561,39 +561,54 @@ class Covid
   end
 
   def self.global_confirmed
-    { 
-      confirmed: api_ddc_global(ENV['covid_thai_ddc_global_confirmed_host'])
-    }
+    api_ddc_global(ENV['covid_thai_ddc_global_confirmed_host'])
   end
 
   def self.global_confirmed_add_today
-    { 
-      confirmed_add_today: api_ddc_global(ENV['covid_thai_ddc_global_confirmed_add_today_host'])
-    }
+    api_ddc_global(ENV['covid_thai_ddc_global_confirmed_add_today_host'])
   end
 
   def self.global_recovered
-    { 
-      recovered: api_ddc_global(ENV['covid_thai_ddc_global_recovered_host'])
-    }
+    api_ddc_global(ENV['covid_thai_ddc_global_recovered_host'])
   end
 
   def self.global_critical
-    { 
-      critical: api_ddc_global(ENV['covid_thai_ddc_global_critical_host'])
-    }
+    api_ddc_global(ENV['covid_thai_ddc_global_critical_host'])
   end
 
   def self.global_deaths
-    { 
-      deaths: api_ddc_global(ENV['covid_thai_ddc_global_deaths_host'])
-    }
+    api_ddc_global(ENV['covid_thai_ddc_global_deaths_host'])
   end
 
   def self.global_deaths_add_today
-    { 
-      deaths_add_today: api_ddc_global(ENV['covid_thai_ddc_global_deaths_add_today_host'])
-    }
+    api_ddc_global(ENV['covid_thai_ddc_global_deaths_add_today_host'])
+  end
+
+  def self.global_by_ddc
+    begin
+      yesterday = GlobalSummary.find_by(date: Date.yesterday)
+      date = Date.today
+      global_summary = GlobalSummary.find_by(date: date)
+      global_summary = GlobalSummary.new if global_summary.nil?
+
+      confirmed = global_confirmed
+      recovered = global_recovered
+      deaths = global_deaths
+      deaths_add_today = ((deaths - yesterday.deaths) || 0).non_negative
+
+      global_summary.confirmed = confirmed
+      global_summary.confirmed_add_today = global_confirmed_add_today
+      global_summary.healings = ((confirmed - recovered) - deaths || 0).non_negative
+      global_summary.recovered = global_recovered
+      global_summary.critical = global_critical
+      global_summary.deaths = deaths
+      global_summary.deaths_add_today = deaths_add_today
+
+      global_summary.save
+    rescue => e
+      LineNoti.send_to_dev("ไม่สามารถ เรียกใช่้ข้อมูลจากกรมกักกันโรคได้ ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
+      self.global_summary
+    end
   end
 
   def self.api_arcgis_global(url)
@@ -638,7 +653,7 @@ class Covid
     global_summary.healings = ((confirmed - recovered) - deaths || 0).non_negative
     global_summary.recovered = recovered
     begin
-      global_summary.critical = Covid.global_critical[:critical]
+      global_summary.critical = global_critical
     end
     global_summary.deaths = deaths
     global_summary.deaths_add_today = deaths_add_today
@@ -663,7 +678,7 @@ class Covid
   end
 
   def self.api_thai_fight_covid
-    RubyCheerio.new((RestClient.get 'https://thaifightcovid.depa.or.th/index.php').to_str)
+    RubyCheerio.new((RestClient.get ENV['thai_fight_covid_host']).to_str)
   end
 
   def self.thai_fight_covid
@@ -730,17 +745,13 @@ class Covid
       
       # use thai fight covid or workpoint
       if thai_covid[:confirmed] > ddc[:confirmed]
-        ap "Use data >>> thai fight covid"
         data = thai_covid
       elsif workpoint[:confirmed] > ddc[:confirmed]
-        ap "Use data >>> workpoint covid"
         data = workpoint
       else
-        ap "Use data >>> ddc covid"
         data = ddc
       end
     rescue => e
-      ap "Use data >>> workpoint covid"
       data = workpoint
     end
 
