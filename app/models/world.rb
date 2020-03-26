@@ -21,6 +21,7 @@ class World < ApplicationRecord
       json[:healings_color] = healings.to_covid_color
       json[:deaths_color] = deaths.to_covid_color
       json[:recovered_color] = recovered.to_covid_color
+      json[:travel_color] = travel_color
       json[:last_updated] = last_updated
 
       json
