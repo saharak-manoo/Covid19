@@ -22,7 +22,6 @@ scheduler.every '1d' do
   begin
     Covid.save_world
   rescue => e
-    Covid.global_summary_workpoint
     ap ">>> World Exception"
     LineNoti.send_to_dev("ไม่สามารถ Updated world ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
   end
