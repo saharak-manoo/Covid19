@@ -32,8 +32,6 @@ class LineBot
       contents = data_to_str(data, isConfirmed, isHealings, isRecovered, isDeaths)
       contents << "เฝ้าระวังทั้งหมด #{data[:watch_out_collectors].to_delimited} คน \n(เพิ่มขึ้น #{data[:watch_out_collectors_add_today].to_delimited} คน)"
       contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน \n(เพิ่มขึ้น #{data[:critical_add_today].to_delimited} คน)"
-      contents << "อยู่ที่ รพ. ทั้งหมด #{data[:case_management_admit].to_delimited} คน \n(เพิ่มขึ้น #{data[:case_management_admit_add_today].to_delimited} คน)"
-      contents << "สังเกตอาการที่ รพ. ทั้งหมด #{data[:case_management_observation].to_delimited} คน \n(เพิ่มขึ้น #{data[:case_management_observation_add_today].to_delimited} คน)"
     elsif WORLD.include?(location)
       data = GlobalSummary.find_by(date: Date.today).as_json({api: true})&.with_indifferent_access
       header[:sub_title_str] = "#{data[:confirmed_add_today].to_delimited} คน"
