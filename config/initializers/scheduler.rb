@@ -3,7 +3,6 @@ scheduler = Rufus::Scheduler::singleton
 scheduler.every '1m' do
   begin
     Covid.thailand_summary
-    Covid.save_world
   rescue => e
     LineNoti.send_to_dev("ไม่สามารถ Updated Thailand ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
   end
@@ -18,3 +17,12 @@ scheduler.every '5m' do
     LineNoti.send_to_dev("ไม่สามารถ Updated Global ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
   end
 end
+
+scheduler.every '30m' do
+  begin
+    Covid.save_world
+  rescue => e
+    ap ">>> World Exception"
+    LineNoti.send_to_dev("ไม่สามารถ Updated world ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
+  end
+end  
