@@ -63,14 +63,10 @@ export class HomeComponent {
 		deaths_add_today: 0,
 		watch_out_collectors: 0,
 		critical: 0,
-		case_management_admit: 0,
-		case_management_observation: 0,
 		healings_add_today: 0,
 		critical_add_today: 0,
 		recovered_add_today: 0,
 		watch_out_collectors_add_today: 0,
-		case_management_admit_add_today: 0,
-		case_management_observation_add_today: 0
 	};
 	total: any = {
 		confirmed: 0,
