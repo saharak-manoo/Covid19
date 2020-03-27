@@ -769,16 +769,16 @@ class Covid
     thailand_summary.deaths = data[:deaths]
     
     unless ddc.nil?
-      thailand_summary.critical = data[:critical]
-      thailand_summary.watch_out_collectors = data[:watch_out_collectors]
-      thailand_summary.new_watch_out = data[:new_watch_out]
-      thailand_summary.case_management_admit = data[:case_management_admit]
-      thailand_summary.case_management_discharged = data[:case_management_discharged]
-      thailand_summary.case_management_observation = data[:case_management_observation]
-      thailand_summary.airport = data[:airport]
-      thailand_summary.sea_port = data[:sea_port]
-      thailand_summary.ground_port = data[:ground_port]
-      thailand_summary.at_chaeng_wattana = data[:at_chaeng_wattana]
+      thailand_summary.critical = ddc[:critical]
+      thailand_summary.watch_out_collectors = ddc[:watch_out_collectors]
+      thailand_summary.new_watch_out = ddc[:new_watch_out]
+      thailand_summary.case_management_admit = ddc[:case_management_admit]
+      thailand_summary.case_management_discharged = ddc[:case_management_discharged]
+      thailand_summary.case_management_observation = ddc[:case_management_observation]
+      thailand_summary.airport = ddc[:airport]
+      thailand_summary.sea_port = ddc[:sea_port]
+      thailand_summary.ground_port = ddc[:ground_port]
+      thailand_summary.at_chaeng_wattana = ddc[:at_chaeng_wattana]
     end  
 
     thailand_summary.save
