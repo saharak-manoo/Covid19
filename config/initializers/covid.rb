@@ -745,12 +745,10 @@ class Covid
       ddc = thai_ddc
       
       # use thai fight covid or workpoint
-       if thai_covid[:confirmed] >= ddc[:confirmed]
+       if thai_covid[:confirmed] >= workpoint[:confirmed]
          data = thai_covid
-      # elsif workpoint[:confirmed] >= ddc[:confirmed]
-      #   data = workpoint
        else
-         data = ddc
+         data = workpoint
        end
     rescue => e
       data = workpoint
