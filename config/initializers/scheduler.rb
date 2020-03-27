@@ -18,7 +18,7 @@ scheduler.every '5m' do
   end
 end
 
-scheduler.every '1d' do
+scheduler.every '30m' do
   begin
     Covid.save_world
   rescue => e
