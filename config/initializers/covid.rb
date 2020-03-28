@@ -596,6 +596,7 @@ class Covid
       deaths = global_deaths
       deaths_add_today = ((deaths - yesterday.deaths) || 0).non_negative
 
+      global_summary.date = global_summary.date != date ? global_summary.date : date
       global_summary.confirmed = confirmed
       global_summary.confirmed_add_today = confirmed_add_today
       global_summary.healings = ((confirmed - recovered) - deaths || 0).non_negative
@@ -606,7 +607,7 @@ class Covid
 
       global_summary.save
     rescue => e
-      LineNoti.send_to_dev("ไม่สามารถ เรียกใช่้ข้อมูลจากกรมกักกันโรคได้ ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
+      LineNoti.send_to_dev("ไม่สามารถ เรียกใช้ข้อมูลจากกรมกักกันโรคได้ ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
       self.global_summary
     end
   end
@@ -647,7 +648,7 @@ class Covid
     global_summary = GlobalSummary.find_by(date: date)
     global_summary = GlobalSummary.new if global_summary.nil?
 
-    global_summary.date = date
+    global_summary.date = global_summary.date != date ? global_summary.date : date
     global_summary.confirmed = confirmed
     global_summary.confirmed_add_today = confirmed_add_today
     global_summary.healings = ((confirmed - recovered) - deaths || 0).non_negative
@@ -659,6 +660,8 @@ class Covid
     global_summary.deaths_add_today = deaths_add_today
 
     global_summary.save
+    
+    global_summary
   end
 
   def self.global_summary_workpoint
@@ -668,13 +671,15 @@ class Covid
     global_summary = GlobalSummary.find_by(date: date)
     global_summary = GlobalSummary.new if global_summary.nil?
 
-    global_summary.date = date
+    global_summary.date = global_summary.date != date ? global_summary.date : date
     global_summary.confirmed = data[:confirmed] if global_summary.confirmed < data[:confirmed]
     global_summary.healings = data[:healings] if global_summary.healings < data[:healings]
     global_summary.recovered = data[:recovered] if global_summary.recovered < data[:recovered]
     global_summary.deaths = data[:deaths] if global_summary.deaths < data[:deaths]
 
     global_summary.save
+    
+    global_summary
   end
 
   def self.api_thai_fight_covid
@@ -758,7 +763,7 @@ class Covid
     thailand_summary = ThailandSummary.find_by(date: date)
     thailand_summary = ThailandSummary.new if thailand_summary.nil?
 
-    thailand_summary.date = date
+    thailand_summary.date = thailand_summary.date != date ? thailand_summary.date : date
     thailand_summary.confirmed = data[:confirmed]
     thailand_summary.confirmed_add_today = data[:confirmed_add_today]
     thailand_summary.healings = data[:healings]
@@ -779,5 +784,7 @@ class Covid
     end  
 
     thailand_summary.save
+    
+    thailand_summary
   end
 end
