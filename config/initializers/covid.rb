@@ -627,59 +627,67 @@ class Covid
   end
 
   def self.global_summary
-    total = Covid.total
-    confirmed = Covid.api_arcgis_global(ENV['arcgis_global_confirmed_host'])
-
-    yesterday = GlobalSummary.find_by(date: Date.yesterday)
-
-    if total[:confirmed] > confirmed
-      confirmed = total[:confirmed]
-      recovered = total[:recovered]
-      deaths = total[:deaths]
-    else
-      recovered = Covid.api_arcgis_global(ENV['arcgis_global_recovered_host'])
-      deaths = Covid.api_arcgis_global(ENV['arcgis_global_deaths_host'])
-    end
-
-    confirmed_add_today = ((confirmed - yesterday.confirmed) || 0).non_negative
-    deaths_add_today = ((deaths - yesterday.deaths) || 0).non_negative
-
-    date = Date.today
-    global_summary = GlobalSummary.find_by(date: date)
-    global_summary = GlobalSummary.new if global_summary.nil?
-
-    global_summary.date = global_summary.date != date ? global_summary.date : date
-    global_summary.confirmed = confirmed
-    global_summary.confirmed_add_today = confirmed_add_today
-    global_summary.healings = ((confirmed - recovered) - deaths || 0).non_negative
-    global_summary.recovered = recovered
     begin
-      global_summary.critical = global_critical
-    end
-    global_summary.deaths = deaths
-    global_summary.deaths_add_today = deaths_add_today
+      total = Covid.total
+      confirmed = Covid.api_arcgis_global(ENV['arcgis_global_confirmed_host'])
 
-    global_summary.save
-    
-    global_summary
+      yesterday = GlobalSummary.find_by(date: Date.yesterday)
+
+      if total[:confirmed] > confirmed
+        confirmed = total[:confirmed]
+        recovered = total[:recovered]
+        deaths = total[:deaths]
+      else
+        recovered = Covid.api_arcgis_global(ENV['arcgis_global_recovered_host'])
+        deaths = Covid.api_arcgis_global(ENV['arcgis_global_deaths_host'])
+      end
+
+      confirmed_add_today = ((confirmed - yesterday.confirmed) || 0).non_negative
+      deaths_add_today = ((deaths - yesterday.deaths) || 0).non_negative
+
+      date = Date.today
+      global_summary = GlobalSummary.find_by(date: date)
+      global_summary = GlobalSummary.new if global_summary.nil?
+
+      global_summary.date = global_summary.date != date ? global_summary.date : date
+      global_summary.confirmed = confirmed
+      global_summary.confirmed_add_today = confirmed_add_today
+      global_summary.healings = ((confirmed - recovered) - deaths || 0).non_negative
+      global_summary.recovered = recovered
+      begin
+        global_summary.critical = global_critical
+      end
+      global_summary.deaths = deaths
+      global_summary.deaths_add_today = deaths_add_today
+
+      global_summary.save
+
+      global_summary
+    rescue => e
+      LineNoti.send_to_dev("ไม่สามารถสร้างหรือแก้ไขข้อมูล global summary ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
+    end
   end
 
   def self.global_summary_workpoint
-    data = world
+    begin
+      data = world
 
-    date = Date.today
-    global_summary = GlobalSummary.find_by(date: date)
-    global_summary = GlobalSummary.new if global_summary.nil?
+      date = Date.today
+      global_summary = GlobalSummary.find_by(date: date)
+      global_summary = GlobalSummary.new if global_summary.nil?
 
-    global_summary.date = global_summary.date != date ? global_summary.date : date
-    global_summary.confirmed = data[:confirmed] if global_summary.confirmed < data[:confirmed]
-    global_summary.healings = data[:healings] if global_summary.healings < data[:healings]
-    global_summary.recovered = data[:recovered] if global_summary.recovered < data[:recovered]
-    global_summary.deaths = data[:deaths] if global_summary.deaths < data[:deaths]
+      global_summary.date = global_summary.date != date ? global_summary.date : date
+      global_summary.confirmed = data[:confirmed] if global_summary.confirmed < data[:confirmed]
+      global_summary.healings = data[:healings] if global_summary.healings < data[:healings]
+      global_summary.recovered = data[:recovered] if global_summary.recovered < data[:recovered]
+      global_summary.deaths = data[:deaths] if global_summary.deaths < data[:deaths]
 
-    global_summary.save
-    
-    global_summary
+      global_summary.save
+
+      global_summary
+    rescue => e
+      LineNoti.send_to_dev("ไม่สามารถสร้างหรือแก้ไขข้อมูล global summary workpoint api ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
+    end
   end
 
   def self.api_thai_fight_covid
@@ -758,33 +766,36 @@ class Covid
       data = workpoint
     end
 
+    begin
+      date = Date.today
+      thailand_summary = ThailandSummary.find_by(date: date)
+      thailand_summary = ThailandSummary.new if thailand_summary.nil?
 
-    date = Date.today
-    thailand_summary = ThailandSummary.find_by(date: date)
-    thailand_summary = ThailandSummary.new if thailand_summary.nil?
+      thailand_summary.date = thailand_summary.date != date ? thailand_summary.date : date
+      thailand_summary.confirmed = data[:confirmed]
+      thailand_summary.confirmed_add_today = data[:confirmed_add_today]
+      thailand_summary.healings = data[:healings]
+      thailand_summary.recovered = data[:recovered].zero? ? yesterday.recovered : data[:recovered]
+      thailand_summary.deaths = data[:deaths]
 
-    thailand_summary.date = thailand_summary.date != date ? thailand_summary.date : date
-    thailand_summary.confirmed = data[:confirmed]
-    thailand_summary.confirmed_add_today = data[:confirmed_add_today]
-    thailand_summary.healings = data[:healings]
-    thailand_summary.recovered = data[:recovered].zero? ? yesterday.recovered : data[:recovered]
-    thailand_summary.deaths = data[:deaths]
-    
-    unless ddc.nil?
-      thailand_summary.critical = ddc[:critical]
-      thailand_summary.watch_out_collectors = ddc[:watch_out_collectors]
-      thailand_summary.new_watch_out = ddc[:new_watch_out]
-      thailand_summary.case_management_admit = ddc[:case_management_admit]
-      thailand_summary.case_management_discharged = ddc[:case_management_discharged]
-      thailand_summary.case_management_observation = ddc[:case_management_observation]
-      thailand_summary.airport = ddc[:airport]
-      thailand_summary.sea_port = ddc[:sea_port]
-      thailand_summary.ground_port = ddc[:ground_port]
-      thailand_summary.at_chaeng_wattana = ddc[:at_chaeng_wattana]
-    end  
+      unless ddc.nil?
+        thailand_summary.critical = ddc[:critical]
+        thailand_summary.watch_out_collectors = ddc[:watch_out_collectors]
+        thailand_summary.new_watch_out = ddc[:new_watch_out]
+        thailand_summary.case_management_admit = ddc[:case_management_admit]
+        thailand_summary.case_management_discharged = ddc[:case_management_discharged]
+        thailand_summary.case_management_observation = ddc[:case_management_observation]
+        thailand_summary.airport = ddc[:airport]
+        thailand_summary.sea_port = ddc[:sea_port]
+        thailand_summary.ground_port = ddc[:ground_port]
+        thailand_summary.at_chaeng_wattana = ddc[:at_chaeng_wattana]
+      end  
 
-    thailand_summary.save
-    
-    thailand_summary
+      thailand_summary.save
+
+      thailand_summary
+    rescue => e
+      LineNoti.send_to_dev("ไม่สามารถสร้างหรือแก้ไขข้อมูล thailand summary ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
+    end
   end
 end
