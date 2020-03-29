@@ -10,7 +10,7 @@ end
 
 scheduler.every '5m' do
   begin
-    Covid.global_by_ddc
+    Covid.global_summary
   rescue => e
     Covid.global_summary_workpoint
     ap ">>> global summary Exception"
