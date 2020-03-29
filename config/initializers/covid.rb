@@ -604,10 +604,11 @@ class Covid
       global_summary.critical = global_critical
       global_summary.deaths = deaths
       global_summary.deaths_add_today = deaths_add_today
-
       global_summary.save
+      
+      global_summary
     rescue => e
-      LineNoti.send_to_dev("ไม่สามารถ เรียกใช้ข้อมูลจากกรมกักกันโรคได้ ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
+      LineNoti.send_to_dev("ไม่สามารถ เรียกใช้ข้อมูลจากกรมกักกันโรคได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
       self.global_summary
     end
   end
@@ -659,7 +660,6 @@ class Covid
       end
       global_summary.deaths = deaths
       global_summary.deaths_add_today = deaths_add_today
-
       global_summary.save
 
       global_summary
@@ -681,7 +681,6 @@ class Covid
       global_summary.healings = data[:healings] if global_summary.healings < data[:healings]
       global_summary.recovered = data[:recovered] if global_summary.recovered < data[:recovered]
       global_summary.deaths = data[:deaths] if global_summary.deaths < data[:deaths]
-
       global_summary.save
 
       global_summary
