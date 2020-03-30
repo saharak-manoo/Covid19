@@ -183,16 +183,17 @@ export class HomeComponent {
 	@ViewChild('patientInformation', { read: MatSort, static: true }) patientInformationSort: MatSort;
 	@ViewChild('patientInformationPaginator', { static: true })
 	patientInformationPaginator: MatPaginator;
-	patientInformationCount: number = 0;
-
-	cases: any = [];
-	safeZones: any = [];
-
+  patientInformationCount: number = 0;
+  
 	infectedByProvinceDisplayedColumns: string[] = ['province', 'infected'];
 	infectedByProvinceDataSource: any = [];
 	@ViewChild('infectedByProvince', { read: MatSort, static: true }) infectedByProvinceSort: MatSort;
 	@ViewChild('infectedByProvincePaginator', { static: true })
-	infectedByProvincePaginator: MatPaginator;
+  infectedByProvincePaginator: MatPaginator;
+  
+  cases: any = [];
+	safeZones: any = [];
+  thailandCases: any = []
 
 	ngOnInit() {
 		this.getLocation();
@@ -470,9 +471,10 @@ export class HomeComponent {
 	loadCountryCases() {
 		this.appService.all('api/covids/thailand_cases').subscribe(
 			resp => {
-				let response: any = resp;
-				this.patientInformationCount = response.data.length;
-				this.patientInformationDataSource = new MatTableDataSource<any>(response.data);
+        let response: any = resp;
+        this.thailandCases = response.data;
+				this.patientInformationCount = this.thailandCases.length;
+				this.patientInformationDataSource = new MatTableDataSource<any>(this.thailandCases);
 				this.patientInformationDataSource.paginator = this.patientInformationPaginator;
 				this.patientInformationDataSource.sort = this.patientInformationSort;
 			},
@@ -524,11 +526,11 @@ export class HomeComponent {
 	}
 
 	animateValue(value, start, end, duration) {
-		var range = end - start;
-		var current = start;
-		var increment = end > start ? 1 : -1;
-		var stepTime = Math.abs(Math.floor(duration / range));
-		var timer = setInterval(function() {
+		let range = end - start;
+		let current = start;
+		let increment = end > start ? 1 : -1;
+		let stepTime = Math.abs(Math.floor(duration / range));
+		let timer = setInterval(function() {
 			value += increment;
 			if (value == end) {
 				clearInterval(timer);
