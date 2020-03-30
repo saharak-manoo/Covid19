@@ -195,6 +195,84 @@ export class HomeComponent {
 	safeZones: any = [];
   thailandCases: any = []
 
+  genderChartType: string = 'doughnut';
+  genderChartDatasets: Array<any> = [
+    { data: [0, 0, 0] }
+  ];
+  genderChartLabels: Array<any> = ['ชาย', 'หญิง', 'ไม่ระบุ'];
+  genderChartColors: Array<any> = [
+    {
+      backgroundColor: [
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+      ],
+      borderColor: [
+        'rgba(54, 162, 235, 1)',
+        'rgba(255,99,132,1)',
+        'rgba(255, 206, 86, 1)',
+      ],
+      borderWidth: 2,
+    }
+  ];
+  genderChartOptions: any = {
+		responsive: true,
+		legend: {
+			position: 'bottom'
+		}
+  };
+
+  ageChartType: string = 'horizontalBar';
+  ageChartDatasets: Array<any> = [
+    { data: Array(10).fill(0) }
+  ];
+  ageChartLabels: Array<any> = [
+    '0-10 ปี', 
+    '11-20 ปี', 
+    '21-30 ปี', 
+    '31-40 ปี', 
+    '41-50 ปี', 
+    '51-60 ปี', 
+    '61-70 ปี', 
+    '71-80 ปี', 
+    '81-90 ปี', 
+    'ไม่ระบุ'];
+  ageChartColors: Array<any> = [
+    {
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderWidth: 2,
+    }
+  ]
+  ageChartOptions: any = {
+		responsive: true,
+		legend: {
+			display: false
+    },
+  };
+
 	ngOnInit() {
 		this.getLocation();
 		this.loadCasesThai();
@@ -477,12 +555,50 @@ export class HomeComponent {
 				this.patientInformationDataSource = new MatTableDataSource<any>(this.thailandCases);
 				this.patientInformationDataSource.paginator = this.patientInformationPaginator;
 				this.patientInformationDataSource.sort = this.patientInformationSort;
+        this.calculateGenderChart();
+        this.calculateAgeChart();
 			},
 			e => {
 				this.app.openSnackBar('มีข้อผิดพลาด ในการโหลดข้อมูล', 'Close', 'red-snackbar');
 			}
 		);
 	}
+
+	calculateGenderChart() {
+		let man = this.thailandCases.filter(c => c.gender === 'ชาย').length || 0;
+		let woman = this.thailandCases.filter(c => c.gender === 'หญิง').length || 0;
+		let noGender = this.thailandCases.filter(c => c.gender === '-').length || 0;
+		this.genderChartDatasets = [{ data: [man, woman, noGender] }]
+  }
+  
+  calculateAgeChart() {
+    let data = Array(10).fill(0)
+    this.thailandCases.forEach(c => {
+      if (c.age >= 0 && c.age <= 10) {
+        data[0] += 1
+      } else if (c.age >= 11 && c.age <= 20) {
+        data[1] += 1
+      } else if (c.age >= 21 && c.age <= 30) {
+        data[2] += 1
+      } else if (c.age >= 31 && c.age <= 40) {
+        data[3] += 1
+      } else if (c.age >= 41 && c.age <= 50) {
+        data[4] += 1
+      } else if (c.age >= 51 && c.age <= 60) {
+        data[5] += 1
+      } else if (c.age >= 61 && c.age <= 70) {
+        data[6] += 1
+      } else if (c.age >= 71 && c.age <= 80) {
+        data[7] += 1
+      } else if (c.age >= 81 && c.age <= 90) {
+        data[8] += 1
+      } else {
+        data[9] += 1
+      }
+    })
+
+    this.ageChartDatasets[0].data = data;
+  }
 
 	searchPatientInformation(event: Event) {
 		const filterValue = (event.target as HTMLInputElement).value;
