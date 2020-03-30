@@ -230,11 +230,6 @@
                         <td mat-cell *matCellDef="let element" fxHide.lt-md> {{element.risk}} </td>
                       </ng-container>
 
-                      <ng-container matColumnDef="recovered_date_str">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header fxShow="true" fxHide.lt-md> วันที่รักษาหาย </th>
-                        <td mat-cell *matCellDef="let element" fxShow="true" fxHide.lt-md> {{element.recovered_date_str}} </td>
-                      </ng-container>
-
                       <tr mat-header-row *matHeaderRowDef="patientInformationDisplayedColumns"></tr>
                       <tr mat-row *matRowDef="let row; columns: patientInformationDisplayedColumns;"></tr>
                     </table>

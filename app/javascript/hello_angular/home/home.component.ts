@@ -178,7 +178,6 @@ export class HomeComponent {
 		'province',
 		'district',
 		'risk',
-		'detected_date_str',
 	];
 	patientInformationDataSource: any = [];
 	@ViewChild('patientInformation', { read: MatSort, static: true }) patientInformationSort: MatSort;
@@ -337,9 +336,9 @@ export class HomeComponent {
 	}
 
 	loadCasesThai() {
-		this.appService.all('api/covids/thailand_cases').subscribe(
+		this.appService.all('api/covids/cases_thai').subscribe(
 			resp => {
-				let response: any = resp;
+        let response: any = resp;
 				this.cases = response.data;
 			},
 			e => {
@@ -469,7 +468,7 @@ export class HomeComponent {
 	}
 
 	loadCountryCases() {
-		this.appService.all('api/covids/cases').subscribe(
+		this.appService.all('api/covids/thailand_cases').subscribe(
 			resp => {
 				let response: any = resp;
 				this.patientInformationCount = response.data.length;
