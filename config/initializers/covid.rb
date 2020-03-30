@@ -812,8 +812,8 @@ class Covid
 
       cases << {
         gender: record['gender'] || '-',
-        age: record['age'] || 0,
-        ageMonth: record['ageMonth'] || 0,
+        age: record['age'] || '-',
+        ageMonth: record['ageMonth'] || '-',
         job: record['job'] || '-',
         nationality: record['nationality'] || '-',
         nationality_alpha2: record['nationalityAlpha2'] || '-',
