@@ -122,6 +122,8 @@ class Api::CovidsController < Api::ApplicationController
   end
 
   def thailand_cases
-    render json: { data: Covid.v2_cases }, status: :ok
+    cases = Covid.v2_cases
+
+    render json: { data: cases }, status: :ok
   end  
 end
