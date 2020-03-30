@@ -34,6 +34,7 @@ Rails.application.routes.draw do
         get 'global_summary'
         get 'thailand_retroact'
         get 'global_retroact'
+        get 'thailand_cases'
       end
     end
   end

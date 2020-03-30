@@ -170,15 +170,15 @@ export class HomeComponent {
 	@ViewChild('allCountryPaginator', { static: true }) allCountryPaginator: MatPaginator;
 
 	patientInformationDisplayedColumns: string[] = [
-		'detected_at',
 		'statement_date_str',
-		'treat_at',
-		'status',
-		'recovered_date_str',
-		'job',
 		'gender',
 		'age',
-		'type'
+    'job',
+    'nationality',
+		'province',
+		'district',
+		'risk',
+		'detected_date_str',
 	];
 	patientInformationDataSource: any = [];
 	@ViewChild('patientInformation', { read: MatSort, static: true }) patientInformationSort: MatSort;
@@ -337,7 +337,7 @@ export class HomeComponent {
 	}
 
 	loadCasesThai() {
-		this.appService.all('api/covids/cases_thai').subscribe(
+		this.appService.all('api/covids/thailand_cases').subscribe(
 			resp => {
 				let response: any = resp;
 				this.cases = response.data;

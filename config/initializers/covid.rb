@@ -797,4 +797,36 @@ class Covid
       LineNoti.send_to_dev("ไม่สามารถสร้างหรือแก้ไขข้อมูล thailand summary ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
     end
   end
+
+  def self.v2_cases
+    cases = []
+    cases_response = api_workpoint('v2/cases')
+
+    cases_response['records'].each do |record|
+      statement_date = Date.parse(record['statementDate'])
+      detected_date = nil
+      detected_date = Date.parse(record['detectedDate']) if record['detectedDate'].present?
+
+      province = record['province']
+      province = 'กรุงเทพมหานคร' if province == 'กทม'
+
+      cases << {
+        gender: record['gender'] || '-',
+        age: record['age'] || 0,
+        ageMonth: record['ageMonth'] || 0,
+        job: record['job'] || '-',
+        nationality: record['nationality'] || '-',
+        nationality_alpha2: record['nationalityAlpha2'] || '-',
+        province: province || '-',
+        district: record['district'] || '-',
+        risk: record['risk'] || '-',
+        statement_date: statement_date,
+        statement_date_str: I18n.l(statement_date, format: '%d %b'),
+        detected_date: detected_date,
+        detected_date_str: detected_date.present? ? I18n.l(detected_date, format: '%d %b') : '-',
+      }
+    end
+
+    cases
+  end
 end
