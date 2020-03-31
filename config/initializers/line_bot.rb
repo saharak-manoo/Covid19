@@ -38,14 +38,19 @@ class LineBot
       contents = data_to_str(data, isConfirmed, isHealings, isRecovered, isDeaths)
       contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน \n(เพิ่มขึ้น #{data[:critical_add_today].to_delimited} คน)"
     else
-      thai_infecteds = Covid.thai_summary.detect { |d| d[:province].include?(location) || d[:province_eng].include?(location) }
+      thai_infecteds = Covid.thailand_infected_province.detect { |d| d[:name].include?(location) }
       world = World.find_by("country ILIKE :keyword OR country_th ILIKE :keyword", keyword: "%#{location}%").as_json({api: true})&.with_indifferent_access
 
       if thai_infecteds.present?
-        header[:title] = thai_infecteds[:province] || location
+        header[:title] = thai_infecteds[:name] || location
         header[:sub_title] = "Province"
-        header[:sub_title_str] = thai_infecteds[:province_eng]
-        contents << "ติดเชื้อทั้งหมด #{thai_infecteds[:infected]} คน"
+        header[:sub_title_str] = GoogleApi.translate(thai_infecteds[:name] || location)
+        contents [
+          "ติดเชื้อทั้งหมด #{thai_infecteds[:infected].to_delimited} คน",
+          "เพศชาย #{thai_infecteds[:man_total].to_delimited} คน",
+          "เพศหญิง #{thai_infecteds[:woman_total].to_delimited} คน",
+          "ไม่ระบุเพศ #{thai_infecteds[:no_gender_total].to_delimited} คน"
+        ]
 
         return flex(flex_msg(header, contents, "* ข้อมูลนี้ #{thai_infecteds[:last_updated]}", thai_infecteds[:infected_color]), header[:title])
       elsif world.present?

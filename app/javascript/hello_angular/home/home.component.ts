@@ -183,7 +183,7 @@ export class HomeComponent {
   patientInformationPaginator: MatPaginator
   patientInformationCount: number = 0
 
-  infectedByProvinceDisplayedColumns: string[] = ['province', 'infected']
+  infectedByProvinceDisplayedColumns: string[] = ['name', 'infected', 'man_total', 'woman_total', 'no_gender_total']
   infectedByProvinceDataSource: any = []
   @ViewChild('infectedByProvince', { read: MatSort, static: true })
   infectedByProvinceSort: MatSort
@@ -602,7 +602,7 @@ export class HomeComponent {
   }
 
   loadInfectedByProvince() {
-    this.appService.all('api/covids/infected_by_province').subscribe(
+    this.appService.all('api/covids/thailand_infected_province').subscribe(
       (resp) => {
         let response: any = resp
         this.infectedByProvinceDataSource = new MatTableDataSource<any>(response.data)
