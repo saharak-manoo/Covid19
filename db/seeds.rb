@@ -210,3 +210,7 @@ end
 if World.count.zero?
   Covid.save_world
 end
+
+if InfectedProvince.count.zero?
+  Covid.thailand_infected_province
+end

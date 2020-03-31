@@ -38,21 +38,21 @@ class LineBot
       contents = data_to_str(data, isConfirmed, isHealings, isRecovered, isDeaths)
       contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน \n(เพิ่มขึ้น #{data[:critical_add_today].to_delimited} คน)"
     else
-      thai_infected = Covid.thailand_infected_province.detect { |d| d[:name].include?(location) }
+      infected_province = InfectedProvince.where(date: Date.today).find_by("name ILIKE :keyword", keyword: "%#{location}%").as_json({api: true})
       world = World.find_by("country ILIKE :keyword OR country_th ILIKE :keyword", keyword: "%#{location}%").as_json({api: true})&.with_indifferent_access
 
-      if thai_infected.present?
-        header[:title] = thai_infected[:name] || location
+      if infected_province.present?
+        header[:title] = infected_province[:name] || location
         header[:sub_title] = 'วันนี้ติดเชื้อเพิ่มขึ้น'
-        header[:sub_title_str] = "0 คน"
+        header[:sub_title_str] = "#{infected_province[:infected_add_today].to_delimited} คน"
         contents = [
-          "ติดเชื้อทั้งหมด #{thai_infected[:infected].to_delimited} คน",
-          "เพศชาย #{thai_infected[:man_total].to_delimited} คน",
-          "เพศหญิง #{thai_infected[:woman_total].to_delimited} คน",
-          "ไม่ระบุเพศ #{thai_infected[:no_gender_total].to_delimited} คน"
+          "ติดเชื้อทั้งหมด #{infected_province[:infected].to_delimited} คน",
+          "เพศชาย #{infected_province[:man_total].to_delimited} คน \n(เพิ่มขึ้น #{infected_province[:man_total_add_today].to_delimited} คน)",
+          "เพศหญิง #{infected_province[:woman_total].to_delimited} คน \n(เพิ่มขึ้น #{infected_province[:woman_total_add_today].to_delimited} คน)",
+          "ไม่ระบุเพศ #{infected_province[:no_gender_total].to_delimited} คน \n(เพิ่มขึ้น #{infected_province[:no_gender_total_add_today].to_delimited} คน)"
         ]
 
-        return flex(flex_msg(header, contents, "* ข้อมูลนี้ #{thai_infected[:last_updated]}", thai_infected[:infected_color]), header[:title])
+        return flex(flex_msg(header, contents, "* ข้อมูลนี้ #{infected_province[:last_updated]}", infected_province[:infected_color]), header[:title])
       elsif world.present?
         header[:title] = world[:country_th] || location
         header[:sub_title] = "Country"

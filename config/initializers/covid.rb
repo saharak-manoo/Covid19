@@ -871,7 +871,6 @@ class Covid
       end  
 
       thailand_summary.save
-
       thailand_summary
     rescue => e
       LineNoti.send_to_dev("ไม่สามารถสร้างหรือแก้ไขข้อมูล thailand summary ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
@@ -913,7 +912,6 @@ class Covid
 
   def self.thailand_infected_province
     cases = v2_cases
-    infected_provinces = []
 
     PROVINCE_TH.each do |name|
       province_cases = cases.select { |c| c[:province] == name }
@@ -922,21 +920,23 @@ class Covid
       woman_total = province_cases.select { |c| c[:gender] == 'หญิง' }.count || 0
       no_gender_total = province_cases.select { |c| c[:gender] == '-' }.count || 0
 
-      infected_provinces << {
-        name: name,
-        name_eng: nil,
-        infected: infected,
-        infected_color: infected.to_covid_color,
-        man_total: man_total,
-        man_total_color: man_total.to_covid_color,
-        woman_total: woman_total,
-        woman_total_color: woman_total.to_covid_color,
-        no_gender_total: no_gender_total,
-        no_gender_total_color: no_gender_total.to_covid_color,
-        last_updated: DateTime.now.to_difference_str
-      }
-    end
+      begin
+        date = Date.today
+        infected_province = InfectedProvince.find_by(date: date, name: name)
+        infected_province = InfectedProvince.new if infected_province.nil?
+  
+        infected_province.date = date
+        infected_province.name = name
+        infected_province.infected = infected
+        infected_province.man_total = man_total
+        infected_province.woman_total = woman_total
+        infected_province.no_gender_total = no_gender_total
 
-    infected_provinces
+        infected_province.save
+        infected_province
+      rescue => e
+        LineNoti.send_to_dev("ไม่สามารถสร้างหรือแก้ไขข้อมูล thailand infected province ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
+      end
+    end
   end  
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_25_140925) do
+ActiveRecord::Schema.define(version: 2020_03_31_064724) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,6 +75,17 @@ ActiveRecord::Schema.define(version: 2020_03_25_140925) do
     t.string "estimated_examination_fees", null: false
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
+  end
+
+  create_table "infected_provinces", force: :cascade do |t|
+    t.date "date"
+    t.string "name"
+    t.integer "infected", default: 0
+    t.integer "man_total", default: 0
+    t.integer "woman_total", default: 0
+    t.integer "no_gender_total", default: 0
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "roles", force: :cascade do |t|
