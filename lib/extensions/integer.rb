@@ -37,4 +37,31 @@ class Integer
   def non_negative
     self.negative? ? 0 : self
   end
+
+  def to_age_covid_color
+    color = "#000"
+
+    case self
+    when 1..10
+      color = "#FECB2A"
+    when 11..20
+      color = "#FC9613"
+    when 21..30
+      color = "#FE702A"
+    when 31..40
+      color = "#FC4B13"
+    when 41..50
+      color = "#FC3313"
+    when 51..60
+      color = "#FE120A"
+    when 61..70
+      color = "#FE0A37"
+    when 71..80
+      color = "#772AFE"
+    when 81..90
+      color = "#9412F5"
+    when 0
+      color = "#000"
+    end
+  end  
 end

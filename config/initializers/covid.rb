@@ -417,7 +417,7 @@ class Covid
         place: resp['gsx$placename']['$t'],
         latitude: resp['gsx$lat']['$t'].to_f,
         longitude: resp['gsx$lng']['$t'].to_f,
-        pin: '/red-zone-radius.svg'.to_map_pin,
+        pin: '/confirmed.svg'.to_map_pin,
         note: resp['gsx$note']['$t'],
         source: resp['gsx$source']['$t'],
         updated_at: updated_at,
@@ -893,6 +893,7 @@ class Covid
       cases << {
         gender: record['gender'] || '-',
         age: record['age'] || '-',
+        age_color: (record['age'] || 0).to_age_covid_color,
         ageMonth: record['ageMonth'] || '-',
         job: record['job'] || '-',
         nationality: record['nationality'] || '-',

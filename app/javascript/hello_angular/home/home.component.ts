@@ -183,7 +183,7 @@ export class HomeComponent {
   patientInformationPaginator: MatPaginator
   patientInformationCount: number = 0
 
-  infectedByProvinceDisplayedColumns: string[] = ['name', 'infected', 'man_total', 'woman_total', 'no_gender_total']
+  infectedByProvinceDisplayedColumns: string[] = ['name', 'man_total', 'woman_total', 'no_gender_total', 'infected']
   infectedByProvinceDataSource: any = []
   @ViewChild('infectedByProvince', { read: MatSort, static: true })
   infectedByProvinceSort: MatSort
