@@ -8,6 +8,14 @@ scheduler.every '1m' do
   end
 end
 
+scheduler.every '3m' do
+  begin
+    Covid.thailand_infected_province
+  rescue => e
+    LineNoti.send_to_dev("ไม่สามารถ Updated Thailand infected province ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
+  end
+end  
+
 scheduler.every '5m' do
   begin
     Covid.global_summary

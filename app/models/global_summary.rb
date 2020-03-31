@@ -39,6 +39,6 @@ class GlobalSummary < ApplicationRecord
       json
     else
       super()
-    end   
+    end
   end
 end
