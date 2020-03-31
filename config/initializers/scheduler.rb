@@ -33,4 +33,12 @@ scheduler.every '30m' do
     ap ">>> World Exception"
     LineNoti.send_to_dev("ไม่สามารถ Updated world ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
   end
+end
+
+scheduler.every '6h' do
+  begin
+    LineBot.broadcast_global_summary
+  rescue => e
+    LineNoti.send_to_dev("ไม่สามารถ broadcast world ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
+  end
 end  
