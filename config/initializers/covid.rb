@@ -1,5 +1,84 @@
 class Covid
   CATEGORIES = ['Confirmed', 'Deaths', 'Recovered']
+  PROVINCE_TH = [
+    'กรุงเทพมหานคร',
+    'กระบี่',
+    'กาญจนบุรี',
+    'กาฬสินธุ์',
+    'กำแพงเพชร',
+    'ขอนแก่น',
+    'จันทบุรี',
+    'ฉะเชิงเทรา',
+    'ชลบุรี',
+    'ชัยนาท',
+    'ชัยภูมิ',
+    'ชุมพร',
+    'เชียงใหม่',
+    'เชียงราย',
+    'ตรัง',
+    'ตราด',
+    'ตาก',
+    'นครนายก',
+    'นครปฐม',
+    'นครพนม',
+    'นครราชสีมา',
+    'นครศรีธรรมราช',
+    'นครสวรรค์',
+    'นนทบุรี',
+    'นราธิวาส',
+    'น่าน',
+    'บึงกาฬ',
+    'บุรีรัมย์',
+    'ปทุมธานี',
+    'ประจวบคีรีขันธ์',
+    'ปราจีนบุรี',
+    'ปัตตานี',
+    'พระนครศรีอยุธยา',
+    'พะเยา',
+    'พังงา',
+    'พัทลุง',
+    'พิจิตร',
+    'พิษณุโลก',
+    'เพชรบุรี',
+    'เพชรบูรณ์',
+    'แพร่',
+    'ภูเก็ต',
+    'มหาสารคาม',
+    'มุกดาหาร',
+    'แม่ฮ่องสอน',
+    'ยโสธร',
+    'ยะลา',
+    'ร้อยเอ็ด',
+    'ระนอง',
+    'ระยอง',
+    'ราชบุรี',
+    'ลพบุรี',
+    'ลำปาง',
+    'ลำพูน',
+    'เลย',
+    'ศรีสะเกษ',
+    'สกลนคร',
+    'สงขลา',
+    'สตูล',
+    'สมุทรปราการ',
+    'สมุทรสงคราม',
+    'สมุทรสาคร',
+    'สระแก้ว',
+    'สระบุรี',
+    'สิงห์บุรี',
+    'สุโขทัย',
+    'สุพรรณบุรี',
+    'สุราษฎร์ธานี',
+    'สุรินทร์',
+    'หนองคาย',
+    'หนองบัวลำภู',
+    'อ่างทอง',
+    'อำนาจเจริญ',
+    'อุดรธานี',
+    'อุตรดิตถ์',
+    'อุทัยธานี',
+    'อุบลราชธานี',
+  ]
   
   def self.rest_api(path)
     response = RestClient::Request.new({
@@ -415,7 +494,6 @@ class Covid
 
     response.each do |resp|
       updated_at = DateTime.parse(resp['updated']['$t']).localtime
-      infected_color = "#000"
       infected = resp['gsx$infected']['$t'].to_i || 0
       province = resp['gsx$provinceth']['$t']
       province = 'กรุงเทพมหานคร' if province == 'กรุงเทพฯ'
@@ -831,4 +909,32 @@ class Covid
 
     cases
   end
+
+  def self.thailand_infected_province
+    cases = v2_cases
+    infected_provinces = []
+
+    PROVINCE_TH.each do |name|
+      province_cases = cases.select { |c| c[:province] == name }
+      infected = province_cases.count || 0
+      man_total = province_cases.select { |c| c[:gender] == 'ชาย' }.count || 0
+      woman_total = province_cases.select { |c| c[:gender] == 'หญิง' }.count || 0
+      no_gender_total = province_cases.select { |c| c[:gender] == '-' }.count || 0
+
+      infected_provinces << {
+        name: name,
+        name_eng: nil,
+        infected: infected,
+        infected_color: infected.to_covid_color,
+        man_total: man_total,
+        man_total_color: man_total.to_covid_color,
+        woman_total: woman_total,
+        woman_total_color: woman_total.to_covid_color,
+        no_gender_total: no_gender_total,
+        no_gender_total_color: no_gender_total.to_covid_color,
+      }
+    end
+
+    infected_provinces
+  end  
 end
