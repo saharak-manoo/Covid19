@@ -14,28 +14,55 @@ class LineBot
     client.reply_message(reply_token, bot_message)
   end
 
+  def self.broadcast(bot_message = 'สวัสดีผมคือ Bot ของ Saharak\'s')
+    client.broadcast(bot_message)
+  end
+
+  def self.broadcast_thailand_summary
+    header = {title: 'ประเทศไทย', sub_title: 'วันนี้ติดเชื้อเพิ่มขึ้น', sub_title_str: '0 คน'}
+    data = ThailandSummary.find_by(date: Date.today).as_json({api: true})&.with_indifferent_access
+    header[:sub_title_str] = "#{data[:confirmed_add_today].to_delimited} คน"
+    contents = data_to_str(data, false, false, false, false)
+    contents << "เฝ้าระวังทั้งหมด #{data[:watch_out_collectors].to_delimited} คน \n(เพิ่มขึ้น #{data[:watch_out_collectors_add_today].to_delimited} คน)"
+    contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน \n(เพิ่มขึ้น #{data[:critical_add_today].to_delimited} คน)"
+
+    footer = "* ข้อมูลนี้ #{data[:last_updated]} \n* Broadcast ทุกครั้งเมื่อข้อมูลมีการเปลี่ยนแปลง"
+    broadcast(flex(flex_msg(header, contents, footer, data[:confirmed_add_today].to_covid_color), header[:title]))
+  end
+
+  def self.broadcast_global_summary
+    header = {title: 'ทั่วโลก', sub_title: 'วันนี้ติดเชื้อเพิ่มขึ้น', sub_title_str: '0 คน'}
+    data = GlobalSummary.find_by(date: Date.today).as_json({api: true})&.with_indifferent_access
+    header[:sub_title_str] = "#{data[:confirmed_add_today].to_delimited} คน"
+    contents = data_to_str(data, false, false, false, false)
+    contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน \n(เพิ่มขึ้น #{data[:critical_add_today].to_delimited} คน)"
+
+    footer = "* ข้อมูลนี้ #{data[:last_updated]} \n* Broadcast ทุก 6 ชั่วโมง"
+    broadcast(flex(flex_msg(header, contents, footer, data[:confirmed_add_today].to_covid_color), header[:title]))
+  end
+
   def self.data_covid(resp)
     contents = []
     data = []
     location = resp[:parameters][:location]
     header = {title: location, sub_title: 'วันนี้ติดเชื้อเพิ่มขึ้น', sub_title_str: '0 คน'}
-    isConfirmed = resp[:parameters][:confirmed].present?
-    isHealings = resp[:parameters][:healings].present?
-    isRecovered = resp[:parameters][:recovered].present?
-    isDeaths = resp[:parameters][:deaths].present?
+    is_confirmed = resp[:parameters][:confirmed].present?
+    is_healings = resp[:parameters][:healings].present?
+    is_recovered = resp[:parameters][:recovered].present?
+    is_deaths = resp[:parameters][:deaths].present?
     color = "#5026FF"
 
     if THAI.include?(location)
       color = "#0367D3"
       data = ThailandSummary.find_by(date: Date.today).as_json({api: true})&.with_indifferent_access
       header[:sub_title_str] = "#{data[:confirmed_add_today].to_delimited} คน"
-      contents = data_to_str(data, isConfirmed, isHealings, isRecovered, isDeaths)
+      contents = data_to_str(data, is_confirmed, is_healings, is_recovered, is_deaths)
       contents << "เฝ้าระวังทั้งหมด #{data[:watch_out_collectors].to_delimited} คน \n(เพิ่มขึ้น #{data[:watch_out_collectors_add_today].to_delimited} คน)"
       contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน \n(เพิ่มขึ้น #{data[:critical_add_today].to_delimited} คน)"
     elsif WORLD.include?(location)
       data = GlobalSummary.find_by(date: Date.today).as_json({api: true})&.with_indifferent_access
       header[:sub_title_str] = "#{data[:confirmed_add_today].to_delimited} คน"
-      contents = data_to_str(data, isConfirmed, isHealings, isRecovered, isDeaths)
+      contents = data_to_str(data, is_confirmed, is_healings, is_recovered, is_deaths)
       contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน \n(เพิ่มขึ้น #{data[:critical_add_today].to_delimited} คน)"
     else
       infected_province = InfectedProvince.where(date: Date.today).find_by("name ILIKE :keyword", keyword: "%#{location}%").as_json({api: true})&.with_indifferent_access
@@ -286,7 +313,7 @@ class LineBot
           {
             type: "text",
             text: footer,
-            size: "md",
+            size: "xs",
             weight: "bold",
             style: "normal",
             wrap: true
@@ -296,18 +323,18 @@ class LineBot
     }
   end
 
-  def self.data_to_str(data, isConfirmed, isHealings, isRecovered, isDeaths)
+  def self.data_to_str(data, is_confirmed, is_healings, is_recovered, is_deaths)
     contents = []
 
-    if isConfirmed
+    if is_confirmed
       contents << "ติดเชื้อทั้งหมด #{data[:confirmed].to_delimited} คน"
-    elsif isHealings
+    elsif is_healings
       contents <<  "กำลังรักษาทั้งหมด #{data[:healings].to_delimited} คน \n(เพิ่มขึ้น #{data[:healings_add_today].to_delimited} คน)"
-    elsif isRecovered
+    elsif is_recovered
       contents <<  "รักษาหายแล้วทั้งหมด #{data[:recovered].to_delimited} คน \n(เพิ่มขึ้น #{data[:recovered_add_today].to_delimited} คน)"
-    elsif isDeaths
+    elsif is_deaths
       contents <<  "เสียชีวิตแล้วทั้งหมด #{data[:deaths].to_delimited} คน \n(เพิ่มขึ้น #{data[:deaths_add_today].to_delimited} คน)"
-    elsif !isConfirmed && !isHealings && !isRecovered && !isDeaths
+    elsif !is_confirmed && !is_healings && !is_recovered && !is_deaths
       contents = [
         "ติดเชื้อทั้งหมด #{data[:confirmed].to_delimited} คน",
         "กำลังรักษาทั้งหมด #{data[:healings].to_delimited} คน \n(เพิ่มขึ้น #{data[:healings_add_today].to_delimited} คน)",
