@@ -26,7 +26,7 @@ class LineBot
     contents << "เฝ้าระวังทั้งหมด #{data[:watch_out_collectors].to_delimited} คน \n(เพิ่มขึ้น #{data[:watch_out_collectors_add_today].to_delimited} คน)"
     contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน \n(เพิ่มขึ้น #{data[:critical_add_today].to_delimited} คน)"
 
-    footer = "* ข้อมูลนี้ #{data[:last_updated]}"
+    footer = "* ข้อมูลนี้ #{data[:last_updated]} \n* Line broadcast ทุกครั้งเมื่อข้อมูลมีแการเปลี่ยนแปลง"
     broadcast(flex(flex_msg(header, contents, footer, data[:confirmed].to_covid_color), header[:title]))
   end
 
@@ -37,7 +37,7 @@ class LineBot
     contents = data_to_str(data, false, false, false, false)
     contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน \n(เพิ่มขึ้น #{data[:critical_add_today].to_delimited} คน)"
 
-    footer = "* ข้อมูลนี้ #{data[:last_updated]}"
+    footer = "* ข้อมูลนี้ #{data[:last_updated]} \n* Line broadcast every 6 hours"
     broadcast(flex(flex_msg(header, contents, footer, data[:confirmed].to_covid_color), header[:title]))
   end
 

@@ -35,7 +35,7 @@ scheduler.every '30m' do
   end
 end
 
-scheduler.every '12h' do
+scheduler.every '6h' do
   begin
     LineBot.broadcast_global_summary
   rescue => e
