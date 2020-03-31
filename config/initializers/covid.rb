@@ -417,9 +417,11 @@ class Covid
       updated_at = DateTime.parse(resp['updated']['$t']).localtime
       infected_color = "#000"
       infected = resp['gsx$infected']['$t'].to_i || 0
+      province = resp['gsx$provinceth']['$t']
+      province = 'กรุงเทพมหานคร' if province == 'กรุงเทพฯ'
 
       data << {
-        province: resp['gsx$provinceth']['$t'],
+        province: province,
         province_eng: resp['gsx$provinceeng']['$t'],
         infected: infected,
         infected_color: infected.to_covid_color,

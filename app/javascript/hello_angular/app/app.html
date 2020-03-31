@@ -1,24 +1,15 @@
 <ngx-loading-bar includeSpinner height="3px" color="#5efcad"></ngx-loading-bar>
 <mat-toolbar [color]="'red'" class="app-toolbar">
   <mat-toolbar-row>
-    <button mat-icon-button (click)="sidenav.toggle()" fxShow="true" fxHide.gt-sm>
-      <mat-icon>menu</mat-icon>
-    </button>
     <a [routerLink]="['/']" class="mat-button" mat-button><span class="font-size-18">Covid-19</span></a>
     <span class="menu-spacer"></span>
-    <div fxShow="true" fxHide.lt-md>
+    <div>
       <a [routerLink]="['/map']" class="mat-button" mat-button>แผนที่</a>
     </div>
   </mat-toolbar-row>
 </mat-toolbar>
 <div style="overflow: hidden;">
   <mat-sidenav-container fxFlexFill>
-    <mat-sidenav #sidenav class="sidenav">
-      <mat-nav-list>
-        <a [routerLink]="['/']" (click)="sidenav.toggle()" class="mat-button btn-block" mat-button>หน้าหลัก</a>
-        <a [routerLink]="['/map']" (click)="sidenav.toggle()" class="mat-button btn-block" mat-button>แผนที่</a>
-      </mat-nav-list>
-    </mat-sidenav>
     <mat-sidenav-content fxFlexFill><router-outlet></router-outlet></mat-sidenav-content>
   </mat-sidenav-container>
 </div>
