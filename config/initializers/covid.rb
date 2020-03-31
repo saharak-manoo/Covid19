@@ -836,11 +836,11 @@ class Covid
       ddc = thai_ddc
       
       # use thai fight covid or workpoint
-       if thai_covid[:confirmed] >= workpoint[:confirmed]
-         data = thai_covid
-       else
-         data = workpoint
-       end
+      if thai_covid[:confirmed] >= workpoint[:confirmed]
+        data = thai_covid
+      else
+        data = workpoint
+      end
     rescue => e
       data = workpoint
     end
@@ -851,23 +851,23 @@ class Covid
       thailand_summary = ThailandSummary.new if thailand_summary.nil?
 
       thailand_summary.date = date
-      thailand_summary.confirmed = data[:confirmed]
-      thailand_summary.confirmed_add_today = data[:confirmed_add_today]
-      thailand_summary.healings = data[:healings]
-      thailand_summary.recovered = data[:recovered].zero? ? yesterday.recovered : data[:recovered]
-      thailand_summary.deaths = data[:deaths]
+      thailand_summary.confirmed = data[:confirmed] || 0
+      thailand_summary.confirmed_add_today = data[:confirmed_add_today] || 0
+      thailand_summary.healings = data[:healings] || 0
+      thailand_summary.recovered = data[:recovered].zero? ? yesterday.recovered || 0 : data[:recovered] || 0
+      thailand_summary.deaths = data[:deaths] || 0
 
       unless ddc.nil?
-        thailand_summary.critical = ddc[:critical]
-        thailand_summary.watch_out_collectors = ddc[:watch_out_collectors]
-        thailand_summary.new_watch_out = ddc[:new_watch_out]
-        thailand_summary.case_management_admit = ddc[:case_management_admit]
-        thailand_summary.case_management_discharged = ddc[:case_management_discharged]
-        thailand_summary.case_management_observation = ddc[:case_management_observation]
-        thailand_summary.airport = ddc[:airport]
-        thailand_summary.sea_port = ddc[:sea_port]
-        thailand_summary.ground_port = ddc[:ground_port]
-        thailand_summary.at_chaeng_wattana = ddc[:at_chaeng_wattana]
+        thailand_summary.critical = ddc[:critical] || 0
+        thailand_summary.watch_out_collectors = ddc[:watch_out_collectors] || 0
+        thailand_summary.new_watch_out = ddc[:new_watch_out] || 0
+        thailand_summary.case_management_admit = ddc[:case_management_admit] || 0
+        thailand_summary.case_management_discharged = ddc[:case_management_discharged] || 0
+        thailand_summary.case_management_observation = ddc[:case_management_observation] || 0
+        thailand_summary.airport = ddc[:airport] || 0
+        thailand_summary.sea_port = ddc[:sea_port] || 0
+        thailand_summary.ground_port = ddc[:ground_port] || 0
+        thailand_summary.at_chaeng_wattana = ddc[:at_chaeng_wattana] || 0
       end  
 
       thailand_summary.save
