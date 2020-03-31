@@ -6,8 +6,8 @@ class ThailandSummary < ApplicationRecord
     meesage = "\n\nจำนวนผู้ติดเชื้อ Covid19 \n- ประเทศไทย \n- เพิ่มขึ้น #{confirmed_add_today&.to_delimited || 0} คน \n\n- ติดเชื้อ #{confirmed&.to_delimited || 0} คน \n- กำลังรักษา #{healings&.to_delimited || 0} คน \n- เพิ่มขึ้น #{healings_add_today&.to_delimited || 0} \n- อาการหนัก #{critical&.to_delimited || 0} คน \n- เพิ่มขึ้น #{critical_add_today&.to_delimited || 0} คน \n- หายแล้ว #{recovered&.to_delimited || 0} คน \n- เพิ่มขึ้น #{recovered_add_today&.to_delimited || 0} คน \n- เสียชีวิต #{deaths&.to_delimited || 0} คน \n- เพิ่มขึ้น #{deaths_add_today&.to_delimited || 0} คน \n- เฝ้าระวัง #{watch_out_collectors&.to_delimited || 0} คน \n- เพิ่มขึ้น #{watch_out_collectors_add_today&.to_delimited || 0} คน \n\n* #{DateTime.now.last_updated}"
 
     if self.changed?
-      LineNoti.send(meesage)
       LineBot.broadcast_thailand_summary(self.as_json({api: true}))
+      LineNoti.send(meesage)
     end  
   end
 
