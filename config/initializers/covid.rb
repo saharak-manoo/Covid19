@@ -932,6 +932,7 @@ class Covid
         woman_total_color: woman_total.to_covid_color,
         no_gender_total: no_gender_total,
         no_gender_total_color: no_gender_total.to_covid_color,
+        last_updated: DateTime.now.to_difference_str
       }
     end
 
