@@ -18,9 +18,8 @@ class LineBot
     client.broadcast(bot_message)
   end
 
-  def self.broadcast_thailand_summary
+  def self.broadcast_thailand_summary(data = ThailandSummary.find_by(date: Date.today).as_json({api: true})&.with_indifferent_access)
     header = {title: 'ประเทศไทย', sub_title: 'วันนี้ติดเชื้อเพิ่มขึ้น', sub_title_str: '0 คน'}
-    data = ThailandSummary.find_by(date: Date.today).as_json({api: true})&.with_indifferent_access
     header[:sub_title_str] = "#{data[:confirmed_add_today].to_delimited} คน"
     contents = data_to_str(data, false, false, false, false)
     contents << "เฝ้าระวังทั้งหมด #{data[:watch_out_collectors].to_delimited} คน \n(เพิ่มขึ้น #{data[:watch_out_collectors_add_today].to_delimited} คน)"
@@ -30,9 +29,8 @@ class LineBot
     broadcast(flex(flex_msg(header, contents, footer, data[:confirmed_add_today].to_covid_color), header[:title]))
   end
 
-  def self.broadcast_global_summary
+  def self.broadcast_global_summary(data = GlobalSummary.find_by(date: Date.today).as_json({api: true})&.with_indifferent_access)
     header = {title: 'ทั่วโลก', sub_title: 'วันนี้ติดเชื้อเพิ่มขึ้น', sub_title_str: '0 คน'}
-    data = GlobalSummary.find_by(date: Date.today).as_json({api: true})&.with_indifferent_access
     header[:sub_title_str] = "#{data[:confirmed_add_today].to_delimited} คน"
     contents = data_to_str(data, false, false, false, false)
     contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน \n(เพิ่มขึ้น #{data[:critical_add_today].to_delimited} คน)"

@@ -7,7 +7,7 @@ class ThailandSummary < ApplicationRecord
 
     if self.changed?
       LineNoti.send(meesage)
-      LineBot.broadcast_thailand_summary
+      LineBot.broadcast_thailand_summary(self)
     end  
   end
 
