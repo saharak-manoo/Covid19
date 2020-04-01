@@ -113,3 +113,6 @@ gem 'easy_translate'
 
 # Google drive
 gem 'google_drive'
+
+# Location
+gem 'geokit-rails'

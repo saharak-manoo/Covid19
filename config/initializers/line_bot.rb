@@ -102,8 +102,9 @@ class LineBot
     flex(flex_msg(header, contents, footer, color), header[:title])
   end
 
-  def self.data_hospital(hospitals)
-    bubble_messages = []
+  def self.data_hospital(hospitals, address = 'ใกล้คุณ')
+    title = "สถานที่ตรวจหาโรค/รักษา #{address} ในระยะ 15 กิโลเมตร"
+    box_messages = []
 
     hospitals.each do |hospital|
       contents = [
@@ -111,20 +112,20 @@ class LineBot
         "เบอร์โทร : #{hospital.phone}"
       ]
 
-      bubble_messages << bubble_message(
+      box_messages << flex_msg(
         hospital.name, 
         contents, 
         hospital.estimated_examination_fees, 
-        'https://image.makewebeasy.net/makeweb/r_600x0/amoluGlRn/Data/c03433b120249dba3f3627c135690521.jpg'
+        '#128EFF'
       )
     end
 
     {
-      type: "flex",
-      altText: "สถานที่ตรวจหาโรค/รักษา",
+      type: 'flex',
+      altText: "#{title} ทั้งหมด #{hospitals.count} แห่ง",
       contents: {
-        type: "carousel",
-        contents: bubble_messages
+        type: 'carousel',
+        contents: box_messages
       }
     } 
   end
@@ -342,5 +343,23 @@ class LineBot
         "เสียชีวิตแล้วทั้งหมด #{data[:deaths].to_delimited} คน \n(เพิ่มขึ้น #{data[:deaths_add_today].to_delimited} คน)"
       ]
     end
+  end
+
+  def self.quick_reply_location
+    {
+      type: 'text',
+      text: 'โปรดส่งตำแหน่งของคุณให้เราทราบ',
+      quickReply: {
+        items: [
+          {
+            type: 'action',
+            action: {
+              type: 'location',
+              label: 'ส่งตำแหน่งของคุณ'
+            }
+          }
+        ]
+      }
+    }
   end  
 end
