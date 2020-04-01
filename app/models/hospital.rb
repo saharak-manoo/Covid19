@@ -10,12 +10,22 @@ class Hospital < ApplicationRecord
   end
 
   def to_km_th(lat, long)
-    "รพ.นี้อยู่ห่างจากคุณประมาณ #{kilometers(lat, long).to_i} กิโลเมตร"
+    km = kilometers(lat, long).to_i
+
+    if km.zero?
+      'รพ.นี้อยู่ห่างจากคุณไม่ถึง 1 กิโลเมตร'
+    else
+      "รพ.นี้อยู่ห่างจากคุณประมาณ #{km} กิโลเมตร"
+    end
   end  
 
   def as_json(options = {})
     if options[:api]
-      super().except('id')
+      json = super().except('id')
+      json[:kilometers] = kilometers(options[:lat], options[:long])
+      json[:kilometer_th] = to_km_th(options[:lat], options[:long])
+      
+      json
     else
       super()
     end   
