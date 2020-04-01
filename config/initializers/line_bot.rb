@@ -108,9 +108,9 @@ class LineBot
     box_messages = []
 
     hospitals.each_with_index do |hospital, index|
-      header = {title: hospital[:name], sub_title: 'ประเภท', sub_title_str: hospital[:hospital_type]}
+      header = {title: hospital[:name], sub_title: 'ค่าตรวจ', sub_title_str: hospital[:price]}
       contents = [
-        "ค่าตรวจ : #{hospital[:price]}",
+        "ประเภท : #{hospital[:hospital_type]}",
         "จังหวัด : #{hospital[:province]}",
         "อำเภอ : #{hospital[:district]}",
         "เบอร์โทร : #{hospital[:phone_number]}",
@@ -120,7 +120,7 @@ class LineBot
       box_messages << flex_msg(
         header, 
         contents,
-        "* #{index + 1} ใน #{count} รพ.ใกล้ฉัน ในระยะทางไม่เกิน 15 กิโลเมตร", 
+        "* #{index + 1} ใน #{count} รพ.ใกล้ฉัน ในระยะ 15 กิโลเมตร", 
         "##{'%06x' % (rand * 0xffffff)}",
         true
       )
