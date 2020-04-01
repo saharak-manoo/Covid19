@@ -114,7 +114,7 @@ class LineBot
 
       header = {title: name, sub_title: 'ค่ารักษา', sub_title_str: hospital.estimated_examination_fees}
       contents = [
-        "ชื่อ : #{hospital.name}"
+        "ชื่อ : #{hospital.name}",
         "ค่าตรวจ : #{estimated}",
         "ที่อยู่ : #{hospital.address}",
         "เบอร์โทร : #{hospital.phone}"

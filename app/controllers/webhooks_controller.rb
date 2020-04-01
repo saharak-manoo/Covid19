@@ -22,11 +22,11 @@ class WebhooksController < ApplicationController
         when Line::Bot::Event::MessageType::Location
           title = event.message['title']
           address = event.message['address']
-          latitude = event.message['latitude']
-          longitude = event.message['longitude']
+          latitude = event.message['latitude'] || 13.7530066
+          longitude = event.message['longitude'] || 100.4960144
 
           location = title.present? ? title : address
-          hospitals = Hospital.within(15, origin: [latitude, longitude]).limit(10)
+          hospitals = Hospital.near([latitude, longitude], 15, units: :km).limit(10)
 
           unless hospitals.count.zero?
             LineBot.reply(event['replyToken'], LineBot.data_hospital(hospitals, location))
