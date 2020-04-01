@@ -108,9 +108,9 @@ class LineBot
     box_messages = []
 
     hospitals.each_with_index do |hospital, index|
-      header = {title: hospital[:name], sub_title: 'ค่าตรวจ', sub_title_str: hospital[:price]}
+      header = {title: hospital[:name], sub_title: 'ประเภท', sub_title_str: hospital[:hospital_type]}
       contents = [
-        "ประเภท : #{hospital[:hospital_type]}",
+        "ค่าตรวจ : #{hospital[:price]}",
         "จังหวัด : #{hospital[:province]}",
         "อำเภอ : #{hospital[:district]}",
         "เบอร์โทร : #{hospital[:phone_number]}",
@@ -121,8 +121,7 @@ class LineBot
         header, 
         contents,
         "* #{index + 1} ใน #{count} รพ.ใกล้ฉัน ในระยะ 15 กิโลเมตร", 
-        "##{'%06x' % (rand * 0xffffff)}",
-        true
+        "##{'%06x' % (rand * 0xffffff)}"
       )
     end
 
