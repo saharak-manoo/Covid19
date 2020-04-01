@@ -102,7 +102,8 @@ class LineBot
     flex(flex_msg(header, contents, footer, color), header[:title])
   end
 
-  def self.data_hospital(hospitals, address = 'คุณ')
+  def self.data_hospital(hospitals, latitude, longitude, address = 'คุณ')
+    hospitals = 
     title = "สถานที่ตรวจหาโรค/รักษา ใกล้#{address} ทั้งหมด #{hospitals.count} แห่ง ในระยะ 15 กิโลเมตร"
     box_messages = []
 
@@ -123,7 +124,7 @@ class LineBot
       box_messages << flex_msg(
         header, 
         contents,
-        '* เป็นข้อมูลที่รวบรวมเองครับ', 
+        "* #{hospital.to_km_th(latitude, longitude)}", 
         "##{'%06x' % (rand * 0xffffff)}",
         true
       )
