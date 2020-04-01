@@ -111,10 +111,10 @@ class LineBot
       header = {title: hospital[:name], sub_title: 'ประเภท', sub_title_str: hospital[:hospital_type]}
       contents = [
         "ค่าตรวจ : #{hospital[:price]}",
-        "จังหวัด : #{hospital[:province}",
-        "อำเภอ : #{hospital[:district}",
-        "เบอร์โทร : #{hospital[:phone_number}",
-        "ระยะทาง : #{hospital[:kilometer_th}"
+        "จังหวัด : #{hospital[:province]}",
+        "อำเภอ : #{hospital[:district]}",
+        "เบอร์โทร : #{hospital[:phone_number]}",
+        "ระยะทาง : #{hospital[:kilometer_th]}",
       ]
 
       box_messages << flex_msg(
