@@ -110,6 +110,7 @@ class LineBot
     hospitals.each_with_index do |hospital, index|
       header = {title: hospital[:name], sub_title: 'ประเภท', sub_title_str: hospital[:hospital_type]}
       contents = [
+        "โรงพยาบาล : #{hospital[:name].gsub!('รพ.', '')}",
         "ค่าตรวจ : #{hospital[:price]}",
         "จังหวัด : #{hospital[:province]}",
         "อำเภอ : #{hospital[:district]}",
@@ -121,7 +122,8 @@ class LineBot
         header, 
         contents,
         "* #{index + 1} ใน #{count} รพ.ใกล้ฉัน ในระยะ 15 กิโลเมตร", 
-        "##{'%06x' % (rand * 0xffffff)}"
+        "##{'%06x' % (rand * 0xffffff)}",
+        true
       )
     end
 
@@ -275,10 +277,9 @@ class LineBot
                 type: "text",
                 text: header[:title],
                 color: "#ffffff",
-                size: is_long_text ? "xl" : "3xl",
+                size: is_long_text ? "xxl" : "3xl",
                 flex: 4,
                 weight: "bold",
-                wrap: true
               }
             ]
           },
@@ -290,8 +291,7 @@ class LineBot
                 type: "text",
                 text: header[:sub_title],
                 color: "#ffffff66",
-                size: "sm",
-                wrap: true
+                size: "sm"
               },
               {
                 type: "text",
@@ -299,8 +299,7 @@ class LineBot
                 color: "#ffffff",
                 size: "xl",
                 flex: 4,
-                weight: "bold",
-                wrap: true
+                weight: "bold"
               }
             ]
           }
