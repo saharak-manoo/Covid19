@@ -332,21 +332,29 @@ class Covid
   end
 
   def self.save_world
-    datas = world
+    begin
+      datas = world
+    rescue => e
+      datas = nil
+      LineNoti.send_to_dev("ไม่สามารถสร้างหรือแก้ไขข้อมูล World ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
+    end
 
-    datas[:statistics].each do |data|
-      world = World.find_by(country: data[:country])
-      world = World.new if world.nil?
-      world.country = data[:country]
-      world.country_th = data[:country_th]
-      world.country_flag = data[:country_flag]
-      world.confirmed = data[:confirmed]
-      world.healings = data[:healings]
-      world.deaths = data[:deaths]
-      world.recovered = data[:recovered]
-      world.travel = data[:travel]
+    unless datas.nil?
+      datas[:statistics].each do |data|
+        world = World.find_by(country: data[:country])
+        world = World.new if world.nil?
 
-      world.save
+        world.country = data[:country]
+        world.country_th = data[:country_th]
+        world.country_flag = data[:country_flag]
+        world.confirmed = data[:confirmed]
+        world.healings = data[:healings]
+        world.deaths = data[:deaths]
+        world.recovered = data[:recovered]
+        world.travel = data[:travel]
+
+        world.save
+      end
     end
   end
 
@@ -565,16 +573,12 @@ class Covid
     end
 
     # Infected
-    infected_keys = jQuery.find('td.popup_subhead').take(10).map.with_index do |td, index|
+    infected_keys = jQuery.find('td.popup_subhead').take(6).map.with_index do |td, index|
       case index
-      when 0..4
+      when 0..3
         "Confirmed case #{td.text}".to_key
-      when 5
+      when 4..5
         "PUI #{td.text}".to_key
-      when 7..9
-        "Case Management #{td.text}".to_key
-      else
-        td.text.to_key
       end
     end
 
@@ -587,7 +591,7 @@ class Covid
     travelers = Hash[traveler_keys.zip(traveler_values)]
 
     confirmed = infecteds['confirmed_case_total'].to_i || 0
-    deaths = infecteds['confirmed_case_death'].to_i || 0
+    deaths = infecteds['confirmed_case_deaths'].to_i || 0
     recovered = infecteds['confirmed_case_discharged'].to_i || 0
     severed = infecteds['confirmed_case_severe'].to_i || 0
 
@@ -601,10 +605,7 @@ class Covid
       critical: severed,
       confirmed_add_today: infecteds['confirmed_case_new_case'].to_i || 0,
       watch_out_collectors: infecteds['pui_total'].to_i || 0,
-      new_watch_out: infecteds['new_pui'].to_i || 0,
-      case_management_admit: infecteds['case_management_admit'].to_i || 0,
-      case_management_discharged: infecteds['case_management_discharged'].to_i || 0,
-      case_management_observation: infecteds['case_management_observation'].to_i || 0,
+      new_watch_out: infecteds['pui_new_pui'].to_i || 0,
       airport: travelers['airport'].to_i || 0,
       sea_port: travelers['sea_port'].to_i || 0,
       ground_port: travelers['ground_port'].to_i || 0,
@@ -861,9 +862,6 @@ class Covid
         thailand_summary.critical = ddc[:critical] || 0
         thailand_summary.watch_out_collectors = ddc[:watch_out_collectors] || 0
         thailand_summary.new_watch_out = ddc[:new_watch_out] || 0
-        thailand_summary.case_management_admit = ddc[:case_management_admit] || 0
-        thailand_summary.case_management_discharged = ddc[:case_management_discharged] || 0
-        thailand_summary.case_management_observation = ddc[:case_management_observation] || 0
         thailand_summary.airport = ddc[:airport] || 0
         thailand_summary.sea_port = ddc[:sea_port] || 0
         thailand_summary.ground_port = ddc[:ground_port] || 0
