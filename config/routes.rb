@@ -36,6 +36,7 @@ Rails.application.routes.draw do
         get 'global_retroact'
         get 'thailand_cases'
         get 'thailand_infected_province'
+        get 'hospital_by_location'
       end
     end
   end
