@@ -484,6 +484,7 @@ DEPENDENCIES
   figaro
   flag-icons-rails
   geocoder
+  geokit
   geokit-rails
   google-cloud-translate
   google_drive

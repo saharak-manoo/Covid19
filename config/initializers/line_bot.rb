@@ -110,7 +110,7 @@ class LineBot
       name = hospital.name
       name.gsub!('โรงพยาบาล', 'รพ.')
       estimated = hospital.estimated_examination_fees
-      estimated.gsub!('ตรวจ COVID-19 มีค่าใช้จ่ายประมาณ', '')
+      estimated.gsub!('ตรวจ COVID-19 มีค่าใช้จ่ายประมาณ ', '')
 
       header = {title: name, sub_title: 'ค่ารักษา', sub_title_str: hospital.estimated_examination_fees}
       contents = [
@@ -213,7 +213,8 @@ class LineBot
     }
   end
 
-  def self.flex_msg(header, datas, footer, color = "#0367D3")
+  def self.flex_msg(header, datas, footer, color, is_long_text = false)
+    color = color.nil? ? "#0367D3" : color
     colors = ['#fcd35e', '#bffd59', '#5efcad', '#EF454D', '#ff4716', '#713ff9', '#29adfe', '#ffd816']
     contents = []
 
@@ -276,7 +277,7 @@ class LineBot
                 type: "text",
                 text: header[:title],
                 color: "#ffffff",
-                size: "3xl",
+                size: is_long_text ? "xl" : "3xl",
                 flex: 4,
                 weight: "bold",
                 wrap: true
