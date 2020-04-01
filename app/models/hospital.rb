@@ -1,4 +1,5 @@
 class Hospital < ApplicationRecord
+  include ActionView::Helpers::NumberHelper
   acts_as_mappable default_units: :kms,
                    default_formula: :sphere,
                    distance_field_name: :address,
@@ -6,17 +7,14 @@ class Hospital < ApplicationRecord
                    lng_column_name: :longitude
 
   def price
-    min_cost = min_cost.to_i
-    max_cost = max_cost.to_i
-
     if min_cost.zero? && max_cost.zero?
       "ไม่ทราบราคา"
     elsif !min_cost.zero? && !max_cost.zero?
-      "#{min_cost.to_delimited} - #{max_cost.to_delimited} บาท"
+      "#{number_to_currency(min_cost, unit: '')} - #{number_to_currency(max_cost, unit: '')} บาท"
     elsif !min_cost.zero?
-      "#{min_cost.to_delimited} บาท"
+      "#{number_to_currency(min_cost, unit: '')} บาท"
     elsif !max_cost.zero?
-      "#{max_cost.to_delimited} บาท"
+      "#{number_to_currency(max_cost, unit: '')} บาท"
     end  
   end
 
@@ -42,8 +40,10 @@ class Hospital < ApplicationRecord
     if options[:api]
       json = super().except('id')
       json[:price] = price
-      json[:kilometers] = kilometers(options[:lat], options[:long])
-      json[:kilometer_th] = to_km_th(options[:lat], options[:long])
+      if options[:lat].present? && options[:long].present?
+        json[:kilometers] = kilometers(options[:lat], options[:long])
+        json[:kilometer_th] = to_km_th(options[:lat], options[:long])
+      end  
       json[:last_updated] = last_updated
 
       json&.with_indifferent_access
