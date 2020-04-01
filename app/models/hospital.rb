@@ -28,9 +28,9 @@ class Hospital < ApplicationRecord
     km = kilometers(lat, long).to_i
 
     if km.zero?
-      'รพ.นี้อยู่ห่างจากคุณไม่ถึง 1 กิโลเมตร'
+      'อยู่ห่างจากคุณไม่ถึง 1 กิโลเมตร'
     else
-      "รพ.นี้อยู่ห่างจากคุณประมาณ #{km} กิโลเมตร"
+      "อยู่ห่างจากคุณประมาณ #{km} กิโลเมตร"
     end
   end
 
