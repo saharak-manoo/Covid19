@@ -24,9 +24,15 @@ class WebhooksController < ApplicationController
           address = event.message['address']
           latitude = event.message['latitude']
           longitude = event.message['longitude']
+
+          location = title.present? ? title : address
           hospitals = Hospital.within(15, origin: [latitude, longitude]).order(address: :desc)
 
-          LineBot.reply(event['replyToken'], LineBot.data_hospital(hospitals, title.present? ? title : address))
+          unless hospitals.zero?
+            LineBot.reply(event['replyToken'], LineBot.data_hospital(hospitals, locations))
+          else
+            LineBot.reply(event['replyToken'], LineBot.quick_reply_location("ขออภัย ไม่มีโรงบาลที่รับตรวจโควิด19 ใกล้#{location} ในระยะ 15 กิโลเมตรเลย โปรดส่งตำแหน่งของคุณใหม่ หรือข้อมูลด้านอื่น เลือกได้เลยครับ"))
+          end  
         when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
           response = client.get_message_content(event.message['id'])
           tf = Tempfile.open("content")
