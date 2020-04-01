@@ -36,7 +36,7 @@ class GlobalSummary < ApplicationRecord
       json[:recovered_add_today] = recovered_add_today
       json[:last_updated] = last_updated
 
-      json
+      json&.with_indifferent_access
     else
       super()
     end
