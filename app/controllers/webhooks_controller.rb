@@ -26,7 +26,7 @@ class WebhooksController < ApplicationController
           longitude = event.message['longitude']
 
           location = title.present? ? title : address
-          hospitals = Hospital.within(15, origin: [latitude, longitude]).order(address: :desc)
+          hospitals = Hospital.within(15, origin: [latitude, longitude]).limit(10).order(address: :desc)
 
           unless hospitals.count.zero?
             LineBot.reply(event['replyToken'], LineBot.data_hospital(hospitals, location))
