@@ -278,7 +278,7 @@ if Hospital.count.zero?
     longitude: 100.6175086
   },
   {
-    name: 'โรงพยาบาลเปาโลเมโมเรียลเกษตร',
+    name: 'รพ.เปาโล (เกษตร)',
     province: 'กรุงเทพมหานคร',
     district: 'จตุจักร',
     hospital_type: 'รพ.เอกชน',
