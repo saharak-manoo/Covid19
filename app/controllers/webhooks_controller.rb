@@ -21,7 +21,7 @@ class WebhooksController < ApplicationController
           else
             LineBot.reply(event['replyToken'], { type: 'text', text: resp[:fulfillment][:speech] })
           end
-        when Line::Bot::Event::MessageType::Localtion
+        when Line::Bot::Event::MessageType::Location
           title = event.message['title']
           address = event.message['address']
           latitude = event.message['latitude']
