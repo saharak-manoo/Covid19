@@ -5,6 +5,10 @@ class Hospital < ApplicationRecord
                    lat_column_name: :latitude,
                    lng_column_name: :longitude
 
+  def last_updated
+    (updated_at || DateTime.now).localtime.to_difference_str
+  end
+
   def as_json(options = {})
     if options[:api]
       super().except('id')
