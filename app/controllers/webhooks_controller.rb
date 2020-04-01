@@ -26,7 +26,7 @@ class WebhooksController < ApplicationController
           longitude = event.message['longitude'] || 100.4960144
 
           location = title.present? ? title : address
-          hospitals = Hospital.near([latitude, longitude], 15, units: :km).limit(10)
+          hospitals = Hospital.all.near([latitude, longitude], 15, units: :km).limit(10)
 
           unless hospitals.count.zero?
             LineBot.reply(event['replyToken'], LineBot.data_hospital(hospitals, location))
