@@ -121,8 +121,8 @@ class LineBot
 
       box_messages << flex_msg(
         header, 
-        contents, 
-        hospital.last_updated, 
+        contents,
+        '* เป็นข้อมูลที่รวบรวมเองครับ', 
         "##{'%06x' % (rand * 0xffffff)}"
       )
     end
