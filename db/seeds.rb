@@ -311,13 +311,13 @@ if Hospital.count.zero?
     longitude: 100.6339656
   },
   {
-    name: 'รพ.สุราษฎร์ธานี',
+    name: 'ศูนย์วิทยาศาสตร์การแพทย์สุราษฎร์ธานี',
     province: 'สุราษฎร์ธานี',
     district: 'เมืองสุราษฎร์ธานี',
     hospital_type: 'รพ.รัฐฯ',
     min_cost: 0,
     max_cost: 0,
-    phone_number: '077-915-600',
+    phone_number: '077-355-301',
     latitude: 9.1318651,
     longitude: 99.2955287
   }]
