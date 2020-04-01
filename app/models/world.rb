@@ -24,7 +24,7 @@ class World < ApplicationRecord
       json[:travel_color] = travel_color
       json[:last_updated] = last_updated
 
-      json
+      json&.with_indifferent_access
     else
       super()
     end   
