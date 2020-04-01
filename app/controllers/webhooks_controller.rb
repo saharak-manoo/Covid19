@@ -15,9 +15,7 @@ class WebhooksController < ApplicationController
           if resp[:intent_name] == "COVID-DATA"
             LineBot.reply(event['replyToken'], LineBot.data_covid(resp))
           elsif resp[:intent_name] == "COVID-HOSPITAL"
-            Hospital.all.each_slice(10) do |hospital|
-              LineBot.reply(event['replyToken'], LineBot.data_hospital(hospital))
-            end
+            LineBot.reply(event['replyToken'], LineBot.quick_reply_location)
           else
             LineBot.reply(event['replyToken'], { type: 'text', text: resp[:fulfillment][:speech] })
           end
@@ -26,8 +24,9 @@ class WebhooksController < ApplicationController
           address = event.message['address']
           latitude = event.message['latitude']
           longitude = event.message['longitude']
+          hospitals = Hospital.within(10, origin: [latitude, longitude])
 
-          LineBot.reply(event['replyToken'], { type: 'text', text: "ผู้ใช้ส่ง Location title: #{title} address: #{address} latitude: #{latitude} longitude: #{longitude}" })
+          LineBot.reply(event['replyToken'], LineBot.data_hospital(hospitals, title.present? ? title : address))
         when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
           response = client.get_message_content(event.message['id'])
           tf = Tempfile.open("content")
