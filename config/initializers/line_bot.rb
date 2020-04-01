@@ -103,7 +103,8 @@ class LineBot
   end
 
   def self.data_hospital(hospitals, address = 'คุณ')
-    title = "สถานที่ตรวจหาโรค/รักษา ใกล้#{address} ทั้งหมด #{hospitals.count} แห่ง ในระยะ 15 กิโลเมตร"
+    count = hospitals.count
+    title = "สถานที่ตรวจหาโรค/รักษา ใกล้#{address} ทั้งหมด #{count} แห่ง ในระยะทางไม่เกิน 15 กิโลเมตร"
     box_messages = []
 
     hospitals.each do |hospital|
@@ -119,7 +120,7 @@ class LineBot
       box_messages << flex_msg(
         header, 
         contents,
-        "* #{hospital[:last_updated]}", 
+        "* 1 ใน #{count} ใกล้ฉัน ในระยะทางไม่เกิน 15 กิโลเมตร", 
         "##{'%06x' % (rand * 0xffffff)}",
         true
       )
