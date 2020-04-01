@@ -103,7 +103,6 @@ class LineBot
   end
 
   def self.data_hospital(hospitals, latitude, longitude, address = 'คุณ')
-    hospitals = 
     title = "สถานที่ตรวจหาโรค/รักษา ใกล้#{address} ทั้งหมด #{hospitals.count} แห่ง ในระยะ 15 กิโลเมตร"
     box_messages = []
 

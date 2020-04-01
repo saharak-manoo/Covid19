@@ -1,9 +1,5 @@
 class Hospital < ApplicationRecord
-  acts_as_mappable default_units: :kms,
-                   default_formula: :sphere,
-                   distance_field_name: :address,
-                   lat_column_name: :latitude,
-                   lng_column_name: :longitude
+  reverse_geocoded_by :latitude, :longitude
 
   def kilometers(lat, long)
     Geocoder::Calculations.distance_between([latitude, longitude], [lat, long])
