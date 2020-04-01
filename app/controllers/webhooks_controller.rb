@@ -24,7 +24,7 @@ class WebhooksController < ApplicationController
           address = event.message['address']
           latitude = event.message['latitude']
           longitude = event.message['longitude']
-          hospitals = Hospital.within(10, origin: [latitude, longitude])
+          hospitals = Hospital.within(15, origin: [latitude, longitude]).order(address: :desc)
 
           LineBot.reply(event['replyToken'], LineBot.data_hospital(hospitals, title.present? ? title : address))
         when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video

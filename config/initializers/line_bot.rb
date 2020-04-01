@@ -102,13 +102,19 @@ class LineBot
     flex(flex_msg(header, contents, footer, color), header[:title])
   end
 
-  def self.data_hospital(hospitals, address = 'ใกล้คุณ')
-    title = "สถานที่ตรวจหาโรค/รักษา #{address} ในระยะ 15 กิโลเมตร"
+  def self.data_hospital(hospitals, address = 'คุณ')
+    title = "สถานที่ตรวจหาโรค/รักษา ใกล้#{address} ในระยะ 15 กิโลเมตร"
     box_messages = []
+    name = hospital.name
+    name.gsub!('โรงพยาบาล', 'รพ.')
+
+    estimated = hospital.estimated_examination_fees
+    estimated.gsub!('ตรวจ COVID-19 มีค่าใช้จ่ายประมาณ', '')
 
     hospitals.each do |hospital|
-      header = {title: hospital.name, sub_title: 'ค่ารักษา', sub_title_str: hospital.estimated_examination_fees}
+      header = {title: name, sub_title: 'ค่ารักษา', sub_title_str: hospital.estimated_examination_fees}
       contents = [
+        "ค่าตรวจ : #{estimated}",
         "ที่อยู่ : #{hospital.address}",
         "เบอร์โทร : #{hospital.phone}"
       ]
@@ -116,8 +122,8 @@ class LineBot
       box_messages << flex_msg(
         header, 
         contents, 
-        hospital.estimated_examination_fees, 
-        '#128EFF'
+        hospital.last_updated, 
+        "##{'%06x' % (rand * 0xffffff)}"
       )
     end
 
@@ -272,7 +278,8 @@ class LineBot
                 color: "#ffffff",
                 size: "3xl",
                 flex: 4,
-                weight: "bold"
+                weight: "bold",
+                wrap: true
               }
             ]
           },
@@ -284,7 +291,8 @@ class LineBot
                 type: "text",
                 text: header[:sub_title],
                 color: "#ffffff66",
-                size: "sm"
+                size: "sm",
+                wrap: true
               },
               {
                 type: "text",
@@ -292,7 +300,8 @@ class LineBot
                 color: "#ffffff",
                 size: "xl",
                 flex: 4,
-                weight: "bold"
+                weight: "bold",
+                wrap: true
               }
             ]
           }
