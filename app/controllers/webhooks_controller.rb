@@ -29,7 +29,7 @@ class WebhooksController < ApplicationController
           hospitals = Hospital.within(15, origin: [latitude, longitude])
                               .limit(10)
                               .as_json({api: true, lat: latitude, long: longitude})
-                              .sort_by! { |hospital| -hospital[:kilometers] }
+                              .sort_by! { |hospital| hospital[:kilometers] }
 
           unless hospitals.count.zero?
             LineBot.reply(event['replyToken'], LineBot.data_hospital(hospitals, location))
