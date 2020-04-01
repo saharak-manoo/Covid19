@@ -128,4 +128,8 @@ class Api::CovidsController < Api::ApplicationController
   def thailand_infected_province
     render json: { data: InfectedProvince.where(date: Date.today).as_json({api: true}) }, status: :ok
   end
+
+  def hospital_by_location
+    render json: { data: Hospital.all.as_json({api: true}) }, status: :ok
+  end 
 end
