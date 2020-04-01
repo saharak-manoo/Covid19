@@ -363,6 +363,13 @@ class LineBot
         items: [
           {
             type: 'action',
+            action: {
+              type: 'location',
+              label: 'ส่งตำแหน่งของคุณ'
+            }
+          },
+          {
+            type: 'action',
             imageUrl: "https://cdn4.iconfinder.com/data/icons/coronavirus-1/512/wuhan-coronavirus-virus-outbreak-02-512.png",
             action: {
               type: 'message',
@@ -399,11 +406,22 @@ class LineBot
           },
           {
             type: 'action',
+            imageUrl: "https://cdn4.iconfinder.com/data/icons/coronavirus-1/512/wuhan-coronavirus-virus-outbreak-02-512.png",
             action: {
-              type: 'location',
-              label: 'ส่งตำแหน่งของคุณ'
+              type: 'message',
+              label: 'สุราษฎร์ธานี',
+              text: 'สุราษฎร์ธานี'
             }
-          }
+          },
+          {
+            type: 'action',
+            imageUrl: "https://cdn4.iconfinder.com/data/icons/coronavirus-1/512/wuhan-coronavirus-virus-outbreak-02-512.png",
+            action: {
+              type: 'message',
+              label: 'ยะลา',
+              text: 'ยะลา'
+            }
+          },
         ]
       }
     }

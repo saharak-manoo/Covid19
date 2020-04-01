@@ -28,7 +28,7 @@ class WebhooksController < ApplicationController
           location = title.present? ? title : address
           hospitals = Hospital.within(15, origin: [latitude, longitude]).order(address: :desc)
 
-          unless hospitals.zero?
+          unless hospitals.count.zero?
             LineBot.reply(event['replyToken'], LineBot.data_hospital(hospitals, locations))
           else
             LineBot.reply(event['replyToken'], LineBot.quick_reply_location("ขออภัย ไม่มีโรงบาลที่รับตรวจโควิด19 ใกล้#{location} ในระยะ 15 กิโลเมตรเลย โปรดส่งตำแหน่งของคุณใหม่ หรือข้อมูลด้านอื่น เลือกได้เลยครับ"))
