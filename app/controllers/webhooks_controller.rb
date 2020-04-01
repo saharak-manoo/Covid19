@@ -26,10 +26,13 @@ class WebhooksController < ApplicationController
           longitude = event.message['longitude'] || 100.4960144
 
           location = title.present? ? title : address
-          hospitals = Hospital.within(15, origin: [latitude, longitude]).limit(10).order(address: :asc)
+          hospitals = Hospital.within(15, origin: [latitude, longitude])
+                              .limit(10)
+                              .as_json({api: true, lat: latitude, long: longitude})
+                              .sort_by! { |hospital| -hospital[:kilometers] }
 
           unless hospitals.count.zero?
-            LineBot.reply(event['replyToken'], LineBot.data_hospital(hospitals, latitude, longitude, location))
+            LineBot.reply(event['replyToken'], LineBot.data_hospital(hospitals, location))
           else
             LineBot.reply(event['replyToken'], LineBot.quick_reply_location("ขออภัย ไม่มีโรงบาลที่รับตรวจโควิด19 ใกล้#{location} ในระยะ 15 กิโลเมตรเลย โปรดส่งตำแหน่งของคุณใหม่ หรือข้อมูลด้านอื่น เลือกได้เลยครับ"))
           end  

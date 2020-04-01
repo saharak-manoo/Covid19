@@ -38,7 +38,7 @@ class InfectedProvince < ApplicationRecord
       json[:no_gender_total_color] = no_gender_total.to_covid_color
       json[:last_updated] = last_updated
 
-      json
+      json&.with_indifferent_access
     else
       super()
     end

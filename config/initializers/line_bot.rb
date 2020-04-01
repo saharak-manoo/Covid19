@@ -19,7 +19,7 @@ class LineBot
   end
 
   def self.broadcast_thailand_summary(data = ThailandSummary.find_by(date: Date.today))
-    data = data.as_json({api: true})&.with_indifferent_access
+    data = data.as_json({api: true})
     header = {title: 'ประเทศไทย', sub_title: 'วันนี้ติดเชื้อเพิ่มขึ้น', sub_title_str: '0 คน'}
     header[:sub_title_str] = "#{data[:confirmed_add_today].to_delimited} คน"
     contents = data_to_str(data, false, false, false, false)
@@ -31,7 +31,7 @@ class LineBot
   end
 
   def self.broadcast_global_summary(data = GlobalSummary.find_by(date: Date.today))
-    data = data.as_json({api: true})&.with_indifferent_access
+    data = data.as_json({api: true})
     header = {title: 'ทั่วโลก', sub_title: 'วันนี้ติดเชื้อเพิ่มขึ้น', sub_title_str: '0 คน'}
     header[:sub_title_str] = "#{data[:confirmed_add_today].to_delimited} คน"
     contents = data_to_str(data, false, false, false, false)
@@ -54,19 +54,19 @@ class LineBot
 
     if THAI.include?(location)
       color = "#0367D3"
-      data = ThailandSummary.find_by(date: Date.today).as_json({api: true})&.with_indifferent_access
+      data = ThailandSummary.find_by(date: Date.today).as_json({api: true})
       header[:sub_title_str] = "#{data[:confirmed_add_today].to_delimited} คน"
       contents = data_to_str(data, is_confirmed, is_healings, is_recovered, is_deaths)
       contents << "เฝ้าระวังทั้งหมด #{data[:watch_out_collectors].to_delimited} คน \n(เพิ่มขึ้น #{data[:watch_out_collectors_add_today].to_delimited} คน)"
       contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน \n(เพิ่มขึ้น #{data[:critical_add_today].to_delimited} คน)"
     elsif WORLD.include?(location)
-      data = GlobalSummary.find_by(date: Date.today).as_json({api: true})&.with_indifferent_access
+      data = GlobalSummary.find_by(date: Date.today).as_json({api: true})
       header[:sub_title_str] = "#{data[:confirmed_add_today].to_delimited} คน"
       contents = data_to_str(data, is_confirmed, is_healings, is_recovered, is_deaths)
       contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน \n(เพิ่มขึ้น #{data[:critical_add_today].to_delimited} คน)"
     else
-      infected_province = InfectedProvince.where(date: Date.today).find_by("name ILIKE :keyword", keyword: "%#{location}%").as_json({api: true})&.with_indifferent_access
-      world = World.find_by("country ILIKE :keyword OR country_th ILIKE :keyword", keyword: "%#{location}%").as_json({api: true})&.with_indifferent_access
+      infected_province = InfectedProvince.where(date: Date.today).find_by("name ILIKE :keyword", keyword: "%#{location}%").as_json({api: true})
+      world = World.find_by("country ILIKE :keyword OR country_th ILIKE :keyword", keyword: "%#{location}%").as_json({api: true})
 
       if infected_province.present?
         header[:title] = infected_province[:name] || location
@@ -102,28 +102,24 @@ class LineBot
     flex(flex_msg(header, contents, footer, color), header[:title])
   end
 
-  def self.data_hospital(hospitals, latitude, longitude, address = 'คุณ')
+  def self.data_hospital(hospitals, address = 'คุณ')
     title = "สถานที่ตรวจหาโรค/รักษา ใกล้#{address} ทั้งหมด #{hospitals.count} แห่ง ในระยะ 15 กิโลเมตร"
     box_messages = []
 
     hospitals.each do |hospital|
-      name = hospital.name
-      name.gsub!('โรงพยาบาล', 'รพ.')
-      estimated = hospital.estimated_examination_fees
-      estimated.gsub!('ตรวจ COVID-19 มีค่าใช้จ่ายประมาณ ', '')
-
-      header = {title: name, sub_title: 'ค่ารักษา', sub_title_str: hospital.estimated_examination_fees}
+      header = {title: hospital[:name], sub_title: 'ประเภท', sub_title_str: hospital[:hospital_type]}
       contents = [
-        "ชื่อ : #{hospital.name}",
-        "ค่าตรวจ : #{estimated}",
-        "ที่อยู่ : #{hospital.address}",
-        "เบอร์โทร : #{hospital.phone}"
+        "ค่าตรวจ : #{hospital[:price]}",
+        "จังหวัด : #{hospital[:province}",
+        "อำเภอ : #{hospital[:district}",
+        "เบอร์โทร : #{hospital[:phone_number}",
+        "ระยะทาง : #{hospital[:kilometer_th}"
       ]
 
       box_messages << flex_msg(
         header, 
         contents,
-        "* #{hospital.to_km_th(latitude, longitude)}", 
+        "* #{hospital[:last_updated]}", 
         "##{'%06x' % (rand * 0xffffff)}",
         true
       )
