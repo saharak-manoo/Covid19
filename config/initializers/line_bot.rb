@@ -105,13 +105,13 @@ class LineBot
   def self.data_hospital(hospitals, address = 'คุณ')
     title = "สถานที่ตรวจหาโรค/รักษา ใกล้#{address} ในระยะ 15 กิโลเมตร"
     box_messages = []
-    name = hospital.name
-    name.gsub!('โรงพยาบาล', 'รพ.')
-
-    estimated = hospital.estimated_examination_fees
-    estimated.gsub!('ตรวจ COVID-19 มีค่าใช้จ่ายประมาณ', '')
 
     hospitals.each do |hospital|
+      name = hospital.name
+      name.gsub!('โรงพยาบาล', 'รพ.')
+      estimated = hospital.estimated_examination_fees
+      estimated.gsub!('ตรวจ COVID-19 มีค่าใช้จ่ายประมาณ', '')
+
       header = {title: name, sub_title: 'ค่ารักษา', sub_title_str: hospital.estimated_examination_fees}
       contents = [
         "ค่าตรวจ : #{estimated}",
@@ -355,12 +355,48 @@ class LineBot
     end
   end
 
-  def self.quick_reply_location
+  def self.quick_reply_location(title = 'โปรดส่งตำแหน่งของคุณให้เราทราบ หรือข้อมูลด้านอื่น เลือกได้เลยครับ')
     {
       type: 'text',
-      text: 'โปรดส่งตำแหน่งของคุณให้เราทราบ',
+      text: title,
       quickReply: {
         items: [
+          {
+            type: 'action',
+            imageUrl: "https://cdn4.iconfinder.com/data/icons/coronavirus-1/512/wuhan-coronavirus-virus-outbreak-02-512.png",
+            action: {
+              type: 'message',
+              label: 'ประเทศไทย',
+              text: 'ประเทศไทย'
+            }
+          },
+          {
+            type: 'action',
+            imageUrl: "https://cdn4.iconfinder.com/data/icons/coronavirus-1/512/wuhan-coronavirus-virus-outbreak-02-512.png",
+            action: {
+              type: 'message',
+              label: 'ทั่วโลก',
+              text: 'ทั่วโลก'
+            }
+          },
+          {
+            type: 'action',
+            imageUrl: "https://cdn4.iconfinder.com/data/icons/coronavirus-1/512/wuhan-coronavirus-virus-outbreak-02-512.png",
+            action: {
+              type: 'message',
+              label: 'กรุงเทพมหานคร',
+              text: 'กรุงเทพมหานคร'
+            }
+          },
+          {
+            type: 'action',
+            imageUrl: "https://cdn4.iconfinder.com/data/icons/coronavirus-1/512/wuhan-coronavirus-virus-outbreak-02-512.png",
+            action: {
+              type: 'message',
+              label: 'เชียงใหม่',
+              text: 'เชียงใหม่'
+            }
+          },
           {
             type: 'action',
             action: {
