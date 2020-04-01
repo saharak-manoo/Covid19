@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_31_064724) do
+ActiveRecord::Schema.define(version: 2020_04_01_104250) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -70,11 +70,16 @@ ActiveRecord::Schema.define(version: 2020_03_31_064724) do
 
   create_table "hospitals", force: :cascade do |t|
     t.string "name", null: false
-    t.string "address", null: false
-    t.string "phone", null: false
-    t.string "estimated_examination_fees", null: false
-    t.decimal "latitude", precision: 10, scale: 6
-    t.decimal "longitude", precision: 10, scale: 6
+    t.string "province", null: false
+    t.string "district", null: false
+    t.string "hospital_type", default: "รพ.รัฐฯ", null: false
+    t.decimal "min_cost", precision: 8, scale: 2, default: "0.0", null: false
+    t.decimal "max_cost", precision: 8, scale: 2, default: "0.0", null: false
+    t.string "phone_number", null: false
+    t.decimal "latitude", precision: 10, scale: 6, null: false
+    t.decimal "longitude", precision: 10, scale: 6, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "infected_provinces", force: :cascade do |t|
