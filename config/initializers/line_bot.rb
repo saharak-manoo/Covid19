@@ -107,13 +107,14 @@ class LineBot
     box_messages = []
 
     hospitals.each do |hospital|
+      header = {title: hospital.name, sub_title: 'ค่ารักษา', sub_title_str: hospital.estimated_examination_fees}
       contents = [
         "ที่อยู่ : #{hospital.address}",
         "เบอร์โทร : #{hospital.phone}"
       ]
 
       box_messages << flex_msg(
-        hospital.name, 
+        header, 
         contents, 
         hospital.estimated_examination_fees, 
         '#128EFF'
@@ -122,7 +123,7 @@ class LineBot
 
     {
       type: 'flex',
-      altText: "#{title} ทั้งหมด #{hospitals.count} แห่ง",
+      altText: "#{title} ทั้งหมด #{hospitals&.count || 0} แห่ง",
       contents: {
         type: 'carousel',
         contents: box_messages
