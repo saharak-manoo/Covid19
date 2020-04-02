@@ -11,7 +11,7 @@ class ThailandCase < ApplicationRecord
 
     case status
     when "ยืนยัน"
-      status_color = "#00EC64"
+      status_color = "#02CC87"
     when "ต้องสงสัย" 
       status_color = "#9412F5"
     when "ไม่มีข้อมูลผู้ติดเชื้อพื้นที่"
