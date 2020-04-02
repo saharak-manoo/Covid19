@@ -403,7 +403,7 @@ export class HomeComponent {
   }
 
   loadCasesThai() {
-    this.appService.all('api/covids/cases_thai').subscribe(
+    this.appService.get('api/covids/cases_thai').subscribe(
       (resp) => {
         let response: any = resp
         this.cases = response.data
@@ -415,7 +415,7 @@ export class HomeComponent {
   }
 
   loadHospital() {
-    this.appService.all('api/covids/hospital_and_labs').subscribe(
+    this.appService.get('api/covids/hospital_and_labs').subscribe(
       (resp) => {
         let response: any = resp
         this.hospitals = response.data
@@ -427,7 +427,7 @@ export class HomeComponent {
   }
 
   loadSafeZone() {
-    this.appService.all('api/covids/safe_zone').subscribe(
+    this.appService.get('api/covids/safe_zone').subscribe(
       (resp) => {
         let response: any = resp
         this.safeZones = response.data
@@ -439,7 +439,7 @@ export class HomeComponent {
   }
 
   loadThailandSummary() {
-    this.appService.all('api/covids/thailand_summary').subscribe(
+    this.appService.get('api/covids/thailand_summary').subscribe(
       (resp) => {
         let response: any = resp
         this.localLastUpdated = response.data.last_updated
@@ -462,7 +462,7 @@ export class HomeComponent {
   }
 
   thailandRetroact() {
-    this.appService.all('api/covids/thailand_retroact').subscribe(
+    this.appService.get('api/covids/thailand_retroact').subscribe(
       (resp) => {
         let response: any = resp
         this.barChartLabels = Object.keys(response.data)
@@ -481,7 +481,7 @@ export class HomeComponent {
   }
 
   globalRetroact() {
-    this.appService.all('api/covids/global_retroact').subscribe(
+    this.appService.get('api/covids/global_retroact').subscribe(
       (resp) => {
         let response: any = resp
         this.barChartLabels = Object.keys(response.data)
@@ -499,7 +499,7 @@ export class HomeComponent {
   }
 
   loadGlobalSummary() {
-    this.appService.all('api/covids/global_summary').subscribe(
+    this.appService.get('api/covids/global_summary').subscribe(
       (resp) => {
         let response: any = resp
         this.globleLastUpdated = response.data.last_updated
@@ -516,7 +516,7 @@ export class HomeComponent {
   }
 
   loadAllCountry() {
-    this.appService.all('api/covids/world').subscribe(
+    this.appService.get('api/covids/world').subscribe(
       (resp) => {
         let response: any = resp
         this.allCountryDataSource = new MatTableDataSource<any>(response.data)
@@ -530,7 +530,7 @@ export class HomeComponent {
   }
 
   loadCountryCases() {
-    this.appService.all('api/covids/thailand_cases').subscribe(
+    this.appService.get('api/covids/thailand_cases').subscribe(
       (resp) => {
         let response: any = resp
         this.thailandCases = response.data
@@ -602,7 +602,7 @@ export class HomeComponent {
   }
 
   loadInfectedByProvince() {
-    this.appService.all('api/covids/thailand_infected_province').subscribe(
+    this.appService.get('api/covids/thailand_infected_province').subscribe(
       (resp) => {
         let response: any = resp
         this.infectedByProvinceDataSource = new MatTableDataSource<any>(response.data)
