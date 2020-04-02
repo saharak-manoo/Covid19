@@ -32,6 +32,10 @@ class Hospital < ApplicationRecord
     end
   end
 
+  def pin 
+    '/hospital-zone.svg'.to_map_pin
+  end  
+
   def last_updated
     (updated_at || DateTime.now).localtime.to_difference_str
   end
@@ -43,7 +47,8 @@ class Hospital < ApplicationRecord
       if options[:lat].present? && options[:long].present?
         json[:kilometers] = kilometers(options[:lat], options[:long])
         json[:kilometer_th] = to_km_th(options[:lat], options[:long])
-      end  
+      end
+      json[:pin] = pin
       json[:last_updated] = last_updated
 
       json&.with_indifferent_access
