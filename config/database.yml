@@ -19,14 +19,15 @@ default: &default
   encoding: unicode
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  pool: 10
 
 development:
   <<: *default
   database: Covid19_development
-  username: saharak 
+  username: saharak
   password: password
   port: 5433
+  pool: 10
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -56,9 +57,10 @@ development:
 test:
   <<: *default
   database: Covid19_test
-  username: saharak 
+  username: saharak
   password: password
   port: 5433
+  pool: 10
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -84,3 +86,4 @@ production:
   database: Covid19_production
   username: Covid19
   password: <%= ENV['Covid19_DATABASE_PASSWORD'] %>
+  pool: 10
