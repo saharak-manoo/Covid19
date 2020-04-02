@@ -131,5 +131,9 @@ class Api::CovidsController < Api::ApplicationController
 
   def hospital_by_location
     render json: { data: Hospital.all.as_json({api: true}) }, status: :ok
+  end
+
+  def thailand_case_by_location
+    render json: { data: ThailandCase.all.as_json({api: true}) }, status: :ok
   end 
 end

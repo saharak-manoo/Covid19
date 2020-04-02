@@ -378,3 +378,7 @@ end
 if InfectedProvince.count.zero?
   Covid.thailand_infected_province
 end
+
+if ThailandCase.count.zero?
+  Covid.save_thailand_cases
+end
