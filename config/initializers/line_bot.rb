@@ -26,7 +26,7 @@ class LineBot
     contents << "เฝ้าระวังทั้งหมด #{data[:watch_out_collectors].to_delimited} คน \n(เพิ่มขึ้น #{data[:watch_out_collectors_add_today].to_delimited} คน)"
     contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน \n(เพิ่มขึ้น #{data[:critical_add_today].to_delimited} คน)"
 
-    contents << "ข้อมูลนี้ #{data[:last_updated]} และ Broadcast ทุกครั้งเมื่อข้อมูลมีการเปลี่ยนแปลง"
+    contents << "ข้อมูลนี้เป็นการ Broadcast ทุกครั้งเมื่อข้อมูลมีการเปลี่ยนแปลง"
     broadcast(flex(flex_msg(header, contents, data[:confirmed_add_today].to_covid_color), header[:title]))
   end
 
@@ -37,7 +37,7 @@ class LineBot
     contents = data_to_str(data, false, false, false, false)
     contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน \n(เพิ่มขึ้น #{data[:critical_add_today].to_delimited} คน)"
 
-    contents << "ข้อมูลนี้ #{data[:last_updated]} และ Broadcast ทุก 6 ชั่วโมง"
+    contents << "ข้อมูลนี้เป็นการ Broadcast ทุก 6 ชั่วโมง"
     broadcast(flex(flex_msg(header, contents, data[:confirmed_add_today].to_covid_color), header[:title]))
   end
 
@@ -118,7 +118,7 @@ class LineBot
         "อำเภอ : #{hospital[:district]}",
         "เบอร์โทร : #{hospital[:phone_number]}",
         "ระยะทาง : #{hospital[:kilometer_th]}",
-        "#{index + 1} ใน #{count} รพ.ใกล้ฉัน ในระยะ 15 กิโลเมตร", 
+        "#{index + 1} ใน #{count} รพ.ใกล้ฉัน \nในระยะ 15 กิโลเมตร", 
       ]
 
       box_messages << flex_msg(

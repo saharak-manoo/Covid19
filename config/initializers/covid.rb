@@ -688,6 +688,8 @@ class Covid
       global_summary.save
       
       global_summary
+    rescue ActiveRecord::ConnectionNotEstablished
+      # ไม่มีอะไร Updated
     rescue => e
       LineNoti.send_to_dev("ไม่สามารถ เรียกใช้ข้อมูลจากกรมกักกันโรคได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
       self.global_summary
@@ -744,6 +746,8 @@ class Covid
       global_summary.save
 
       global_summary
+    rescue ActiveRecord::ConnectionNotEstablished
+      # ไม่มีอะไร Updated
     rescue => e
       LineNoti.send_to_dev("ไม่สามารถสร้างหรือแก้ไขข้อมูล global summary ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
     end
@@ -765,6 +769,8 @@ class Covid
       global_summary.save
 
       global_summary
+    rescue ActiveRecord::ConnectionNotEstablished
+      # ไม่มีอะไร Updated
     rescue => e
       LineNoti.send_to_dev("ไม่สามารถสร้างหรือแก้ไขข้อมูล global summary workpoint api ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
     end
@@ -870,6 +876,8 @@ class Covid
 
       thailand_summary.save
       thailand_summary
+    rescue ActiveRecord::ConnectionNotEstablished
+      # ไม่มีอะไร Updated
     rescue => e
       LineNoti.send_to_dev("ไม่สามารถสร้างหรือแก้ไขข้อมูล thailand summary ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
     end
