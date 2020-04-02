@@ -250,43 +250,47 @@ class LineBot
       footer: {
         type: "box",
         layout: "vertical",
-        contents: [{
+        contents: {
           type: "box",
-          layout: "vertical",
+          layout: "horizontal",
           contents: [{
-            type: "filler"
-          },
-          {
             type: "box",
             layout: "vertical",
-            contents: [
-              {
-                type: "filler"
-              }
-            ],
-            cornerRadius: "30px",
-            width: "15px",
-            height: "15px",
-            borderWidth: "2px",
-            borderColor: "#FF122F"
-          },
-          {
-            type: "filler"
-          }
-        ],
-          flex: 0
-        }, {
-          type: "text",
-          text: footer,
-          gravity: "center",
-          flex: 4,
-          size: "sm",
-          weight: "bold",
-          wrap: true
-        }],
-        spacing: "lg",
-        cornerRadius: "30px",
-        margin: "xl"
+            contents: [{
+              type: "filler"
+            },
+            {
+              type: "box",
+              layout: "vertical",
+              contents: [
+                {
+                  type: "filler"
+                }
+              ],
+              cornerRadius: "30px",
+              width: "14px",
+              height: "14px",
+              borderWidth: "2px",
+              borderColor: "#000"
+            },
+            {
+              type: "filler"
+            }
+          ],
+            flex: 0
+          }, {
+            type: "text",
+            text: footer,
+            gravity: "center",
+            flex: 4,
+            size: "sm",
+            weight: "bold",
+            wrap: true
+          }],
+          spacing: "lg",
+          cornerRadius: "30px",
+          margin: "xl"
+        }
       }
     }
   end
