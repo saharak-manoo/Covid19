@@ -105,8 +105,8 @@ class LineBot
   end
 
   def self.data_hospital(hospitals, address = 'คุณ')
-    count = hospitals.count
-    title = "สถานที่ตรวจหาโรค/รักษา ใกล้#{address} ทั้งหมด #{count} แห่ง ในระยะทางไม่เกิน 15 กิโลเมตร"
+    count = hospitals.count || 0
+    title = "สถานที่ตรวจหาโรค/รักษา ใกล้ #{address} ทั้งหมด #{count} แห่ง ในระยะทางไม่เกิน 15 กิโลเมตร"
     box_messages = []
 
     hospitals.each_with_index do |hospital, index|
@@ -131,7 +131,41 @@ class LineBot
 
     {
       type: 'flex',
-      altText: "#{title} ทั้งหมด #{hospitals&.count || 0} แห่ง",
+      altText: "#{title} ทั้งหมด #{count} แห่ง",
+      contents: {
+        type: 'carousel',
+        contents: box_messages
+      }
+    } 
+  end
+
+  def self.data_thailand_case(thailand_cases, address = 'คุณ')
+    count = thailand_cases.count || 0
+    title = "สถานที่ตรวจหาโรค/รักษา ใกล้ #{address} ทั้งหมด #{count} แห่ง ในระยะทางไม่เกิน 15 กิโลเมตร"
+    box_messages = []
+
+    thailand_cases.each_with_index do |thailand_case, index|
+      header = {title: thailand_case[:place_name], sub_title: 'สถานะ', sub_title_str: thailand_case[:status]}
+      contents = [
+        "สถานที่ : #{thailand_case[:place_name]}",
+        "สถานะ : #{thailand_case[:status]}",
+        "เมื่อ : #{thailand_case[:date_diff_str]}",
+        "ข้อมูล : #{thailand_case[:note]}",
+        "ระยะทาง : #{thailand_case[:kilometer_th]}",
+        "#{index + 1} ใน #{count} ผู้ติดเชื้อใกล้ฉัน \nในระยะ 15 กิโลเมตร", 
+      ]
+
+      box_messages << flex_msg(
+        header, 
+        contents,
+        thailand_case[:status_color],
+        true
+      )
+    end
+
+    {
+      type: 'flex',
+      altText: "#{title} ทั้งหมด #{count} แห่ง",
       contents: {
         type: 'carousel',
         contents: box_messages

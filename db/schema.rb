@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_01_104250) do
+ActiveRecord::Schema.define(version: 2020_04_02_043815) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -103,6 +103,18 @@ ActiveRecord::Schema.define(version: 2020_04_01_104250) do
     t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
   end
 
+  create_table "thailand_cases", force: :cascade do |t|
+    t.string "place_name", null: false
+    t.date "date", null: false
+    t.string "status", null: false
+    t.string "note", null: false
+    t.string "source", null: false
+    t.decimal "latitude", precision: 10, scale: 6, null: false
+    t.decimal "longitude", precision: 10, scale: 6, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "thailand_summaries", force: :cascade do |t|
     t.integer "confirmed", default: 0
     t.integer "healings", default: 0
@@ -122,6 +134,14 @@ ActiveRecord::Schema.define(version: 2020_04_01_104250) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.date "date"
+  end
+
+  create_table "user_temp_chats", force: :cascade do |t|
+    t.string "line_user_id", null: false
+    t.string "message", null: false
+    t.string "intent_name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", force: :cascade do |t|

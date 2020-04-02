@@ -403,23 +403,10 @@ class Covid
         date = DateTime.parse(resp['gsx$date']['$t'])
       end
 
-      status_color = "#000"
       status = resp['gsx$status']['$t']
-
-      case status
-      when "ยืนยัน"
-        status_color = "#00EC64"
-      when "ต้องสงสัย" 
-        status_color = "#9412F5"
-      when "ไม่มีข้อมูลผู้ติดเชื้อพื้นที่"
-        status_color = "#129FF5"
-      when "ไม่ระบุพื้นที่"
-        status_color = "#F55E12"
-      end
 
       data << {
         status: status,
-        status_color: status_color,
         date: date,
         date_diff_str: date.to_difference_str,
         place: resp['gsx$placename']['$t'],
@@ -920,25 +907,57 @@ class Covid
     cases = v2_cases
 
     PROVINCE_TH.each do |name|
-      province_cases = cases.select { |c| c[:province] == name }
-      infected = province_cases.count || 0
-      man_total = province_cases.select { |c| c[:gender] == 'ชาย' }.count || 0
-      woman_total = province_cases.select { |c| c[:gender] == 'หญิง' }.count || 0
-      no_gender_total = province_cases.select { |c| c[:gender] == '-' }.count || 0
-      
-      date = Date.today
-      infected_province = InfectedProvince.find_by(date: date, name: name)
-      infected_province = InfectedProvince.new if infected_province.nil?
+      begin
+        province_cases = cases.select { |c| c[:province] == name }
+        infected = province_cases.count || 0
+        man_total = province_cases.select { |c| c[:gender] == 'ชาย' }.count || 0
+        woman_total = province_cases.select { |c| c[:gender] == 'หญิง' }.count || 0
+        no_gender_total = province_cases.select { |c| c[:gender] == '-' }.count || 0
+        
+        date = Date.today
+        infected_province = InfectedProvince.find_by(date: date, name: name)
+        infected_province = InfectedProvince.new if infected_province.nil?
 
-      infected_province.date = date
-      infected_province.name = name
-      infected_province.infected = infected
-      infected_province.man_total = man_total
-      infected_province.woman_total = woman_total
-      infected_province.no_gender_total = no_gender_total
+        infected_province.date = date
+        infected_province.name = name
+        infected_province.infected = infected
+        infected_province.man_total = man_total
+        infected_province.woman_total = woman_total
+        infected_province.no_gender_total = no_gender_total
 
-      infected_province.save
-      infected_province
+        infected_province.save
+        infected_province
+      rescue ActiveRecord::ConnectionNotEstablished
+        # ไม่มีอะไร Updated
+      rescue => e
+        LineNoti.send_to_dev("ไม่สามารถสร้างหรือแก้ไขข้อมูล Infected province ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
+      end
     end
-  end  
+  end
+
+  def self.save_thailand_cases
+    cases = cases_thai
+
+    cases.each do |case_thai|
+      begin
+        thailand_case = ThailandCase.find_by(place_name: case_thai[:place])
+        thailand_case = ThailandCase.new if thailand_case.nil?
+
+        thailand_case.place_name = case_thai[:place]
+        thailand_case.date = case_thai[:date]
+        thailand_case.status = case_thai[:status]
+        thailand_case.note = case_thai[:note]
+        thailand_case.source = case_thai[:source]
+        thailand_case.latitude = case_thai[:latitude]
+        thailand_case.longitude = case_thai[:longitude]
+
+        thailand_case.save
+        thailand_case
+      rescue ActiveRecord::ConnectionNotEstablished
+        # ไม่มีอะไร Updated
+      rescue => e
+        LineNoti.send_to_dev("ไม่สามารถสร้างหรือแก้ไขข้อมูล Thailand Infected case ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
+      end
+    end
+  end
 end
