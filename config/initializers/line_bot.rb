@@ -26,7 +26,7 @@ class LineBot
     contents << "เฝ้าระวังทั้งหมด #{data[:watch_out_collectors].to_delimited} คน \n(เพิ่มขึ้น #{data[:watch_out_collectors_add_today].to_delimited} คน)"
     contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน \n(เพิ่มขึ้น #{data[:critical_add_today].to_delimited} คน)"
 
-    footer = "* ข้อมูลนี้ #{data[:last_updated]} \n* Broadcast ทุกครั้งเมื่อข้อมูลมีการเปลี่ยนแปลง"
+    footer = "ข้อมูลนี้ #{data[:last_updated]} และ Broadcast ทุกครั้งเมื่อข้อมูลมีการเปลี่ยนแปลง"
     broadcast(flex(flex_msg(header, contents, footer, data[:confirmed_add_today].to_covid_color), header[:title]))
   end
 
@@ -37,7 +37,7 @@ class LineBot
     contents = data_to_str(data, false, false, false, false)
     contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน \n(เพิ่มขึ้น #{data[:critical_add_today].to_delimited} คน)"
 
-    footer = "* ข้อมูลนี้ #{data[:last_updated]} \n* Broadcast ทุก 6 ชั่วโมง"
+    footer = "ข้อมูลนี้ #{data[:last_updated]} และ Broadcast ทุก 6 ชั่วโมง"
     broadcast(flex(flex_msg(header, contents, footer, data[:confirmed_add_today].to_covid_color), header[:title]))
   end
 
@@ -79,7 +79,7 @@ class LineBot
           "ไม่ระบุเพศ #{infected_province[:no_gender_total].to_delimited} คน \n(เพิ่มขึ้น #{infected_province[:no_gender_total_add_today].to_delimited} คน)"
         ]
 
-        return flex(flex_msg(header, contents, "* ข้อมูลนี้ #{infected_province[:last_updated]}", infected_province[:infected_color]), header[:title])
+        return flex(flex_msg(header, contents, "ข้อมูลนี้ #{infected_province[:last_updated]}", infected_province[:infected_color]), header[:title])
       elsif world.present?
         header[:title] = world[:country_th] || location
         header[:sub_title] = "Country"
@@ -92,13 +92,13 @@ class LineBot
           "การเดินทาง: #{world[:travel]}"
         ]
 
-        return flex(flex_msg(header, contents, "* ข้อมูลนี้ #{world[:last_updated]}", world[:confirmed_color]), header[:title])
+        return flex(flex_msg(header, contents, "ข้อมูลนี้ #{world[:last_updated]}", world[:confirmed_color]), header[:title])
       else
         return { type: 'text', text: "ขออภัยไม่มีข้อมูลของ #{location} โปรดลองเป็น ชื่อจังหวัด เช่น เชียงใหม่, กรุงเทพ" }
       end  
     end
 
-    footer = "* ข้อมูลนี้ #{data[:last_updated]}"
+    footer = "ข้อมูลนี้ #{data[:last_updated]}"
     flex(flex_msg(header, contents, footer, color), header[:title])
   end
 
@@ -250,43 +250,47 @@ class LineBot
       footer: {
         type: "box",
         layout: "vertical",
-        contents: [{
+        contents: {
           type: "box",
-          layout: "vertical",
+          layout: "horizontal",
           contents: [{
-            type: "filler"
-          },
-          {
             type: "box",
             layout: "vertical",
-            contents: [
-              {
-                type: "filler"
-              }
-            ],
-            cornerRadius: "30px",
-            width: "15px",
-            height: "15px",
-            borderWidth: "2px",
-            borderColor: "#FF122F"
-          },
-          {
-            type: "filler"
-          }
-        ],
-          flex: 0
-        }, {
-          type: "text",
-          text: footer,
-          gravity: "center",
-          flex: 4,
-          size: "sm",
-          weight: "bold",
-          wrap: true
-        }],
-        spacing: "lg",
-        cornerRadius: "30px",
-        margin: "xl"
+            contents: [{
+              type: "filler"
+            },
+            {
+              type: "box",
+              layout: "vertical",
+              contents: [
+                {
+                  type: "filler"
+                }
+              ],
+              cornerRadius: "30px",
+              width: "14px",
+              height: "14px",
+              borderWidth: "2px",
+              borderColor: "#000"
+            },
+            {
+              type: "filler"
+            }
+          ],
+            flex: 0
+          }, {
+            type: "text",
+            text: footer,
+            gravity: "center",
+            flex: 4,
+            size: "sm",
+            weight: "bold",
+            wrap: true
+          }],
+          spacing: "lg",
+          cornerRadius: "30px",
+          margin: "xl"
+        }
       }
     }
   end
