@@ -26,8 +26,8 @@ class LineBot
     contents << "เฝ้าระวังทั้งหมด #{data[:watch_out_collectors].to_delimited} คน \n(เพิ่มขึ้น #{data[:watch_out_collectors_add_today].to_delimited} คน)"
     contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน \n(เพิ่มขึ้น #{data[:critical_add_today].to_delimited} คน)"
 
-    footer = "ข้อมูลนี้ #{data[:last_updated]} และ Broadcast ทุกครั้งเมื่อข้อมูลมีการเปลี่ยนแปลง"
-    broadcast(flex(flex_msg(header, contents, footer, data[:confirmed_add_today].to_covid_color), header[:title]))
+    contents << "ข้อมูลนี้ #{data[:last_updated]} และ Broadcast ทุกครั้งเมื่อข้อมูลมีการเปลี่ยนแปลง"
+    broadcast(flex(flex_msg(header, contents, data[:confirmed_add_today].to_covid_color), header[:title]))
   end
 
   def self.broadcast_global_summary(data = GlobalSummary.find_by(date: Date.today))
@@ -37,8 +37,8 @@ class LineBot
     contents = data_to_str(data, false, false, false, false)
     contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน \n(เพิ่มขึ้น #{data[:critical_add_today].to_delimited} คน)"
 
-    footer = "ข้อมูลนี้ #{data[:last_updated]} และ Broadcast ทุก 6 ชั่วโมง"
-    broadcast(flex(flex_msg(header, contents, footer, data[:confirmed_add_today].to_covid_color), header[:title]))
+    contents << "ข้อมูลนี้ #{data[:last_updated]} และ Broadcast ทุก 6 ชั่วโมง"
+    broadcast(flex(flex_msg(header, contents, data[:confirmed_add_today].to_covid_color), header[:title]))
   end
 
   def self.data_covid(resp)
@@ -76,10 +76,11 @@ class LineBot
           "ติดเชื้อทั้งหมด #{infected_province[:infected].to_delimited} คน",
           "เพศชาย #{infected_province[:man_total].to_delimited} คน \n(เพิ่มขึ้น #{infected_province[:man_total_add_today].to_delimited} คน)",
           "เพศหญิง #{infected_province[:woman_total].to_delimited} คน \n(เพิ่มขึ้น #{infected_province[:woman_total_add_today].to_delimited} คน)",
-          "ไม่ระบุเพศ #{infected_province[:no_gender_total].to_delimited} คน \n(เพิ่มขึ้น #{infected_province[:no_gender_total_add_today].to_delimited} คน)"
+          "ไม่ระบุเพศ #{infected_province[:no_gender_total].to_delimited} คน \n(เพิ่มขึ้น #{infected_province[:no_gender_total_add_today].to_delimited} คน)",
+          "ข้อมูลนี้ #{infected_province[:last_updated]}"
         ]
 
-        return flex(flex_msg(header, contents, "ข้อมูลนี้ #{infected_province[:last_updated]}", infected_province[:infected_color]), header[:title])
+        return flex(flex_msg(header, contents, infected_province[:infected_color]), header[:title])
       elsif world.present?
         header[:title] = world[:country_th] || location
         header[:sub_title] = "Country"
@@ -89,17 +90,18 @@ class LineBot
           "กำลังรักษาทั้งหมด #{world[:healings].to_delimited} คน",
           "รักษาหายแล้วทั้งหมด #{world[:recovered].to_delimited} คน",
           "เสียชีวิตแล้วทั้งหมด #{world[:deaths].to_delimited} คน",
-          "การเดินทาง: #{world[:travel]}"
+          "การเดินทาง: #{world[:travel]}",
+          "ข้อมูลนี้ #{world[:last_updated]}"
         ]
 
-        return flex(flex_msg(header, contents, "ข้อมูลนี้ #{world[:last_updated]}", world[:confirmed_color]), header[:title])
+        return flex(flex_msg(header, contents, world[:confirmed_color]), header[:title])
       else
         return { type: 'text', text: "ขออภัยไม่มีข้อมูลของ #{location} โปรดลองเป็น ชื่อจังหวัด เช่น เชียงใหม่, กรุงเทพ" }
       end  
     end
 
-    footer = "ข้อมูลนี้ #{data[:last_updated]}"
-    flex(flex_msg(header, contents, footer, color), header[:title])
+    contents << "ข้อมูลนี้ #{data[:last_updated]}"
+    flex(flex_msg(header, contents, color), header[:title])
   end
 
   def self.data_hospital(hospitals, address = 'คุณ')
@@ -116,12 +118,12 @@ class LineBot
         "อำเภอ : #{hospital[:district]}",
         "เบอร์โทร : #{hospital[:phone_number]}",
         "ระยะทาง : #{hospital[:kilometer_th]}",
+        "#{index + 1} ใน #{count} รพ.ใกล้ฉัน ในระยะ 15 กิโลเมตร", 
       ]
 
       box_messages << flex_msg(
         header, 
         contents,
-        "#{index + 1} ใน #{count} รพ.ใกล้ฉัน ในระยะ 15 กิโลเมตร", 
         "##{'%06x' % (rand * 0xffffff)}",
         true
       )
@@ -145,12 +147,15 @@ class LineBot
     }
   end
 
-  def self.flex_msg(header, datas, footer, color, is_long_text = false)
+  def self.flex_msg(header, datas, color, is_long_text = false)
     color = color.nil? ? "#0367D3" : color
-    colors = ['#fcd35e', '#bffd59', '#5efcad', '#EF454D', '#ff4716', '#713ff9', '#29adfe', '#ffd816']
+    colors = ['#fcd35e', '#bffd59', '#5efcad', '#EF454D', '#ff4716', '#713ff9', '#29adfe', '#ffd816', '#10E8C6']
     contents = []
+    count = datas.count
 
     datas.each_with_index do |text, index|
+      is_lasted = index + 1 == count
+
       contents << {
         type: "box",
         layout: "horizontal",
@@ -169,8 +174,8 @@ class LineBot
               }
             ],
             cornerRadius: "30px",
-            width: "12px",
-            height: "12px",
+            width: is_lasted ? "14px" : "12px",
+            height: is_lasted ? "14px" : "12px",
             borderWidth: "2px",
             borderColor: datas.count == 1 ? '#EF454D' : colors[index]
           },
@@ -247,51 +252,6 @@ class LineBot
         layout: "vertical",
         contents: contents
       },
-      footer: {
-        type: "box",
-        layout: "vertical",
-        contents: {
-          type: "box",
-          layout: "horizontal",
-          contents: [{
-            type: "box",
-            layout: "vertical",
-            contents: [{
-              type: "filler"
-            },
-            {
-              type: "box",
-              layout: "vertical",
-              contents: [
-                {
-                  type: "filler"
-                }
-              ],
-              cornerRadius: "30px",
-              width: "14px",
-              height: "14px",
-              borderWidth: "2px",
-              borderColor: "#000"
-            },
-            {
-              type: "filler"
-            }
-          ],
-            flex: 0
-          }, {
-            type: "text",
-            text: footer,
-            gravity: "center",
-            flex: 4,
-            size: "sm",
-            weight: "bold",
-            wrap: true
-          }],
-          spacing: "lg",
-          cornerRadius: "30px",
-          margin: "xl"
-        }
-      }
     }
   end
 
