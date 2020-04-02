@@ -6,15 +6,20 @@ class WebhooksController < ApplicationController
 
     events = LineBot.client.parse_events_from(body)
     events.each do |event|
+      message = event.message['text']
+      line_user_id = event['source']['userId']
+
       case event
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Text
-          resp = Dialogflow.send(event.message['text'])
+          resp = Dialogflow.send(message)
 
           if resp[:intent_name] == "COVID-DATA"
             LineBot.reply(event['replyToken'], LineBot.data_covid(resp))
           elsif resp[:intent_name] == "COVID-HOSPITAL"
+            UserTempChat.where(line_user_id: line_user_id).delete_all
+            UserTempChat.create(line_user_id: line_user_id, message: message, intent_name: resp[:intent_name])
             LineBot.reply(event['replyToken'], LineBot.quick_reply_location)
           else
             LineBot.reply(event['replyToken'], { type: 'text', text: resp[:fulfillment][:speech] })

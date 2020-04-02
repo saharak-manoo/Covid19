@@ -403,7 +403,7 @@ export class HomeComponent {
   }
 
   loadCasesThai() {
-    this.appService.get('api/covids/cases_thai').subscribe(
+    this.appService.get('api/covids/thailand_case_by_location').subscribe(
       (resp) => {
         let response: any = resp
         this.cases = response.data

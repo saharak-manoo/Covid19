@@ -32,6 +32,16 @@ scheduler.every '5m' do
   end
 end
 
+scheduler.every '10m' do
+  begin
+    Covid.save_thailand_cases
+  rescue ActiveRecord::ConnectionNotEstablished
+    # ไม่มีอะไร Updated
+  rescue => e
+    LineNoti.send_to_dev("ไม่สามารถ Updated thailand cases ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
+  end
+end  
+
 scheduler.every '30m' do
   begin
     Covid.save_world

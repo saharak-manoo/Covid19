@@ -1,0 +1,2 @@
+class UserTempChat < ApplicationRecord
+end
