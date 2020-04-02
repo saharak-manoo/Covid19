@@ -108,12 +108,9 @@ class LineBot
     box_messages = []
 
     hospitals.each_with_index do |hospital, index|
-      name = hospital[:name]
-      name.gsub!('รพ.', '')
-
-      header = {title: name, sub_title: 'ประเภท', sub_title_str: hospital[:hospital_type]}
+      header = {title: hospital[:name], sub_title: 'ประเภท', sub_title_str: hospital[:hospital_type]}
       contents = [
-        "โรงพยาบาล : #{name}",
+        "โรงพยาบาล : #{hospital[:name].sub('รพ.', '')}",
         "ค่าตรวจ : #{hospital[:price]}",
         "จังหวัด : #{hospital[:province]}",
         "อำเภอ : #{hospital[:district]}",
@@ -145,74 +142,6 @@ class LineBot
       type: "flex",
       altText: "ข้อมูลไวรัสโควิด #{header}",
       contents: messages
-    }
-  end
-
-  def self.bubble_message(header, data, footer, image)
-    contents = []
-    data.each do |text|
-      contents << {
-        type: "text",
-        text: text,
-        flex: 3,
-        size: "md",
-        gravity: "center",
-        wrap: true
-      }
-      
-      contents << {
-        type: "separator"
-      }
-    end
-
-    {
-      type: "bubble",
-      header: {
-        type: "box",
-        layout: "horizontal",
-        contents: [
-          {
-            type: "text",
-            text: header,
-            size: "lg",
-            weight: "bold",
-            color: "#565656",
-            wrap: true
-          }
-        ]
-      },
-      hero: {
-        type: "image",
-        url: image,
-        size: "full",
-        aspectRatio: "16:9",
-        aspectMode: "cover",
-        action: {
-          type: "uri",
-          label: "Action",
-          uri: "https://data-covid-2019.herokuapp.com/"
-        }
-      },
-      body: {
-        type: "box",
-        layout: "vertical",
-        spacing: "sm",
-        margin: "md",
-        contents: contents
-      },
-      footer: {
-        type: "box",
-        layout: "horizontal",
-        contents: [
-          {
-            type: "text",
-            text: footer,
-            weight: "bold",
-            wrap: true,
-            size: "xs",
-          }
-        ]
-      }
     }
   end
 
@@ -321,16 +250,43 @@ class LineBot
       footer: {
         type: "box",
         layout: "vertical",
-        contents: [
+        contents: [{
+          type: "box",
+          layout: "vertical",
+          contents: [{
+            type: "filler"
+          },
           {
-            type: "text",
-            text: footer,
-            size: "xs",
-            weight: "bold",
-            style: "normal",
-            wrap: true
+            type: "box",
+            layout: "vertical",
+            contents: [
+              {
+                type: "filler"
+              }
+            ],
+            cornerRadius: "30px",
+            width: "15px",
+            height: "15px",
+            borderWidth: "2px",
+            borderColor: "#FF122F"
+          },
+          {
+            type: "filler"
           }
-        ]
+        ],
+          flex: 0
+        }, {
+          type: "text",
+          text: footer,
+          gravity: "center",
+          flex: 4,
+          size: "sm",
+          weight: "bold",
+          wrap: true
+        }],
+        spacing: "lg",
+        cornerRadius: "30px",
+        margin: "xl"
       }
     }
   end
@@ -426,5 +382,73 @@ class LineBot
         ]
       }
     }
-  end  
+  end
+  
+  def self.bubble_message(header, data, footer, image)
+    contents = []
+    data.each do |text|
+      contents << {
+        type: "text",
+        text: text,
+        flex: 3,
+        size: "md",
+        gravity: "center",
+        wrap: true
+      }
+      
+      contents << {
+        type: "separator"
+      }
+    end
+
+    {
+      type: "bubble",
+      header: {
+        type: "box",
+        layout: "horizontal",
+        contents: [
+          {
+            type: "text",
+            text: header,
+            size: "lg",
+            weight: "bold",
+            color: "#565656",
+            wrap: true
+          }
+        ]
+      },
+      hero: {
+        type: "image",
+        url: image,
+        size: "full",
+        aspectRatio: "16:9",
+        aspectMode: "cover",
+        action: {
+          type: "uri",
+          label: "Action",
+          uri: "https://data-covid-2019.herokuapp.com/"
+        }
+      },
+      body: {
+        type: "box",
+        layout: "vertical",
+        spacing: "sm",
+        margin: "md",
+        contents: contents
+      },
+      footer: {
+        type: "box",
+        layout: "horizontal",
+        contents: [
+          {
+            type: "text",
+            text: footer,
+            weight: "bold",
+            wrap: true,
+            size: "xs",
+          }
+        ]
+      }
+    }
+  end
 end
