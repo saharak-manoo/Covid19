@@ -399,31 +399,37 @@ export class HomeComponent {
     this.app.getPosition().then((pos) => {
       this.latitude = pos.lat
       this.longitude = pos.lng
+      this.loadCasesThai()
+      this.loadHospital()
     })
   }
 
   loadCasesThai() {
-    this.appService.get('api/covids/thailand_case_by_location').subscribe(
-      (resp) => {
-        let response: any = resp
-        this.cases = response.data
-      },
-      (e) => {
-        this.app.openSnackBar('มีข้อผิดพลาด ในการโหลดข้อมูล', 'Close', 'red-snackbar')
-      }
-    )
+    this.appService
+      .getWithParams('api/covids/thailand_case_by_location', { latitude: this.latitude, longitude: this.longitude })
+      .subscribe(
+        (resp) => {
+          let response: any = resp
+          this.cases = response.data
+        },
+        (e) => {
+          this.app.openSnackBar('มีข้อผิดพลาด ในการโหลดข้อมูล', 'Close', 'red-snackbar')
+        }
+      )
   }
 
   loadHospital() {
-    this.appService.get('api/covids/hospital_and_labs').subscribe(
-      (resp) => {
-        let response: any = resp
-        this.hospitals = response.data
-      },
-      (e) => {
-        this.app.openSnackBar('มีข้อผิดพลาด ในการโหลดข้อมูล', 'Close', 'red-snackbar')
-      }
-    )
+    this.appService
+      .getWithParams('api/covids/hospital_by_location', { latitude: this.latitude, longitude: this.longitude })
+      .subscribe(
+        (resp) => {
+          let response: any = resp
+          this.hospitals = response.data
+        },
+        (e) => {
+          this.app.openSnackBar('มีข้อผิดพลาด ในการโหลดข้อมูล', 'Close', 'red-snackbar')
+        }
+      )
   }
 
   loadSafeZone() {
