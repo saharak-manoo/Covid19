@@ -18,13 +18,16 @@
                   ผู้ติดเชื้อ
                   <strong class="font-size-14">
                     (เพิ่มขึ้น
-                    <strong class="font-size-18 confirmed"
-                      >{{ totalLocal.confirmed_add_today.toLocaleString('en') || 0 }}</strong
-                    >
+                    <strong class="font-size-18 confirmed"></strong>
+                      {{ totalLocal.confirmed_add_today.toLocaleString('en') || 0 }}
+                    </strong>
                     คน)
                   </strong>
                 </p>
-                <p class="infected-person confirmed text-center" id="totalLocalConfirmed">
+                <p
+                  class="infected-person confirmed text-center"
+                  id="totalLocalConfirmed"
+                >
                   {{ totalLocal.confirmed.toLocaleString('en') }}
                 </p>
                 <h4 class="text-center">คน</h4>
@@ -38,13 +41,15 @@
                   กำลังรักษา
                   <strong class="font-size-14">
                     (เพิ่มขึ้น
-                    <strong class="font-size-18 healings"
-                      >{{ totalLocal.healings_add_today.toLocaleString('en') || 0 }}</strong
-                    >
+                    <strong class="font-size-18 healings">
+                      {{ totalLocal.healings_add_today.toLocaleString('en') || 0 }}
+                    </strong>
                     คน)
                   </strong>
                 </p>
-                <p class="infected-person healings text-center">{{ totalLocal.healings.toLocaleString('en') }}</p>
+                <p class="infected-person healings text-center">
+                  {{ totalLocal.healings.toLocaleString('en') }}
+                </p>
                 <h4 class="text-center">คน</h4>
               </mat-card-content>
             </mat-card>
@@ -56,13 +61,15 @@
                   รักษาหายแล้ว
                   <strong class="font-size-14">
                     (เพิ่มขึ้น
-                    <strong class="font-size-18 recovered"
-                      >{{ totalLocal.recovered_add_today.toLocaleString('en') || 0 }}</strong
-                    >
+                    <strong class="font-size-18 recovered">
+                      {{ totalLocal.recovered_add_today.toLocaleString('en') || 0 }}
+                    </strong>
                     คน)
                   </strong>
                 </p>
-                <p class="infected-person recovered text-center">{{ totalLocal.recovered.toLocaleString('en') }}</p>
+                <p class="infected-person recovered text-center">
+                  {{ totalLocal.recovered.toLocaleString('en') }}
+                </p>
                 <h4 class="text-center">คน</h4>
               </mat-card-content>
             </mat-card>
@@ -74,13 +81,15 @@
                   เสียชีวิต
                   <strong class="font-size-14">
                     (เพิ่มขึ้น
-                    <strong class="font-size-18 deaths"
-                      >{{ totalLocal.deaths_add_today.toLocaleString('en') || 0 }}</strong
-                    >
+                    <strong class="font-size-18 deaths">
+                      {{ totalLocal.deaths_add_today.toLocaleString('en') || 0 }}
+                    </strong>
                     คน)
                   </strong>
                 </p>
-                <p class="infected-person deaths text-center">{{ totalLocal.deaths.toLocaleString('en') }}</p>
+                <p class="infected-person deaths text-center">
+                  {{ totalLocal.deaths.toLocaleString('en') }}
+                </p>
                 <h4 class="text-center">คน</h4>
               </mat-card-content>
             </mat-card>
@@ -90,9 +99,9 @@
               <mat-card-content>
                 <p class="text-center font-size-22">
                   เฝ้าระวัง
-                  <strong class="font-size-26 watch-out-collectors"
-                    >{{ totalLocal.watch_out_collectors.toLocaleString('en') }}</strong
-                  >
+                  <strong class="font-size-26 watch-out-collectors">
+                    {{ totalLocal.watch_out_collectors.toLocaleString('en') }}
+                  </strong>
                   คน
                 </p>
               </mat-card-content>
@@ -103,7 +112,10 @@
               <mat-card-content>
                 <p class="text-center font-size-22">
                   อาการหนัก
-                  <strong class="font-size-26 severed">{{ totalLocal.critical.toLocaleString('en') }}</strong> คน
+                  <strong class="font-size-26 severed">
+                    {{ totalLocal.critical.toLocaleString('en') }}
+                  </strong>
+                  คน
                 </p>
               </mat-card-content>
             </mat-card>
@@ -164,7 +176,9 @@
             <mat-card class="card-chart">
               <mat-card-content>
                 <p class="text-center font-size-26">
-                  ข้อมูลย้อนหลัง <strong class="font-size-26 color-7">7</strong> วัน
+                  ข้อมูลย้อนหลัง
+                  <strong class="font-size-26 color-7">7</strong>
+                  วัน
                 </p>
                 <canvas
                   baseChart
@@ -203,7 +217,12 @@
                         <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
                           <p class="font-size-16">
                             สถานะ :
-                            <strong class="font-size-16" [style.color]="case.status_color">{{ case.status }}</strong>
+                            <strong
+                              class="font-size-16"
+                              [style.color]="case.status_color"
+                            >
+                              {{ case.status }}
+                            </strong>
                           </p>
                         </div>
                         <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
@@ -211,6 +230,7 @@
                         </div>
                       </div>
                       <h6>ข้อมูล : {{ case.note }}</h6>
+                      <h6>ระยะทาง : {{ case.kilometer_th }}</h6>
                     </agm-info-window>
                   </agm-marker>
 
@@ -223,7 +243,12 @@
                     <agm-info-window>
                       <h5>{{ hospital.name }}</h5>
                       <h6>รับตรวจ COVID-19</h6>
-                      <h6>ประเภท : {{ hospital.type }}</h6>
+                      <h6>ประเภท : {{ hospital.hospital_type }}</h6>
+                      <h6>ค่าตรวจ : {{ hospital.price }}</h6>
+                      <h6>จังหวัด : {{ hospital.province }}</h6>
+                      <h6>อำเภอ : {{ hospital.district }}</h6>
+                      <h6>เบอร์โทร : {{ hospital.phone_number }}</h6>
+                      <h6>ระยะทาง : {{ hospital.kilometer_th }}</h6>
                     </agm-info-window>
                   </agm-marker>
 
@@ -239,9 +264,12 @@
                         <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
                           <p class="font-size-16">
                             สถานะ :
-                            <strong class="font-size-16" [style.color]="safeZone.action_color"
-                              >{{ safeZone.action }}</strong
+                            <strong
+                              class="font-size-16"
+                              [style.color]="safeZone.action_color"
                             >
+                              {{ safeZone.action }}
+                            </strong>
                           </p>
                         </div>
                         <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
@@ -258,14 +286,19 @@
             <mat-card class="card-chart">
               <mat-card-content>
                 <p class="text-center font-size-26">
-                  ข้อมูลผู้ป่วยในประเทศที่ยืนยันแล้ว (<strong class="deaths"
-                    >{{ (patientInformationCount || 0).toLocaleString('en') }}
+                  ข้อมูลผู้ป่วยในประเทศที่ยืนยันแล้ว (
+                  <strong class="deaths">
+                    {{ (patientInformationCount || 0).toLocaleString('en') }}
                   </strong>
                   คน)
                 </p>
                 <mat-form-field>
                   <mat-label>ค้นหา...</mat-label>
-                  <input matInput (keyup)="searchPatientInformation($event)" placeholder="ตัวอย่าง. เชียงใหม่" />
+                  <input
+                    matInput
+                    (keyup)="searchPatientInformation($event)"
+                    placeholder="ตัวอย่าง. เชียงใหม่"
+                  >
                 </mat-form-field>
 
                 <div class="mat-elevation-z8">
@@ -279,49 +312,160 @@
                       matSortDirection="desc"
                     >
                       <ng-container matColumnDef="statement_date_str">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>วันที่</th>
-                        <td mat-cell *matCellDef="let element">{{element.statement_date_str}}</td>
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          mat-sort-header
+                        >
+                          วันที่
+                        </th>
+                        <td
+                          mat-cell
+                          *matCellDef="let element"
+                        >
+                          {{element.statement_date_str}}
+                        </td>
                       </ng-container>
 
                       <ng-container matColumnDef="gender">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header fxShow="true" fxHide.lt-md>เพศ</th>
-                        <td mat-cell *matCellDef="let element" fxShow="true" fxHide.lt-md>{{element.gender}}</td>
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          mat-sort-header
+                          fxShow="true"
+                          fxHide.lt-md
+                        >
+                          เพศ
+                        </th>
+                        <td
+                          mat-cell
+                          *matCellDef="let element"
+                          fxShow="true"
+                          fxHide.lt-md
+                        >
+                          {{element.gender}}
+                        </td>
                       </ng-container>
 
                       <ng-container matColumnDef="age">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>อายุ (ปี)</th>
-                        <td mat-cell *matCellDef="let element" [style.color]="element.age_color">
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          mat-sort-header
+                        >
+                          อายุ (ปี)
+                        </th>
+                        <td
+                          mat-cell
+                          *matCellDef="let element"
+                          [style.color]="element.age_color"
+                        >
                           {{element.age}}
                         </td>
                       </ng-container>
 
                       <ng-container matColumnDef="job">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header fxShow="true" fxHide.lt-md>อาชีพ</th>
-                        <td mat-cell *matCellDef="let element" fxShow="true" fxHide.lt-md>{{element.job}}</td>
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          mat-sort-header
+                          fxShow="true"
+                          fxHide.lt-md
+                        >
+                          อาชีพ
+                        </th>
+                        <td
+                          mat-cell
+                          *matCellDef="let element"
+                          fxShow="true"
+                          fxHide.lt-md
+                        >
+                          {{element.job}}
+                        </td>
                       </ng-container>
 
                       <ng-container matColumnDef="nationality">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header fxShow="true" fxHide.lt-md>สัญชาติ</th>
-                        <td mat-cell *matCellDef="let element" fxShow="true" fxHide.lt-md>{{element.nationality}}</td>
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          mat-sort-header
+                          fxShow="true"
+                          fxHide.lt-md
+                        >
+                          สัญชาติ
+                        </th>
+                        <td
+                          mat-cell
+                          *matCellDef="let element"
+                          fxShow="true"
+                          fxHide.lt-md
+                        >
+                          {{element.nationality}}
+                        </td>
                       </ng-container>
 
                       <ng-container matColumnDef="province">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>จังหวัด</th>
-                        <td mat-cell *matCellDef="let element">{{element.province}}</td>
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          mat-sort-header
+                        >
+                          จังหวัด
+                        </th>
+                        <td
+                          mat-cell
+                          *matCellDef="let element"
+                        >
+                          {{element.province}}
+                        </td>
                       </ng-container>
 
                       <ng-container matColumnDef="district">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.lt-md>อำเภอ</th>
-                        <td mat-cell *matCellDef="let element" fxHide.lt-md>{{element.district}}</td>
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          mat-sort-header
+                          fxHide.lt-md
+                        >
+                          อำเภอ
+                        </th>
+                        <td
+                          mat-cell
+                          *matCellDef="let element"
+                          fxHide.lt-md
+                        >
+                          {{element.district}}
+                        </td>
                       </ng-container>
 
                       <ng-container matColumnDef="risk">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.lt-md>รูปแบบความเสี่ยง</th>
-                        <td mat-cell *matCellDef="let element" fxHide.lt-md>{{element.risk}}</td>
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          mat-sort-header
+                          fxHide.lt-md
+                        >
+                          รูปแบบความเสี่ยง
+                        </th>
+                        <td
+                          mat-cell
+                          *matCellDef="let element"
+                          fxHide.lt-md
+                        >
+                          {{element.risk}}
+                        </td>
                       </ng-container>
 
-                      <tr mat-header-row *matHeaderRowDef="patientInformationDisplayedColumns"></tr>
-                      <tr mat-row *matRowDef="let row; columns: patientInformationDisplayedColumns;"></tr>
+                      <tbody>
+                        <tr
+                          mat-header-row
+                          *matHeaderRowDef="patientInformationDisplayedColumns"
+                        ></tr>
+                        <tr
+                          mat-row
+                          *matRowDef="let row; columns: patientInformationDisplayedColumns;"
+                        ></tr>
+                      </tbody>
                     </table>
 
                     <mat-paginator
@@ -340,7 +484,11 @@
                 <p class="text-center font-size-26">จำนวนผู้ติดเชื้อแบบแยกตามจังหวัด</p>
                 <mat-form-field>
                   <mat-label>ค้นหา...</mat-label>
-                  <input matInput (keyup)="searchInfectedByProvince($event)" placeholder="ตัวอย่าง. สุราษฎร์ธานี" />
+                  <input
+                    matInput
+                    (keyup)="searchInfectedByProvince($event)"
+                    placeholder="ตัวอย่าง. สุราษฎร์ธานี"
+                  >
                 </mat-form-field>
 
                 <div class="mat-elevation-z8">
@@ -354,40 +502,99 @@
                       matSortDirection="desc"
                     >
                       <ng-container matColumnDef="name">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>จังหวัด</th>
-                        <td mat-cell *matCellDef="let element">{{element.name}}</td>
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          mat-sort-header
+                        >
+                          จังหวัด
+                        </th>
+                        <td
+                          mat-cell
+                          *matCellDef="let element"
+                        >
+                          {{element.name}}
+                        </td>
                       </ng-container>
 
                       <ng-container matColumnDef="man_total">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>เพศชาย (คน)</th>
-                        <td mat-cell *matCellDef="let element" [style.color]="element.man_total_color">
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          mat-sort-header
+                        >
+                          เพศชาย (คน)
+                        </th>
+                        <td
+                          mat-cell
+                          *matCellDef="let element"
+                          [style.color]="element.man_total_color"
+                        >
                           {{element.man_total.toLocaleString('en')}}
                         </td>
                       </ng-container>
 
                       <ng-container matColumnDef="woman_total">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>เพศหญิง (คน)</th>
-                        <td mat-cell *matCellDef="let element" [style.color]="element.woman_total_color">
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          mat-sort-header
+                        >
+                          เพศหญิง (คน)
+                        </th>
+                        <td
+                          mat-cell
+                          *matCellDef="let element"
+                          [style.color]="element.woman_total_color"
+                        >
                           {{element.woman_total.toLocaleString('en')}}
                         </td>
                       </ng-container>
 
                       <ng-container matColumnDef="no_gender_total">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>ไม่ระบุเพศ (คน)</th>
-                        <td mat-cell *matCellDef="let element" [style.color]="element.no_gender_total_color">
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          mat-sort-header
+                        >
+                          ไม่ระบุเพศ (คน)
+                        </th>
+                        <td
+                          mat-cell
+                          *matCellDef="let element"
+                          [style.color]="element.no_gender_total_color"
+                        >
                           {{element.no_gender_total.toLocaleString('en')}}
                         </td>
                       </ng-container>
 
                       <ng-container matColumnDef="infected">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>จำนวน (คน)</th>
-                        <td mat-cell *matCellDef="let element" [style.color]="element.infected_color">
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          mat-sort-header
+                        >
+                          จำนวน (คน)
+                        </th>
+                        <td
+                          mat-cell
+                          *matCellDef="let element"
+                          [style.color]="element.infected_color"
+                        >
                           {{element.infected.toLocaleString('en')}}
                         </td>
                       </ng-container>
 
-                      <tr mat-header-row *matHeaderRowDef="infectedByProvinceDisplayedColumns"></tr>
-                      <tr mat-row *matRowDef="let row; columns: infectedByProvinceDisplayedColumns;"></tr>
+                      <tbody>
+                        <tr
+                          mat-header-row
+                          *matHeaderRowDef="infectedByProvinceDisplayedColumns"
+                        ></tr>
+                        <tr
+                          mat-row
+                          *matRowDef="let row; columns: infectedByProvinceDisplayedColumns;"
+                        ></tr>
+                      </tbody>
                     </table>
 
                     <mat-paginator
@@ -416,15 +623,17 @@
               <mat-card-content>
                 <p class="text-center font-size-26">
                   ผู้ติดเชื้อ
-                  <strong class="font-size-14"
-                    >(เพิ่มขึ้น
-                    <strong class="font-size-18 confirmed"
-                      >{{ total.confirmed_add_today.toLocaleString('en') || 0 }}</strong
-                    >
+                  <strong class="font-size-14">
+                    (เพิ่มขึ้น
+                    <strong class="font-size-18 confirmed">
+                      {{ total.confirmed_add_today.toLocaleString('en') || 0 }}
+                    </strong>
                     คน)
                   </strong>
                 </p>
-                <p class="infected-person confirmed text-center">{{ total.confirmed.toLocaleString('en') }}</p>
+                <p class="infected-person confirmed text-center">
+                  {{ total.confirmed.toLocaleString('en') }}
+                </p>
                 <h4 class="text-center">คน</h4>
               </mat-card-content>
             </mat-card>
@@ -436,13 +645,15 @@
                   กำลังรักษา
                   <strong class="font-size-14">
                     (เพิ่มขึ้น
-                    <strong class="font-size-18 healings"
-                      >{{ total.healings_add_today.toLocaleString('en') || 0 }}</strong
-                    >
+                    <strong class="font-size-18 healings">
+                      {{ total.healings_add_today.toLocaleString('en') || 0 }}
+                    </strong>
                     คน)
                   </strong>
                 </p>
-                <p class="infected-person healings text-center">{{ total.healings.toLocaleString('en') }}</p>
+                <p class="infected-person healings text-center">
+                  {{ total.healings.toLocaleString('en') }}
+                </p>
                 <h4 class="text-center">คน</h4>
               </mat-card-content>
             </mat-card>
@@ -454,13 +665,15 @@
                   รักษาหายแล้ว
                   <strong class="font-size-14">
                     (เพิ่มขึ้น
-                    <strong class="font-size-18 recovered"
-                      >{{ total.recovered_add_today.toLocaleString('en') || 0 }}</strong
-                    >
+                    <strong class="font-size-18 recovered">
+                      {{ total.recovered_add_today.toLocaleString('en') || 0 }}
+                    </strong>
                     คน)
                   </strong>
                 </p>
-                <p class="infected-person recovered text-center">{{ total.recovered.toLocaleString('en') }}</p>
+                <p class="infected-person recovered text-center">
+                  {{ total.recovered.toLocaleString('en') }}
+                </p>
                 <h4 class="text-center">คน</h4>
               </mat-card-content>
             </mat-card>
@@ -472,7 +685,9 @@
                   เสียชีวิต
                   <strong class="font-size-14">
                     (เพิ่มขึ้น
-                    <strong class="font-size-18 deaths">{{ total.deaths_add_today.toLocaleString('en') || 0 }}</strong>
+                    <strong class="font-size-18 deaths">
+                      {{ total.deaths_add_today.toLocaleString('en') || 0 }}
+                    </strong>
                     คน)
                   </strong>
                 </p>
@@ -485,7 +700,11 @@
             <mat-card class="card-text-data">
               <mat-card-content>
                 <p class="text-center font-size-22">
-                  อาการหนัก <strong class="font-size-26 severed">{{ total.critical.toLocaleString('en') }}</strong> คน
+                  อาการหนัก
+                  <strong class="font-size-26 severed">
+                    {{ total.critical.toLocaleString('en') }}
+                  </strong>
+                  คน
                 </p>
               </mat-card-content>
             </mat-card>
@@ -511,7 +730,9 @@
             <mat-card class="card-chart">
               <mat-card-content>
                 <p class="text-center font-size-26">
-                  ข้อมูลย้อนหลัง <strong class="font-size-26 color-7">7</strong> วัน
+                  ข้อมูลย้อนหลัง
+                  <strong class="font-size-26 color-7">7</strong>
+                  วัน
                 </p>
                 <canvas
                   baseChart
@@ -531,7 +752,11 @@
                 <p class="text-center font-size-26">ข้อมูลแบบแยกประเทศ</p>
                 <mat-form-field>
                   <mat-label>ค้นหา...</mat-label>
-                  <input matInput (keyup)="searchAllCountry($event)" placeholder="ตัวอย่าง. Thailand" />
+                  <input
+                    matInput
+                    (keyup)="searchAllCountry($event)"
+                    placeholder="ตัวอย่าง. Thailand"
+                  >
                 </mat-form-field>
                 <div class="mat-elevation-z8">
                   <div class="table-container">
@@ -544,8 +769,14 @@
                       matSortDirection="desc"
                     >
                       <ng-container matColumnDef="country_flag">
-                        <th mat-header-cell *matHeaderCellDef></th>
-                        <td mat-cell *matCellDef="let element">
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                        ></th>
+                        <td
+                          mat-cell
+                          *matCellDef="let element"
+                        >
                           <div
                             [style.background-image]="'url(' + element.country_flag + ')'"
                             class="country-flag"
@@ -554,26 +785,63 @@
                       </ng-container>
 
                       <ng-container matColumnDef="country_th">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>ประเทศ</th>
-                        <td mat-cell *matCellDef="let element">{{element.country_th}}</td>
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          mat-sort-header
+                        >
+                          ประเทศ
+                        </th>
+                        <td
+                          mat-cell
+                          *matCellDef="let element"
+                        >
+                          {{element.country_th}}
+                        </td>
                       </ng-container>
 
                       <ng-container matColumnDef="travel">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>การเดินทาง</th>
-                        <td mat-cell *matCellDef="let element" [style.color]="element.travel_color">
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          mat-sort-header
+                        >
+                          การเดินทาง
+                        </th>
+                        <td
+                          mat-cell
+                          *matCellDef="let element"
+                          [style.color]="element.travel_color"
+                        >
                           {{element.travel}}
                         </td>
                       </ng-container>
 
                       <ng-container matColumnDef="confirmed">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>ติดเชื้อ</th>
-                        <td mat-cell *matCellDef="let element" [style.color]="element.confirmed_color">
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          mat-sort-header
+                        >
+                          ติดเชื้อ
+                        </th>
+                        <td
+                          mat-cell
+                          *matCellDef="let element"
+                          [style.color]="element.confirmed_color"
+                        >
                           {{element.confirmed.toLocaleString('en')}}
                         </td>
                       </ng-container>
 
                       <ng-container matColumnDef="healings">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header fxShow="true" fxHide.lt-md>
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          mat-sort-header
+                          fxShow="true"
+                          fxHide.lt-md
+                        >
                           กำลังอยู่ในการรักษา
                         </th>
                         <td
@@ -588,7 +856,15 @@
                       </ng-container>
 
                       <ng-container matColumnDef="recovered">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header fxShow="true" fxHide.lt-md>หายแล้ว</th>
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          mat-sort-header
+                          fxShow="true"
+                          fxHide.lt-md
+                        >
+                          หายแล้ว
+                        </th>
                         <td
                           mat-cell
                           *matCellDef="let element"
@@ -601,7 +877,15 @@
                       </ng-container>
 
                       <ng-container matColumnDef="deaths">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header fxShow="true" fxHide.lt-md>เสียชีวิต</th>
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          mat-sort-header
+                          fxShow="true"
+                          fxHide.lt-md
+                        >
+                          เสียชีวิต
+                        </th>
                         <td
                           mat-cell
                           *matCellDef="let element"
@@ -613,8 +897,16 @@
                         </td>
                       </ng-container>
 
-                      <tr mat-header-row *matHeaderRowDef="allCountryDisplayedColumns"></tr>
-                      <tr mat-row *matRowDef="let row; columns: allCountryDisplayedColumns;"></tr>
+                      <tbody>
+                        <tr
+                          mat-header-row
+                          *matHeaderRowDef="allCountryDisplayedColumns"
+                        ></tr>
+                        <tr
+                          mat-row
+                          *matRowDef="let row; columns: allCountryDisplayedColumns;"
+                        ></tr>
+                      </tbody>
                     </table>
 
                     <mat-paginator
@@ -631,11 +923,17 @@
             <mat-card class="card-qr-code">
               <mat-card-content>
                 <p class="text-center font-size-26">
-                  <strong class="font-size-26 color-line">Line</strong> Notify QR Code
+                  <strong class="font-size-26 color-line">Line</strong>
+                  Notify QR Code
                 </p>
-                <img src="/line_notify.jpg" class="qrcode" />
+                <img
+                  src="/line_notify.jpg"
+                  class="qrcode"
+                >
                 <p class="text-center">
-                  <a href="http://line.me/ti/g/owNyXS1V-D"><strong>Covid-19 notify</strong></a>
+                  <a href="http://line.me/ti/g/owNyXS1V-D">
+                    <strong>Covid-19 notify</strong>
+                  </a>
                 </p>
               </mat-card-content>
             </mat-card>
@@ -644,9 +942,13 @@
             <mat-card class="card-qr-code">
               <mat-card-content>
                 <p class="text-center font-size-26">
-                  <strong class="font-size-26 color-line">Line</strong> Bot QR Code
+                  <strong class="font-size-26 color-line">Line</strong>
+                  Bot QR Code
                 </p>
-                <img src="/line_bot.png" class="qrcode" />
+                <img
+                  src="/line_bot.png"
+                  class="qrcode"
+                >
                 <p class="text-center">Line Bot ชื่อ : Covid19</p>
               </mat-card-content>
             </mat-card>
@@ -656,9 +958,14 @@
               <mat-card-content>
                 <p class="text-center">
                   พัฒนาโดย
-                  <a href="https://github.com/Saharak-Dove"><strong>Saharak Manoo</strong></a>
-                  ใช้ข้อมูลจาก <a href="https://ddc.moph.go.th/viralpneumonia">กรมควบคุมโรค</a> ,
-                  <a href="https://github.com/CSSEGISandData/COVID-19">CSSEGISandData</a> และ
+                  <a href="https://github.com/Saharak-Dove">
+                    <strong>Saharak Manoo</strong>
+                  </a>
+                  ใช้ข้อมูลจาก
+                  <a href="https://ddc.moph.go.th/viralpneumonia">กรมควบคุมโรค</a>
+                  ,
+                  <a href="https://github.com/CSSEGISandData/COVID-19">CSSEGISandData</a>
+                  และ
                   <a href="https://covid19.workpointnews.com/">Workpointnews</a>
                 </p>
               </mat-card-content>

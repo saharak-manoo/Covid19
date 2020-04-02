@@ -8,17 +8,7 @@ scheduler.every '1m' do
   rescue => e
     LineNoti.send_to_dev("ไม่สามารถ Updated Thailand ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
   end
-end
-
-scheduler.every '3m' do
-  begin
-    Covid.thailand_infected_province
-  rescue ActiveRecord::ConnectionNotEstablished
-    # ไม่มีอะไร Updated
-  rescue => e
-    LineNoti.send_to_dev("ไม่สามารถ Updated Thailand infected province ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
-  end
-end  
+end 
 
 scheduler.every '5m' do
   begin
@@ -27,7 +17,6 @@ scheduler.every '5m' do
     # ไม่มีอะไร Updated
   rescue => e
     Covid.global_summary_workpoint
-    ap ">>> global summary Exception"
     LineNoti.send_to_dev("ไม่สามารถ Updated Global ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
   end
 end
@@ -48,10 +37,19 @@ scheduler.every '30m' do
   rescue ActiveRecord::ConnectionNotEstablished
     # ไม่มีอะไร Updated
   rescue => e
-    ap ">>> World Exception"
     LineNoti.send_to_dev("ไม่สามารถ Updated world ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
   end
 end
+
+scheduler.every '2h' do
+  begin
+    Covid.thailand_infected_province
+  rescue ActiveRecord::ConnectionNotEstablished
+    # ไม่มีอะไร Updated
+  rescue => e
+    LineNoti.send_to_dev("ไม่สามารถ Updated Thailand infected province ได้ \n Exception #{e.class.name} \n Error message => #{e.message}")
+  end
+end 
 
 scheduler.every '6h' do
   begin
