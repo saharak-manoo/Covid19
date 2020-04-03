@@ -781,31 +781,23 @@ class Covid
       critical: 0,
       deaths: 0,
       recovered: 0,
-      updated_at: nil,
-      last_updated: nil
     }
 
     jQuery.find('div.info-box-4').each_with_index do |info_box, index|
       content = info_box.find('div.content').first
-      if index.zero?
-        date_str = content.find('div.text')[0].text
-        updated_at = DateTime.strptime("#{date_str} +07:00", 'ข้อมูลล่าสุดวันที่ %d-%m-%Y').localtime - 543.year
-
-        thai_covid_data[:updated_at] = updated_at
-        thai_covid_data[:last_updated] = DateTime.now.to_difference_str
-      else
+      unless index.zero?
         key = content.find('div.text')[0].text
-        value = content.find('div.number')[0].text.to_i
+        value = content.find('div.number')[0].text.tap { |s| s.delete!(',') }.to_i
 
         case key
         when 'จำนวนผู้ติดเชื้อ'
           thai_covid_data[:confirmed] = value
-        when 'ผู้ป่วยกลับบ้านแล้ว'
+        when 'หายแล้ว'
           thai_covid_data[:recovered] = value
         when 'รายใหม่'
           thai_covid_data[:confirmed_add_today] = value
-        when 'รุนแรง'
-          thai_covid_data[:critical] = value
+        when 'รักษาอยู่ใน รพ.'
+          thai_covid_data[:healings] = value
         when 'เสียชีวิต'
           thai_covid_data[:deaths] = value
         end
@@ -819,25 +811,36 @@ class Covid
 
   def self.thailand_summary
     yesterday = ThailandSummary.find_by(date: Date.yesterday)
-    workpoint = constants
+    hash = []
 
-    data = {}
-    ddc = nil
-    thai_covid = nil
+    begin
+      workpoint = constants
+      hash << {key: 'workpoint', value: workpoint[:confirmed] || 0, data: workpoint}
+    rescue => e
+      workpoint = nil
+    end
+
+    begin
+      ddc = thai_ddc
+      hash << {key: 'ddc', value: ddc[:confirmed] || 0, data: ddc}
+    rescue => e
+      ddc = nil
+    end
 
     begin
       thai_covid = thai_fight_covid
-      ddc = thai_ddc
-      
-      # use thai fight covid or workpoint
-      if thai_covid[:confirmed] >= workpoint[:confirmed]
-        data = thai_covid
-      else
-        data = workpoint
-      end
+      hash << {key: 'thai_covid', value: thai_covid[:confirmed] || 0, data: thai_covid}
     rescue => e
-      data = workpoint
+      thai_covid = nil
     end
+
+    data = {}
+
+    max_confirmed = hash.map { |h| h[:value] }.max
+    ap max_confirmed
+    ap hash.detect { |h| h[:value] == max_confirmed}
+    data = hash.detect { |h| h[:value] == max_confirmed}[:data]
+    ap data
 
     begin
       date = Date.today
