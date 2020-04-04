@@ -21,6 +21,7 @@ thai_fight_covid_host: https://thaifightcovid.depa.or.th/index.php
 line_channel_id: 1654029072
 line_channel_secret: 6058b28f1a72cd6bc6e75b91cb46047e
 line_channel_token: 8slCj+llLb8y3EoYXTHMW5KPUxgYN0MtpkmYo8meFKTpOcEcbdX1lT7gOw5owl8HS7fZAb+Z93z0h6HgfSg+5HQJRpnVq2CSvmAoujA0rT7asfvqR6Rrbvhs5q2MInl2Bg4dlliUeXaZx9LW5Bt2OAdB04t89/1O/w1cDnyilFU=
+covid19_api_th_host: https://covid19.th-stat.com/api/open/
 
 production:
   covid_api_host: https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/
@@ -43,3 +44,4 @@ production:
   arcgis_global_recovered_host: https://services9.arcgis.com/N9p5hsImWXAccRNI/arcgis/rest/services/Nc2JKvYFoAEOFCG5JSI6/FeatureServer/1/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=%5B%7B%22statisticType%22%3A%22sum%22%2C%22onStatisticField%22%3A%22Recovered%22%2C%22outStatisticFieldName%22%3A%22value%22%7D%5D&outSR=102100&cacheHint=true
   arcgis_global_deaths_host: https://services9.arcgis.com/N9p5hsImWXAccRNI/arcgis/rest/services/Nc2JKvYFoAEOFCG5JSI6/FeatureServer/1/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=%5B%7B%22statisticType%22%3A%22sum%22%2C%22onStatisticField%22%3A%22Deaths%22%2C%22outStatisticFieldName%22%3A%22value%22%7D%5D&outSR=102100&cacheHint=true
   thai_fight_covid_host: https://thaifightcovid.depa.or.th/index.php
+  covid19_api_th_host: https://covid19.th-stat.com/api/open/

@@ -38,6 +38,9 @@ Rails.application.routes.draw do
         get 'thailand_infected_province'
         get 'hospital_by_location'
         get 'thailand_case_by_location'
+        get 'thailand_today'
+        get 'thailand_timeline'
+        get 'thailand_area'
       end
     end
   end

@@ -117,3 +117,4 @@ gem 'google_drive'
 # Location
 gem 'geokit-rails'
 gem 'geokit'
+gem 'chronic'
