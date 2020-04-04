@@ -135,5 +135,17 @@ class Api::CovidsController < Api::ApplicationController
 
   def thailand_case_by_location
     render json: { data: ThailandCase.all.as_json({api: true, lat: params[:latitude], long: params[:longitude]}) }, status: :ok
-  end 
+  end
+
+  def thailand_today
+    render json: { data: Covid.thailand_today }, status: :ok
+  end
+
+  def thailand_timeline
+    render json: { data: Covid.thailand_timeline }, status: :ok
+  end
+
+  def thailand_area
+    render json: { data: Covid.thailand_area }, status: :ok
+  end  
 end

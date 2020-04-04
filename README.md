@@ -24,3 +24,7 @@ References
 | https://data-covid-2019.herokuapp.com/api/covids/global_confirmed_add_today | Get the global confirmed add today                                     |
 | https://data-covid-2019.herokuapp.com/api/covids/global_critical            | Get the global critical                                                |
 | https://data-covid-2019.herokuapp.com/api/covids/global_deaths              | Get the global deaths                                                  |
+| https://data-covid-2019.herokuapp.com/api/covids/thailand_today             | Get the thailand today                                                 |
+| https://data-covid-2019.herokuapp.com/api/covids/thailand_timeline          | Get the thailand timeline                                              |
+| https://data-covid-2019.herokuapp.com/api/covids/thailand_area              | Get the thailand                                                       |
+| risky area                                                                  |

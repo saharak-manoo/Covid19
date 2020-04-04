@@ -362,7 +362,7 @@ export class HomeComponent {
     let steps = Math.ceil(duration / refreshInterval)
     let increment = (to - from) / steps
     let num = from
-    this.tick(isLocal, name, to, 0, 4, 30, 0, increment, num, steps)
+    this.tick(isLocal, name, to, 0, 4, 15, 0, increment, num, steps)
   }
 
   tick(isLocal, name, to, from, duration, refreshInterval, step, increment, num, steps) {
