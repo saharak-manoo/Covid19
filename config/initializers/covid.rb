@@ -202,7 +202,7 @@ class Covid
 
   def self.constants
     response = api_workpoint('constants')
-    date = Date.parse(response['เพิ่มวันที่'])
+    date = Date.parse(response['เพิ่มวันที่']) rescue nil
 
     {
       confirmed: response['ผู้ติดเชื้อ'].to_i,
@@ -212,7 +212,7 @@ class Covid
       confirmed_add_today: response['เพิ่มวันนี้'].to_i || 0,
       add_date: date,
       updated_at: DateTime.now.localtime,
-      last_updated: "ข้อมูล ณ วันที่ #{I18n.l(date, format: '%d %B')}",
+      last_updated: date.present? ? "ข้อมูล ณ วันที่ #{I18n.l(date, format: '%d %B')}" : 'ไม่มีข้อมูล',
     }
   end
 
@@ -221,9 +221,8 @@ class Covid
     response = api_workpoint('cases')
 
     response.each do |resp|
-      statement_date = Date.parse(resp['statementDate'])
-      recovered_date = nil
-      recovered_date = Date.parse(resp['recoveredDate']) if resp['recoveredDate'].present?
+      statement_date = Date.parse(resp['statementDate']) rescue nil
+      recovered_date = Date.parse(resp['recoveredDate']) rescue nil
 
       type = 'ไม่มีข้อมูล'
       type_color = "#000"
@@ -809,34 +808,116 @@ class Covid
     thai_covid_data
   end
 
+  def self.api_covid19_thailand(path)
+    response = RestClient::Request.new({
+      method: :get,
+      url: "#{ENV['covid19_api_th_host']}#{path}",
+      timeout: 200
+    }).execute do |response, request, result|
+      return JSON.parse(response.to_str)
+    end
+  end
+
+  def self.thailand_today
+    resp = api_covid19_thailand('today')
+    updated_at = DateTime.parse(resp['UpdateDate']).localtime rescue nil
+
+    {
+      confirmed: resp['Confirmed'] || 0,
+      confirmed_add_today: resp['NewConfirmed'] || 0,
+      healings: resp['Hospitalized'] || 0,
+      healings_add_today: resp['NewHospitalized'] || 0,
+      deaths: resp['Deaths'] || 0,
+      deaths_add_today: resp['NewDeaths'] || 0,
+      recovered: resp['Recovered'] || 0,
+      recovered_add_today: resp['NewRecovered'] || 0,
+      updated_at: updated_at,
+      last_updated: updated_at&.to_difference_str,
+    }
+  end
+
+  def self.thailand_timeline
+    data_timelines = []
+    timelines = api_covid19_thailand('timeline')
+
+    timelines['Data'].each do |timeline|
+      date = Date.parse(timeline['Date']) rescue nil
+
+      data_timelines << {
+        date: date,
+        date_str: date.present? ? I18n.l(date, format: '%d %b %Y') : '-',
+        confirmed: timeline['Confirmed'] || 0,
+        confirmed_add_today: timeline['NewConfirmed'] || 0,
+        healings: timeline['Hospitalized'] || 0,
+        healings_add_today: timeline['NewHospitalized'] || 0,
+        deaths: timeline['Deaths'] || 0,
+        deaths_add_today: timeline['NewDeaths'] || 0,
+        recovered: timeline['Recovered'] || 0,
+        recovered_add_today: timeline['NewRecovered'] || 0
+      }
+    end
+
+    data_timelines
+  end
+
+  def self.thailand_area
+    data_areas = []
+    areas = api_covid19_thailand('area')
+
+    areas['Data'].each do |area|
+      date = area['Date'].difference_language_to_date rescue nil
+      updated_at = DateTime.parse(area['Update']).localtime rescue nil
+
+      data_areas << {
+        date: date,
+        date_str: date.to_difference_str,
+        detail: area['Detail'].gsub(/<\/?[^>]+>/, '').gsub(/&nbsp;/i, " ").strip,
+        location: area['Location'].gsub(/<\/?[^>]+>/, '').gsub(/&nbsp;/i, " ").strip,
+        recommend: area['Recommend'].gsub(/<\/?[^>]+>/, '').gsub(/&nbsp;/i, " ").strip,
+        announce_by: area['AnnounceBy'].gsub(/<\/?[^>]+>/, '').gsub(/&nbsp;/i, " ").strip,
+        province: area['Province'],
+        province_eng: area['ProvinceEn'],
+        updated_at: updated_at,
+        last_updated: updated_at&.to_difference_str,
+      }
+    end
+
+    data_areas
+  end  
+
   def self.thailand_summary
     yesterday = ThailandSummary.find_by(date: Date.yesterday)
     hash = []
-
-    begin
-      workpoint = constants
-      hash << {key: 'workpoint', value: workpoint[:confirmed] || 0, data: workpoint}
-    rescue => e
-      workpoint = nil
-    end
-
-    begin
-      ddc = thai_ddc
-      hash << {key: 'ddc', value: ddc[:confirmed] || 0, data: ddc}
-    rescue => e
-      ddc = nil
-    end
+    ddc = thai_ddc rescue nil
 
     begin
       thai_covid = thai_fight_covid
-      hash << {key: 'thai_covid', value: thai_covid[:confirmed] || 0, data: thai_covid}
+      hash << {
+        key: 'thai_covid', 
+        confirmed: thai_covid[:confirmed] || 0,
+        recovered: thai_covid[:recovered] || 0,  
+        deaths: thai_covid[:deaths] || 0, 
+        data: thai_covid
+      }
     rescue => e
       thai_covid = nil
     end
 
+    begin
+      thail_today = thailand_today
+      hash << {
+        key: 'thail_today', 
+        confirmed: thail_today[:confirmed] || 0,
+        recovered: thail_today[:recovered] || 0,  
+        deaths: thail_today[:deaths] || 0, 
+        data: thail_today
+      }
+    rescue => e
+      thail_today = nil
+    end
+
     data = {}
-    max_confirmed = hash.map { |h| h[:value] }.max
-    data = hash.detect { |h| h[:value] == max_confirmed}[:data]
+    data = hash.max_by{ |h| h[:confirmed] }[:data]
 
     begin
       date = Date.today

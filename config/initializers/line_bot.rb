@@ -74,6 +74,35 @@ class LineBot
     flex_msg(header, contents, data[:confirmed_color])
   end
 
+  def self.flex_risky_area(data, no = '')
+    location = data[:location]
+    location = data[:detail] unless location.present?
+    location = data[:province] unless location.present?
+
+    header = {}
+    header[:title] = "#{no}#{location}"
+    header[:sub_title] = 'ประกาศเมื่อ'
+    header[:sub_title_str] = data[:date_str]
+    contents = []
+    contents << "สถานที่ : #{data[:location]}" if data[:location].present?
+    contents << "ข้อมูล : #{data[:detail]}"  if data[:detail].present?
+    contents << "จังหวัด : #{data[:province]}"  if data[:province].present?
+    contents << "ประกาศโดย : #{data[:announce_by]}"  if data[:announce_by].present?
+    contents << "คำแนะนำ : #{data[:recommend]}"  if data[:recommend].present?
+
+    flex_msg(header, contents, "##{'%06x' % (rand * 0xffffff)}")
+  end
+
+  def self.flex_no_data_risky_area
+    header = {}
+    header[:title] = "ไม่มีประกาศ"
+    header[:sub_title] = 'ไม่มีข้อมูล'
+    header[:sub_title_str] = 'ไม่มีข้อมูล'
+    contents = ['ไม่มีข้อมูล']
+
+    flex_msg(header, contents, "##{'%06x' % (rand * 0xffffff)}")
+  end
+
   def self.flex_carousel(box_messages, text)
     {
       type: 'flex',
@@ -109,15 +138,12 @@ class LineBot
       contents = data_to_str(data, is_confirmed, is_healings, is_recovered, is_deaths)
       contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน \n(เพิ่มขึ้น #{data[:critical_add_today].to_delimited} คน)"
     else
-      infected_province = InfectedProvince.where(date: Date.today).find_by("name ILIKE :keyword", keyword: "%#{location}%").as_json({api: true})
       world = World.find_by("country ILIKE :keyword OR country_th ILIKE :keyword", keyword: "%#{location}%").as_json({api: true})
 
-      if infected_province.present?
-        return flex(flex_province(infected_province), infected_province[:name])
-      elsif world.present?
+      if world.present?
         return flex(flex_world(world), world[:country_th])
       else
-        return { type: 'text', text: "ขออภัยไม่มีข้อมูลของ #{location} โปรดลองเป็น ชื่อจังหวัด เช่น เชียงใหม่, กรุงเทพ" }
+        return { type: 'text', text: "ขออภัยไม่มีข้อมูลของ #{location} โปรดลองเป็น ชื่อจังหวัด เช่น จีน, สหรัฐ" }
       end  
     end
 

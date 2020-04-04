@@ -92,6 +92,7 @@ GEM
       xpath (~> 3.2)
     childprocess (1.0.1)
       rake (< 13.0)
+    chronic (0.10.2)
     climate_control (0.2.0)
     coffee-rails (5.0.0)
       coffee-script (>= 2.2.0)
@@ -476,6 +477,7 @@ DEPENDENCIES
   byebug
   cancancan
   capybara (>= 2.15)
+  chronic
   countries
   data-confirm-modal
   devise
