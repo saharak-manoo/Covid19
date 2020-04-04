@@ -27,6 +27,27 @@ class WebhooksController < ApplicationController
             UserTempChat.create(line_user_id: line_user_id, message: message, intent_name: resp[:intent_name])
             
             LineBot.reply(event['replyToken'], LineBot.quick_reply_location)
+          elsif resp[:intent_name] == "COVID-MAX"
+            parameters = resp[:parameters].as_json
+            if parameters['max-ten-country'].present?
+              worlds = World.order(confirmed: :desc).limit(10).as_json({api: true})
+              box_messages = worlds.map.with_index { |world, index| LineBot.flex_world(world, "#{index + 1}.") }
+
+              LineBot.reply(event['replyToken'], LineBot.flex_carousel(box_messages, "ข้อมูล #{parameters['max-ten-country']}"))
+            elsif parameters['max-country'].present?
+              world = World.order(confirmed: :desc).limit(1).first.as_json({api: true})
+
+              LineBot.reply(event['replyToken'], LineBot.flex(LineBot.flex_world(world, '1.'), "ประเทศที่มีผู้ติดเชื้อเยอะที่สุดในโลก"))
+            elsif parameters['max-ten-thailand'].present?
+              provinces = InfectedProvince.where(date: Date.today).order(infected: :desc).limit(10).as_json({api: true})
+              box_messages = provinces.map.with_index { |province, index| LineBot.flex_province(province, "#{index + 1}.") }
+
+              LineBot.reply(event['replyToken'], LineBot.flex_carousel(box_messages, "ข้อมูล #{parameters['max-ten-thailand']}"))
+            elsif parameters['max-thailand'].present?
+              province = InfectedProvince.where(date: Date.today).order(infected: :desc).limit(1).first.as_json({api: true})
+
+              LineBot.reply(event['replyToken'], LineBot.flex(LineBot.flex_province(province, '1.'), 'จังหวัดที่ติดเชื้อเยอะที่สุดในประเทศไทย'))
+            end
           else
             LineBot.reply(event['replyToken'], { type: 'text', text: resp[:fulfillment][:speech] })
           end

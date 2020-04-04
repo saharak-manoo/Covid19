@@ -41,6 +41,50 @@ class LineBot
     broadcast(flex(flex_msg(header, contents, data[:confirmed_add_today].to_covid_color), header[:title]))
   end
 
+  def self.flex_province(data, no = '')
+    header = {}
+    header[:title] = "#{no}#{data[:name]}"
+    header[:sub_title] = 'วันนี้ติดเชื้อเพิ่มขึ้น'
+    header[:sub_title_str] = "#{data[:infected_add_today].to_delimited} คน"
+    contents = [
+      "ติดเชื้อทั้งหมด #{data[:infected].to_delimited} คน",
+      "เพศชาย #{data[:man_total].to_delimited} คน \n(เพิ่มขึ้น #{data[:man_total_add_today].to_delimited} คน)",
+      "เพศหญิง #{data[:woman_total].to_delimited} คน \n(เพิ่มขึ้น #{data[:woman_total_add_today].to_delimited} คน)",
+      "ไม่ระบุเพศ #{data[:no_gender_total].to_delimited} คน \n(เพิ่มขึ้น #{data[:no_gender_total_add_today].to_delimited} คน)",
+      "ข้อมูลนี้ #{data[:last_updated]}"
+    ]
+
+    flex_msg(header, contents, data[:infected_color])
+  end
+
+  def self.flex_world(data, no = '')
+    header = {}
+    header[:title] = "#{no}#{data[:country_th].sub('ประเทศ', '')}"
+    header[:sub_title] = "Country"
+    header[:sub_title_str] = data[:country]
+    contents = [
+      "ติดเชื้อทั้งหมด #{data[:confirmed].to_delimited} คน",
+      "กำลังรักษาทั้งหมด #{data[:healings].to_delimited} คน",
+      "รักษาหายแล้วทั้งหมด #{data[:recovered].to_delimited} คน",
+      "เสียชีวิตแล้วทั้งหมด #{data[:deaths].to_delimited} คน",
+      "การเดินทาง: #{data[:travel]}",
+      "ข้อมูลนี้ #{data[:last_updated]}"
+    ]
+
+    flex_msg(header, contents, data[:confirmed_color])
+  end
+
+  def self.flex_carousel(box_messages, text)
+    {
+      type: 'flex',
+      altText: text,
+      contents: {
+        type: 'carousel',
+        contents: box_messages
+      }
+    } 
+  end
+
   def self.data_covid(resp)
     contents = []
     data = []
@@ -69,32 +113,9 @@ class LineBot
       world = World.find_by("country ILIKE :keyword OR country_th ILIKE :keyword", keyword: "%#{location}%").as_json({api: true})
 
       if infected_province.present?
-        header[:title] = infected_province[:name] || location
-        header[:sub_title] = 'วันนี้ติดเชื้อเพิ่มขึ้น'
-        header[:sub_title_str] = "#{infected_province[:infected_add_today].to_delimited} คน"
-        contents = [
-          "ติดเชื้อทั้งหมด #{infected_province[:infected].to_delimited} คน",
-          "เพศชาย #{infected_province[:man_total].to_delimited} คน \n(เพิ่มขึ้น #{infected_province[:man_total_add_today].to_delimited} คน)",
-          "เพศหญิง #{infected_province[:woman_total].to_delimited} คน \n(เพิ่มขึ้น #{infected_province[:woman_total_add_today].to_delimited} คน)",
-          "ไม่ระบุเพศ #{infected_province[:no_gender_total].to_delimited} คน \n(เพิ่มขึ้น #{infected_province[:no_gender_total_add_today].to_delimited} คน)",
-          "ข้อมูลนี้ #{infected_province[:last_updated]}"
-        ]
-
-        return flex(flex_msg(header, contents, infected_province[:infected_color]), header[:title])
+        return flex(flex_province(infected_province), infected_province[:name])
       elsif world.present?
-        header[:title] = world[:country_th] || location
-        header[:sub_title] = "Country"
-        header[:sub_title_str] = world[:country]
-        contents = [
-          "ติดเชื้อทั้งหมด #{world[:confirmed].to_delimited} คน",
-          "กำลังรักษาทั้งหมด #{world[:healings].to_delimited} คน",
-          "รักษาหายแล้วทั้งหมด #{world[:recovered].to_delimited} คน",
-          "เสียชีวิตแล้วทั้งหมด #{world[:deaths].to_delimited} คน",
-          "การเดินทาง: #{world[:travel]}",
-          "ข้อมูลนี้ #{world[:last_updated]}"
-        ]
-
-        return flex(flex_msg(header, contents, world[:confirmed_color]), header[:title])
+        return flex(flex_world(world), world[:country_th])
       else
         return { type: 'text', text: "ขออภัยไม่มีข้อมูลของ #{location} โปรดลองเป็น ชื่อจังหวัด เช่น เชียงใหม่, กรุงเทพ" }
       end  
