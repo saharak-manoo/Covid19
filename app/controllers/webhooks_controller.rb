@@ -48,6 +48,39 @@ class WebhooksController < ApplicationController
 
               LineBot.reply(event['replyToken'], LineBot.flex(LineBot.flex_province(province, '1.'), 'จังหวัดที่ติดเชื้อเยอะที่สุดในประเทศไทย'))
             end
+          elsif resp[:intent_name] == "COVID-RISKY-AREA"
+            risky_areas = Covid.thailand_area.sort! { |a, b| a[:date] <=> b[:date] }
+            parameters = resp[:parameters].as_json
+
+            if parameters['province'].present?
+              box_messages = []
+              infected_province = InfectedProvince.where(date: Date.today)
+                                                  .find_by("name ILIKE :keyword", keyword: "%#{parameters['province']}%")
+                                                  .as_json({api: true})
+
+              flex_province = LineBot.flex_province(infected_province)
+
+              if parameters['risky-area'].present?
+                risky_areas = risky_areas.select { |area| area[:province].include?(parameters['province']) }.take(9).reverse
+                box_messages << flex_province
+                unless risky_areas.size.zero?
+                  box_messages.concat(risky_areas.map.with_index { |area, index| LineBot.flex_risky_area(area, "#{index + 1}.") })
+                else
+                  box_messages << LineBot.flex_no_data_risky_area
+                end  
+
+                LineBot.reply(event['replyToken'], LineBot.flex_carousel(box_messages, "ข้อมูล พื้นที่เสี่ยงในจังหวัด #{parameters['province']} ล่าสุด 10 แห่ง"))
+              elsif !parameters['risky-area'].present?
+                LineBot.reply(event['replyToken'], LineBot.flex(flex_province, "ข้อมูลจำนวนผู้ติดเชื้อในจังหวัด #{parameters['province']}"))
+              else
+                LineBot.reply(event['replyToken'], { type: 'text', text: resp[:fulfillment][:speech] })
+              end
+            else
+              risky_areas = risky_areas.take(10).reverse
+              box_messages = risky_areas.map.with_index { |area, index| LineBot.flex_risky_area(area, "#{index + 1}.") }
+
+              LineBot.reply(event['replyToken'], LineBot.flex_carousel(box_messages, "ข้อมูล พื้นที่เสียงล่าสุด 10 แห่ง"))
+            end   
           else
             LineBot.reply(event['replyToken'], { type: 'text', text: resp[:fulfillment][:speech] })
           end
