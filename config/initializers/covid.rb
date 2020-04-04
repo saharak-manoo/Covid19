@@ -665,13 +665,13 @@ class Covid
       deaths_add_today = ((deaths - yesterday.deaths) || 0).non_negative
 
       global_summary.date = global_summary.date != date ? global_summary.date : date
-      global_summary.confirmed = confirmed
+      global_summary.confirmed = confirmed || 0
       global_summary.confirmed_add_today = confirmed_add_today
       global_summary.healings = ((confirmed - recovered) - deaths || 0).non_negative
-      global_summary.recovered = global_recovered
-      global_summary.critical = global_critical
+      global_summary.recovered = global_recovered || 0
+      global_summary.critical = global_critical || 0
       global_summary.deaths = deaths
-      global_summary.deaths_add_today = deaths_add_today
+      global_summary.deaths_add_today = deaths_add_today || 0
       global_summary.save
       
       global_summary
@@ -721,15 +721,15 @@ class Covid
       global_summary = GlobalSummary.new if global_summary.nil?
 
       global_summary.date = date
-      global_summary.confirmed = confirmed
-      global_summary.confirmed_add_today = confirmed_add_today
+      global_summary.confirmed = confirmed || 0
+      global_summary.confirmed_add_today = confirmed_add_today || 0
       global_summary.healings = ((confirmed - recovered) - deaths || 0).non_negative
-      global_summary.recovered = recovered
+      global_summary.recovered = recovered || 0
       begin
-        global_summary.critical = global_critical
+        global_summary.critical = global_critical || 0
       end
-      global_summary.deaths = deaths
-      global_summary.deaths_add_today = deaths_add_today
+      global_summary.deaths = deaths || 0
+      global_summary.deaths_add_today = deaths_add_today || 0
       global_summary.save
 
       global_summary
@@ -835,12 +835,8 @@ class Covid
     end
 
     data = {}
-
     max_confirmed = hash.map { |h| h[:value] }.max
-    ap max_confirmed
-    ap hash.detect { |h| h[:value] == max_confirmed}
     data = hash.detect { |h| h[:value] == max_confirmed}[:data]
-    ap data
 
     begin
       date = Date.today
@@ -878,9 +874,8 @@ class Covid
     cases_response = api_workpoint('v2/cases')
 
     cases_response['records'].each do |record|
-      statement_date = Date.parse(record['statementDate'])
-      detected_date = nil
-      detected_date = Date.parse(record['detectedDate']) if record['detectedDate'].present?
+      statement_date = Date.parse(record['statementDate']) rescue nil
+      detected_date = Date.parse(record['detectedDate']) rescue nil
 
       province = record['province']
       province = 'กรุงเทพมหานคร' if province == 'กทม'
@@ -896,9 +891,9 @@ class Covid
         province: province || '-',
         district: record['district'] || '-',
         risk: record['risk'] || '-',
-        statement_date: statement_date,
-        statement_date_str: I18n.l(statement_date, format: '%d %b'),
-        detected_date: detected_date,
+        statement_date: statement_date || '-',
+        statement_date_str: statement_date.present? ? I18n.l(statement_date, format: '%d %b') : '-',
+        detected_date: detected_date || '-',
         detected_date_str: detected_date.present? ? I18n.l(detected_date, format: '%d %b') : '-',
       }
     end
