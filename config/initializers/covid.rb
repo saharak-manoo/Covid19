@@ -841,7 +841,7 @@ class Covid
     timelines = api_covid19_thailand('timeline')
 
     timelines['Data'].each do |timeline|
-      date = Date.parse(timeline['Date']) rescue nil
+      date = Date.strptime(timeline['Date'], '%m/%d/%Y') rescue nil
 
       data_timelines << {
         date: date,
@@ -865,7 +865,7 @@ class Covid
     areas = api_covid19_thailand('area')
 
     areas['Data'].each do |area|
-      date = area['Date'].difference_language_to_date - 543.years rescue nil
+      date = area['Date'].difference_language_to_date rescue nil
       updated_at = DateTime.parse(area['Update']).localtime rescue nil
 
       data_areas << {
