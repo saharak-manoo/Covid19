@@ -149,5 +149,49 @@ class Api::CovidsController < Api::ApplicationController
 
   def thailand_area
     render json: { data: Covid.thailand_area }, status: :ok
-  end  
+  end
+
+  def thailand_timeline_for_chart
+    timeline = Covid.thailand_timeline
+
+    render json: { data: 
+      {
+        categories: timeline.pluck(:date_str),
+        series: [
+          {
+            name: 'ผู้ติดเชื้อ',
+            data: timeline.pluck(:confirmed),
+          },
+          {
+            name: 'ผู้ติดเชื้อเพิ่มขึ้น',
+            data: timeline.pluck(:confirmed_add_today),
+          },
+          {
+            name: 'กำลังรักษา',
+            data: timeline.pluck(:healings),
+          },
+          {
+            name: 'กำลังรักษาเพิ่มขึ้น',
+            data: timeline.pluck(:healings_add_today),
+          },
+          {
+            name: 'รักษาหายแล้ว',
+            data: timeline.pluck(:recovered),
+          },
+          {
+            name: 'รักษาหายแล้วเพิ่มขึ้น',
+            data: timeline.pluck(:recovered_add_today),
+          },
+          {
+            name: 'เสียชีวิต',
+            data: timeline.pluck(:deaths),
+          },
+          {
+            name: 'เสียชีวิตเพิ่มขึ้น',
+            data: timeline.pluck(:deaths_add_today),
+          },
+        ]
+      } 
+    }, status: :ok
+  end
 end

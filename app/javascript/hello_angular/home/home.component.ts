@@ -13,7 +13,7 @@ import { MatTableDataSource } from '@angular/material/table'
 import { MatSort } from '@angular/material/sort'
 
 @Component({
-  template: templateString
+  template: templateString,
 })
 export class HomeComponent {
   constructor(
@@ -30,8 +30,8 @@ export class HomeComponent {
   pieChartOptions: ChartOptions = {
     responsive: true,
     legend: {
-      position: 'bottom'
-    }
+      position: 'bottom',
+    },
   }
   pieChartDataLocal: number[] = [0, 0, 0, 0]
   pieChartLabelsLocal: Label[] = [['ผู้ติดเชื้อ'], ['กำลังรักษา'], ['อาการหนัก'], ['รักษาหาย'], ['เสียชีวิต']]
@@ -41,13 +41,13 @@ export class HomeComponent {
   pieChartColorsLocal = [
     {
       backgroundColor: ['#FCD35E', '#BFFD59', '#713ff9', '#5EFCAD', '#FC5E71'],
-      borderColor: ['#FCD35E', '#BFFD59', '#713ff9', '#5EFCAD', '#FC5E71']
-    }
+      borderColor: ['#FCD35E', '#BFFD59', '#713ff9', '#5EFCAD', '#FC5E71'],
+    },
   ]
   pieChartColors = [
     {
-      backgroundColor: ['#FCD35E', '#BFFD59', '#5EFCAD', '#FC5E71']
-    }
+      backgroundColor: ['#FCD35E', '#BFFD59', '#5EFCAD', '#FC5E71'],
+    },
   ]
   totalLocal: any = {
     confirmed: 0,
@@ -61,7 +61,7 @@ export class HomeComponent {
     healings_add_today: 0,
     critical_add_today: 0,
     recovered_add_today: 0,
-    watch_out_collectors_add_today: 0
+    watch_out_collectors_add_today: 0,
   }
   total: any = {
     confirmed: 0,
@@ -72,7 +72,7 @@ export class HomeComponent {
     deaths_add_today: 0,
     critical: 0,
     recovered_add_today: 0,
-    healings_add_today: 0
+    healings_add_today: 0,
   }
   barChartOptions: ChartOptions = {
     responsive: true,
@@ -80,25 +80,25 @@ export class HomeComponent {
       xAxes: [
         {
           ticks: {
-            beginAtZero: true
-          }
-        }
+            beginAtZero: true,
+          },
+        },
       ],
       yAxes: [
         {
           ticks: {
-            beginAtZero: true
-          }
-        }
-      ]
-    }
+            beginAtZero: true,
+          },
+        },
+      ],
+    },
   }
   barChartDataLocal: any = [
     { data: [0, 0, 0, 0, 0, 0, 0], label: 'ผู้ติดเชื้อ' },
     { data: [0, 0, 0, 0, 0, 0, 0], label: 'กำลังรักษา' },
     { data: [0, 0, 0, 0, 0, 0, 0], label: 'อาการหนัก' },
     { data: [0, 0, 0, 0, 0, 0, 0], label: 'รักษาหายแล้ว' },
-    { data: [0, 0, 0, 0, 0, 0, 0], label: 'เสียชีวิต' }
+    { data: [0, 0, 0, 0, 0, 0, 0], label: 'เสียชีวิต' },
   ]
   barChartLabels: Label[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
   barChartType: ChartType = 'line'
@@ -106,47 +106,47 @@ export class HomeComponent {
     { data: [0, 0, 0, 0, 0, 0, 0], label: 'ผู้ติดเชื้อ' },
     { data: [0, 0, 0, 0, 0, 0, 0], label: 'กำลังรักษา' },
     { data: [0, 0, 0, 0, 0, 0, 0], label: 'รักษาหายแล้ว' },
-    { data: [0, 0, 0, 0, 0, 0, 0], label: 'เสียชีวิต' }
+    { data: [0, 0, 0, 0, 0, 0, 0], label: 'เสียชีวิต' },
   ]
   barChartColorsLocal = [
     {
       backgroundColor: 'rgb(252, 211, 94, 0.5)',
-      borderColor: '#FCD35E'
+      borderColor: '#FCD35E',
     },
     {
       backgroundColor: 'rgb(191, 253, 89, 0.5)',
-      borderColor: '#BFFD59'
+      borderColor: '#BFFD59',
     },
     {
       backgroundColor: 'rgb(113, 63, 249, 0.5)',
-      borderColor: '#713ff9'
+      borderColor: '#713ff9',
     },
     {
       backgroundColor: 'rgb(94, 252, 173, 0.5)',
-      borderColor: '#5EFCAD'
+      borderColor: '#5EFCAD',
     },
     {
       backgroundColor: 'rgb(252, 94, 113, 0.5)',
-      borderColor: '#FC5E71'
-    }
+      borderColor: '#FC5E71',
+    },
   ]
   barChartColors = [
     {
       backgroundColor: 'rgb(252, 211, 94, 0.5)',
-      borderColor: '#FCD35E'
+      borderColor: '#FCD35E',
     },
     {
       backgroundColor: 'rgb(191, 253, 89, 0.5)',
-      borderColor: '#BFFD59'
+      borderColor: '#BFFD59',
     },
     {
       backgroundColor: 'rgb(94, 252, 173, 0.5)',
-      borderColor: '#5EFCAD'
+      borderColor: '#5EFCAD',
     },
     {
       backgroundColor: 'rgb(252, 94, 113, 0.5)',
-      borderColor: '#FC5E71'
-    }
+      borderColor: '#FC5E71',
+    },
   ]
   latitude: number = 13.7530066
   longitude: number = 100.4960144
@@ -158,7 +158,7 @@ export class HomeComponent {
     'confirmed',
     'healings',
     'recovered',
-    'deaths'
+    'deaths',
   ]
   allCountryDataSource: any = []
   @ViewChild('allCountry', { read: MatSort, static: true })
@@ -174,7 +174,7 @@ export class HomeComponent {
     'nationality',
     'province',
     'district',
-    'risk'
+    'risk',
   ]
   patientInformationDataSource: any = []
   @ViewChild('patientInformation', { read: MatSort, static: true })
@@ -201,14 +201,14 @@ export class HomeComponent {
     {
       backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(255, 206, 86, 0.2)'],
       borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255,99,132,1)', 'rgba(255, 206, 86, 1)'],
-      borderWidth: 2
-    }
+      borderWidth: 2,
+    },
   ]
   genderChartOptions: any = {
     responsive: true,
     legend: {
-      position: 'bottom'
-    }
+      position: 'bottom',
+    },
   }
 
   ageChartType: string = 'horizontalBar'
@@ -223,7 +223,7 @@ export class HomeComponent {
     '61-70 ปี',
     '71-80 ปี',
     '81-90 ปี',
-    'ไม่ระบุ'
+    'ไม่ระบุ',
   ]
   ageChartColors: Array<any> = [
     {
@@ -237,7 +237,7 @@ export class HomeComponent {
         'rgba(6, 240, 160, 0.2)',
         'rgba(240, 6, 77, 0.2)',
         'rgba(240, 27, 6, 0.2)',
-        'rgba(255, 206, 86, 0.2)'
+        'rgba(255, 206, 86, 0.2)',
       ],
       borderColor: [
         'rgba(255,99,132,1)',
@@ -249,20 +249,40 @@ export class HomeComponent {
         'rgba(6, 240, 160)',
         'rgba(240, 6, 77, 1)',
         'rgba(240, 27, 6, 1)',
-        'rgba(255, 206, 86, 1)'
+        'rgba(255, 206, 86, 1)',
       ],
-      borderWidth: 2
-    }
+      borderWidth: 2,
+    },
   ]
   ageChartOptions: any = {
     responsive: true,
     legend: {
-      display: false
-    }
+      display: false,
+    },
+  }
+
+  timelineOptions = {
+    series: [],
+    chart: {
+      height: 400,
+      type: 'line',
+    },
+    stroke: {
+      width: 4,
+      curve: 'smooth',
+    },
+    xaxis: {
+      categories: [],
+    },
+    colors: ['#FCD35E', '#F24F20', '#BFFD59', '#07EA66', '#5EFCAD', '#07EACD', '#FC5E71', '#713ff9'],
+    yaxis: {
+      min: 0,
+    },
   }
 
   ngOnInit() {
     this.getLocation()
+    this.loadThailandTimeline()
     this.loadCasesThai()
     this.loadHospital()
     this.loadSafeZone()
@@ -274,84 +294,84 @@ export class HomeComponent {
         this.barChartColorsLocal = [
           {
             backgroundColor: 'rgb(252, 211, 94, 0.5)',
-            borderColor: '#FCD35E'
+            borderColor: '#FCD35E',
           },
           {
             backgroundColor: 'rgb(191, 253, 89, 0.5)',
-            borderColor: '#BFFD59'
+            borderColor: '#BFFD59',
           },
           {
             backgroundColor: 'rgb(113, 63, 249, 0.5)',
-            borderColor: '#713ff9'
+            borderColor: '#713ff9',
           },
           {
             backgroundColor: 'rgb(94, 252, 173, 0.5)',
-            borderColor: '#5EFCAD'
+            borderColor: '#5EFCAD',
           },
           {
             backgroundColor: 'rgb(252, 94, 113, 0.5)',
-            borderColor: '#FC5E71'
-          }
+            borderColor: '#FC5E71',
+          },
         ]
         this.barChartColors = [
           {
             backgroundColor: 'rgb(252, 211, 94, 0.5)',
-            borderColor: '#FCD35E'
+            borderColor: '#FCD35E',
           },
           {
             backgroundColor: 'rgb(191, 253, 89, 0.5)',
-            borderColor: '#BFFD59'
+            borderColor: '#BFFD59',
           },
           {
             backgroundColor: 'rgb(94, 252, 173, 0.5)',
-            borderColor: '#5EFCAD'
+            borderColor: '#5EFCAD',
           },
           {
             backgroundColor: 'rgb(252, 94, 113, 0.5)',
-            borderColor: '#FC5E71'
-          }
+            borderColor: '#FC5E71',
+          },
         ]
       } else {
         this.barChartType = 'bar'
         this.barChartColorsLocal = [
           {
             backgroundColor: '#FCD35E',
-            borderColor: '#FCD35E'
+            borderColor: '#FCD35E',
           },
           {
             backgroundColor: '#BFFD59',
-            borderColor: '#BFFD59'
+            borderColor: '#BFFD59',
           },
           {
             backgroundColor: '#713ff9',
-            borderColor: '#713ff9'
+            borderColor: '#713ff9',
           },
           {
             backgroundColor: '#5EFCAD',
-            borderColor: '#5EFCAD'
+            borderColor: '#5EFCAD',
           },
           {
             backgroundColor: '#FC5E71',
-            borderColor: '#FC5E71'
-          }
+            borderColor: '#FC5E71',
+          },
         ]
         this.barChartColors = [
           {
             backgroundColor: '#FCD35E',
-            borderColor: '#FCD35E'
+            borderColor: '#FCD35E',
           },
           {
             backgroundColor: '#BFFD59',
-            borderColor: '#BFFD59'
+            borderColor: '#BFFD59',
           },
           {
             backgroundColor: '#5EFCAD',
-            borderColor: '#5EFCAD'
+            borderColor: '#5EFCAD',
           },
           {
             backgroundColor: '#FC5E71',
-            borderColor: '#FC5E71'
-          }
+            borderColor: '#FC5E71',
+          },
         ]
       }
     }, 30000)
@@ -362,7 +382,7 @@ export class HomeComponent {
     let steps = Math.ceil(duration / refreshInterval)
     let increment = (to - from) / steps
     let num = from
-    this.tick(isLocal, name, to, 0, 4, 15, 0, increment, num, steps)
+    this.tick(isLocal, name, to, 0, 4, 10, 0, increment, num, steps)
   }
 
   tick(isLocal, name, to, from, duration, refreshInterval, step, increment, num, steps) {
@@ -458,7 +478,7 @@ export class HomeComponent {
           this.totalLocal.healings,
           this.totalLocal.critical,
           this.totalLocal.recovered,
-          this.totalLocal.deaths
+          this.totalLocal.deaths,
         ]
       },
       (e) => {
@@ -635,11 +655,26 @@ export class HomeComponent {
     let current = start
     let increment = end > start ? 1 : -1
     let stepTime = Math.abs(Math.floor(duration / range))
-    let timer = setInterval(function() {
+    let timer = setInterval(function () {
       value += increment
       if (value == end) {
         clearInterval(timer)
       }
     }, stepTime)
+  }
+
+  loadThailandTimeline() {
+    this.appService.get('api/covids/thailand_timeline_for_chart').subscribe(
+      (resp) => {
+        let response: any = resp
+        this.timelineOptions.xaxis = {
+          categories: response.data.categories,
+        }
+        this.timelineOptions.series = response.data.series
+      },
+      (e) => {
+        this.app.openSnackBar('มีข้อผิดพลาด ในการโหลดข้อมูล', 'Close', 'red-snackbar')
+      }
+    )
   }
 }

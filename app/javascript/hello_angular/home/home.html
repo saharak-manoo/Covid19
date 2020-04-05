@@ -121,6 +121,28 @@
             </mat-card>
           </div>
 
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <mat-card class="card-chart">
+              <mat-card-content>
+                <p class="text-center font-size-26">
+                  <strong class="font-size-26 case-management-admit">ไทม์ไลน์</strong>
+                  จำนวนผู้ติดเชื้อ
+                </p>
+                <div class="apex-chart">
+                  <apx-chart
+                    [series]="timelineOptions.series"
+                    [chart]="timelineOptions.chart"
+                    [xaxis]="timelineOptions.xaxis"
+                    [colors]="timelineOptions.colors"
+                    [grid]="timelineOptions.grid"
+                    [stroke]="timelineOptions.stroke"
+                    [yaxis]="timelineOptions.yaxis"
+                  ></apx-chart>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
             <mat-card class="card-chart">
               <mat-card-content>
