@@ -591,13 +591,6 @@ class LineBot
                         type: "filler"
                       },
                       {
-                    type: "filler"
-                  },
-                  {
-                    type: "box",
-                    layout: "baseline",
-                    contents: [
-                      {
                         type: "filler"
                       },
                       {
@@ -614,7 +607,7 @@ class LineBot
                         action: {
                           type: "uri",
                           label: "action",
-                          uri: "https://data-covid-2019.herokuapp.com/"
+                          uri: "https://data-covid-2019.herokuapp.com"
                         }
                       },
                       {
