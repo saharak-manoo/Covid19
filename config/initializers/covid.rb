@@ -865,7 +865,7 @@ class Covid
     areas = api_covid19_thailand('area')
 
     areas['Data'].each do |area|
-      date = area['Date'].difference_language_to_date rescue nil
+      date = area['Date'].difference_language_to_date - 543.years rescue nil
       updated_at = DateTime.parse(area['Update']).localtime rescue nil
 
       data_areas << {

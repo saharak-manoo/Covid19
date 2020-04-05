@@ -126,6 +126,8 @@ class Api::CovidsController < Api::ApplicationController
   end
 
   def thailand_infected_province
+    Covid.thailand_infected_province
+    
     render json: { data: InfectedProvince.where(date: Date.today).as_json({api: true}) }, status: :ok
   end
 
