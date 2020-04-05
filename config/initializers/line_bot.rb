@@ -138,7 +138,9 @@ class LineBot
       contents = data_to_str(data, is_confirmed, is_healings, is_recovered, is_deaths)
       contents << "อาการหนักทั้งหมด #{data[:critical].to_delimited} คน \n(เพิ่มขึ้น #{data[:critical_add_today].to_delimited} คน)"
     else
-      world = World.find_by("country ILIKE :keyword OR country_th ILIKE :keyword", keyword: "%#{location}%").as_json({api: true})
+      world = World.order(confirmed: :desc)
+                   .find_by("country ILIKE :keyword OR country_th ILIKE :keyword", keyword: "%#{location}%")
+                   .as_json({api: true})
 
       if world.present?
         return flex(flex_world(world), world[:country_th])
