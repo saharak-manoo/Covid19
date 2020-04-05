@@ -121,6 +121,23 @@
             </mat-card>
           </div>
 
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <mat-card class="card-chart">
+              <mat-card-content>
+                <p class="text-center font-size-26">Timeline ผู้ติดเชื้อ</p>
+                <apx-chart
+                  [series]="timelineOptions.series"
+                  [chart]="timelineOptions.chart"
+                  [xaxis]="timelineOptions.xaxis"
+                  [grid]="timelineOptions.grid"
+                  [stroke]="timelineOptions.stroke"
+                  [yaxis]="timelineOptions.yaxis"
+                  [fill]="timelineOptions.fill"
+                ></apx-chart>
+              </mat-card-content>
+            </mat-card>
+          </div>
+
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
             <mat-card class="card-chart">
               <mat-card-content>

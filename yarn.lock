@@ -4706,6 +4706,13 @@ neo-async@^2.5.0:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha512-iyam8fBuCUpWeKPGpaNMetEocMt364qkCsfL9JuhjXX6dRnguRVOfk2GZaDpPjcOKiiXCPINZC1GczQ7iTq3Zw==
 
+ng-apexcharts@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/ng-apexcharts/-/ng-apexcharts-1.2.3.tgz#d41ff3522bbb64dd94acb1b0021759d7036c6d27"
+  integrity sha512-4G+JRCWp8uSSBJKvYP9vKHEZIC0w6YuRLasumZS35fCCc7bzLY+L907n8khG9Xeoo4LBt7pVbmjb9P+lSWs/5g==
+  dependencies:
+    tslib "^1.9.0"
+
 ng-flash-messages@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/ng-flash-messages/-/ng-flash-messages-0.3.0.tgz#d890e2644e6530d3ba80890d75386475e8c1940c"
@@ -6245,6 +6252,11 @@ redent@^1.0.0:
   dependencies:
     indent-string "^2.1.0"
     strip-indent "^1.0.1"
+
+reflect-metadata@^0.1.13:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
+  integrity sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==
 
 regenerate-unicode-properties@^8.0.2:
   version "8.1.0"
