@@ -41,6 +41,7 @@ Rails.application.routes.draw do
         get 'thailand_today'
         get 'thailand_timeline'
         get 'thailand_area'
+        get 'thailand_timeline_for_chart'
       end
     end
   end

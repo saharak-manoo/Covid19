@@ -19,5 +19,5 @@
     "vendor",
     "public"
   ],
-  "compileOnSave": false
+  "compileOnSave": true
 }
