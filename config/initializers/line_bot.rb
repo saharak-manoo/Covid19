@@ -360,7 +360,7 @@ class LineBot
   end
 
   def self.quick_reply_text(messages, title = 'สวัสดีครับ มีคำถามอะไร คุณสามารถเลือกได้เลย')
-    messages = ['พื้นที่เสี่ยงติดโควิด', 'ผู้ติดเชื้อ ใกล้ฉัน', 'ที่ตรวจโควิด ใกล้ฉัน', 'ประเทศไทย', 'ทั่วโลก', 'พื้นที่เสี่ยงติดโควิด ชลบุรี', 'กรุงเทพ', 'เชียงใหม่', 'สหรัฐ', 'ญี่ปุ่น'] unless messages.present?
+    messages = ['พื้นที่เสี่ยงติดโควิด', 'ผู้ติดเชื้อ ใกล้ฉัน', 'ที่ตรวจโควิด ใกล้ฉัน', 'ประเทศไทย', 'ทั่วโลก', 'พื้นที่เสี่ยงติดโควิด ชลบุรี', 'กรุงเทพ', 'เชียงใหม่', 'สหรัฐ', 'ญี่ปุ่น', 'อิตาลี', 'พัฒนาโดยใคร'] unless messages.present?
 
     items = []
     messages.each do |message|
@@ -533,7 +533,7 @@ class LineBot
         contents: [
           {
             type: "image",
-            url: "https://lh3.googleusercontent.com/yLr_44-QZb2WMgRVYHoFTaHGazMwTkrkH5XdFkVgntza6Fq_yrpKIU3lKxr7enXCLpw0HFIcNlfIJuBz9RmSd_Zd2B9wptRz_XXCXbXX7LdZ7IUhjuV8UEoo2M0GHam6mTT51ny8bCMsiCcSN3m3m1Ug8B5maroyah-gSIfAQ7JsCR1U-3hRGrdQFO9bisBcwRnEmeEJTLxrceARVqr9FO03ezN-xZVmAlQwN5pY6uvGJBTkCk7e-lxvix8zuJbdS7Jml91YlxXjUW24P09nVx4wvE6gD_6EB9IhCPKSXtWKCW0RLjFNlMdSzCZRdLRpzHOBRVT9junt9TwyOexYjGWidj_2dT1dp99ZZAQUQS10_rVDkQlFmUw0qVjQqZ3NFCwpecEQT6vvrES7H1pHoH_HsTsMtMxlW5sFm_P0usA1ImB-TAHzyKEl0YDJcU0WyMnwuoDajE5_j31hEsXeQRQhHQaFag6DP3bC2VaRnSM7fyNuX3LuKnLXJJXkLM2EiOrZttxczs0nI5_Qro1JszFMsH8G_zKWUb9poLDwFrm8u-w7hRbCGWxVD5MefNTvJrYO7SoYv_Ljndv3PpDhj-naq-YaRcIwWLcm0M7G_GBpRGMT708HwGeLXw3nvmOMa-u9emRXjgmDJV_jcJWPqpI0_qAOUNvmrwqBf8hcW0v7wP_9TD8iNap4l_szkg=w687-h915-no",
+            url: "https://i.imgur.com/ucGRDmW_d.jpg?maxwidth=640&shape=thumb&fidelity=medium",
             size: "full",
             aspectMode: "cover",
             aspectRatio: "2:3",
@@ -585,6 +585,36 @@ class LineBot
                           type: "uri",
                           label: "action",
                           uri: "https://github.com/Saharak-Dove"
+                        }
+                      },
+                      {
+                        type: "filler"
+                      },
+                      {
+                    type: "filler"
+                  },
+                  {
+                    type: "box",
+                    layout: "baseline",
+                    contents: [
+                      {
+                        type: "filler"
+                      },
+                      {
+                        type: "icon",
+                        url: "https://png2.cleanpng.com/sh/11f935019720c4ccbb463bbead0190f2/L0KzQYm3VsEzN5t4e5H0aYP2gLBuTfNwdaF6jNd7LXnmf7B6TflvfJZ3htd9LYfocn7rhgZmdJD1hdd3dD3kfbLDjB4uf5ZnRadrMXa7QIXsgvNkaWY3RqUDMEO4R4K4UcUzQGgASaM6OEe6Q4S1kP5o/kisspng-computer-icons-internet-web-development-amazon-web-5b1f804ebcca52.3803571115287911187733.png",
+                        size: "lg"
+                      },
+                      {
+                        type: "text",
+                        text: "Covid-19",
+                        color: "#ffffff",
+                        flex: 0,
+                        offsetTop: "-2px",
+                        action: {
+                          type: "uri",
+                          label: "action",
+                          uri: "https://data-covid-2019.herokuapp.com/"
                         }
                       },
                       {
