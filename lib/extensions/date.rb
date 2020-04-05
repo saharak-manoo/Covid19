@@ -14,7 +14,7 @@ class Date
   def to_difference_str
     days = TimeDifference.between(self, Date.today).in_days.to_i
 
-    days.zero? ? "วันนี้" : "#{days} วันที่แล้ว"
+    days.zero? ? "วันนี้" : "#{days} วันก่อน"
   end
 
   def to_day_month

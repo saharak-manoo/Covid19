@@ -21,6 +21,7 @@ class String
       date = Date.parse(self.gsub!(/#{cyrillic_month}/, latin_month)) if self.match(cyrillic_month)
     end
 
+    date = date - 543.years if Date.today.year < date.year
     date
   end
 
@@ -30,6 +31,7 @@ class String
       date = DateTime.parse(self.gsub!(/#{cyrillic_month}/, latin_month)).localtime if self.match(cyrillic_month)
     end
 
+    date = date - 543.years if Date.today.year < date.year
     date
   end
 end
