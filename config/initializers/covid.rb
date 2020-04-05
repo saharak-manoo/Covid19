@@ -846,14 +846,14 @@ class Covid
       data_timelines << {
         date: date,
         date_str: date.present? ? I18n.l(date, format: '%d %b') : '-',
-        confirmed: timeline['Confirmed'] || 0,
-        confirmed_add_today: timeline['NewConfirmed'] || 0,
-        healings: timeline['Hospitalized'] || 0,
-        healings_add_today: timeline['NewHospitalized'] || 0,
-        deaths: timeline['Deaths'] || 0,
-        deaths_add_today: timeline['NewDeaths'] || 0,
-        recovered: timeline['Recovered'] || 0,
-        recovered_add_today: timeline['NewRecovered'] || 0
+        confirmed: (timeline['Confirmed'] || 0).non_negative,
+        confirmed_add_today: (timeline['NewConfirmed'] || 0).non_negative,
+        healings: (timeline['Hospitalized'] || 0.non_negative),
+        healings_add_today: (timeline['NewHospitalized'] || 0).non_negative,
+        deaths: (timeline['Deaths'] || 0).non_negative,
+        deaths_add_today: (timeline['NewDeaths'] || 0).non_negative,
+        recovered: (timeline['Recovered'] || 0).non_negative,
+        recovered_add_today: (timeline['NewRecovered'] || 0).non_negative
       }
     end
 

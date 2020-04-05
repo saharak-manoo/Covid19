@@ -266,9 +266,6 @@ export class HomeComponent {
     chart: {
       height: 400,
       type: 'line',
-      zoom: {
-        enabled: false,
-      },
     },
     stroke: {
       width: 4,
@@ -277,18 +274,7 @@ export class HomeComponent {
     xaxis: {
       categories: [],
     },
-    fill: {
-      type: 'gradient',
-      gradient: {
-        shade: 'dark',
-        gradientToColors: ['#FCD35E', '#F24F20', '#BFFD59', '#07EA66', '#5EFCAD', '#07EACD', '#FC5E71', '#713ff9'],
-        shadeIntensity: 1,
-        type: 'horizontal',
-        opacityFrom: 1,
-        opacityTo: 1,
-        stops: [0, 0, 5, 100],
-      },
-    },
+    colors: ['#FCD35E', '#F24F20', '#BFFD59', '#07EA66', '#5EFCAD', '#07EACD', '#FC5E71', '#713ff9'],
     yaxis: {
       min: 0,
     },
@@ -681,8 +667,10 @@ export class HomeComponent {
     this.appService.get('api/covids/thailand_timeline_for_chart').subscribe(
       (resp) => {
         let response: any = resp
+        this.timelineOptions.xaxis = {
+          categories: response.data.categories,
+        }
         this.timelineOptions.series = response.data.series
-        this.timelineOptions.xaxis.categories = response.data.categories
       },
       (e) => {
         this.app.openSnackBar('มีข้อผิดพลาด ในการโหลดข้อมูล', 'Close', 'red-snackbar')

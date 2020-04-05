@@ -125,19 +125,20 @@
             <mat-card class="card-chart">
               <mat-card-content>
                 <p class="text-center font-size-26">
-                  <strong class="font-size-26 deaths">สถิติ</strong>ผู้ติดเชื้อ
+                  <strong class="font-size-26 case-management-admit">ไทม์ไลน์</strong>
+                  จำนวนผู้ติดเชื้อ
                 </p>
-                <apx-chart
-                  [series]="timelineOptions.series"
-                  [chart]="timelineOptions.chart"
-                  [xaxis]="timelineOptions.xaxis"
-                  [dataLabels]="timelineOptions.dataLabels"
-                  [grid]="timelineOptions.grid"
-                  [stroke]="timelineOptions.stroke"
-                  [title]="timelineOptions.title"
-                  [yaxis]="timelineOptions.yaxis"
-                  [fill]="timelineOptions.fill"
-                ></apx-chart>
+                <div class="apex-chart">
+                  <apx-chart
+                    [series]="timelineOptions.series"
+                    [chart]="timelineOptions.chart"
+                    [xaxis]="timelineOptions.xaxis"
+                    [colors]="timelineOptions.colors"
+                    [grid]="timelineOptions.grid"
+                    [stroke]="timelineOptions.stroke"
+                    [yaxis]="timelineOptions.yaxis"
+                  ></apx-chart>
+                </div>
               </mat-card-content>
             </mat-card>
           </div>
