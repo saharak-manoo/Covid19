@@ -360,7 +360,7 @@ class LineBot
   end
 
   def self.quick_reply_text(messages, title = 'สวัสดีครับ มีคำถามอะไร คุณสามารถเลือกได้เลย')
-    messages = ['พื้นที่เสี่ยงติดโควิด', 'ผู้ติดเชื้อ ใกล้ฉัน', 'ที่ตรวจโควิด ใกล้ฉัน', 'ประเทศไทย', 'ทั่วโลก', 'พื้นที่เสี่ยงติดโควิด ชลบุรี', 'กรุงเทพ', 'เชียงใหม่', 'สหรัฐ', 'ญี่ปุ่น'] unless messages.present?
+    messages = ['พื้นที่เสี่ยงติดโควิด', 'ผู้ติดเชื้อ ใกล้ฉัน', 'ที่ตรวจโควิด ใกล้ฉัน', 'ประเทศไทย', 'ทั่วโลก', 'พื้นที่เสี่ยงติดโควิด ชลบุรี', 'กรุงเทพ', 'เชียงใหม่', 'สหรัฐ', 'ญี่ปุ่น', 'อิตาลี', 'พัฒนาโดยใคร'] unless messages.present?
 
     items = []
     messages.each do |message|
@@ -585,6 +585,36 @@ class LineBot
                           type: "uri",
                           label: "action",
                           uri: "https://github.com/Saharak-Dove"
+                        }
+                      },
+                      {
+                        type: "filler"
+                      },
+                      {
+                    type: "filler"
+                  },
+                  {
+                    type: "box",
+                    layout: "baseline",
+                    contents: [
+                      {
+                        type: "filler"
+                      },
+                      {
+                        type: "icon",
+                        url: "https://png2.cleanpng.com/sh/11f935019720c4ccbb463bbead0190f2/L0KzQYm3VsEzN5t4e5H0aYP2gLBuTfNwdaF6jNd7LXnmf7B6TflvfJZ3htd9LYfocn7rhgZmdJD1hdd3dD3kfbLDjB4uf5ZnRadrMXa7QIXsgvNkaWY3RqUDMEO4R4K4UcUzQGgASaM6OEe6Q4S1kP5o/kisspng-computer-icons-internet-web-development-amazon-web-5b1f804ebcca52.3803571115287911187733.png",
+                        size: "lg"
+                      },
+                      {
+                        type: "text",
+                        text: "Covid-19",
+                        color: "#ffffff",
+                        flex: 0,
+                        offsetTop: "-2px",
+                        action: {
+                          type: "uri",
+                          label: "action",
+                          uri: "https://data-covid-2019.herokuapp.com/"
                         }
                       },
                       {
