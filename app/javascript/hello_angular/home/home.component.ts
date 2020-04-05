@@ -268,7 +268,7 @@ export class HomeComponent {
       type: 'line',
     },
     stroke: {
-      width: 4,
+      width: 1,
       curve: 'smooth',
     },
     xaxis: {
