@@ -595,7 +595,7 @@ class LineBot
                       },
                       {
                         type: "icon",
-                        url: "https://png2.cleanpng.com/sh/11f935019720c4ccbb463bbead0190f2/L0KzQYm3VsEzN5t4e5H0aYP2gLBuTfNwdaF6jNd7LXnmf7B6TflvfJZ3htd9LYfocn7rhgZmdJD1hdd3dD3kfbLDjB4uf5ZnRadrMXa7QIXsgvNkaWY3RqUDMEO4R4K4UcUzQGgASaM6OEe6Q4S1kP5o/kisspng-computer-icons-internet-web-development-amazon-web-5b1f804ebcca52.3803571115287911187733.png",
+                        url: "https://d31pjuirwqbaad.cloudfront.net/wp-content/uploads/2019/08/kissclipart-website-icon-png-clipart-computer-icons-ac62ecb3b8ae4d41.png?x61175",
                         size: "lg"
                       },
                       {
