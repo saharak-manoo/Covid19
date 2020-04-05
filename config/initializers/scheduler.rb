@@ -41,7 +41,7 @@ scheduler.every '30m' do
   end
 end
 
-scheduler.every '2h' do
+scheduler.every '40m' do
   begin
     Covid.thailand_infected_province
   rescue ActiveRecord::ConnectionNotEstablished
