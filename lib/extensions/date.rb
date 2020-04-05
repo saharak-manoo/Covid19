@@ -12,9 +12,9 @@ class Date
   end
 
   def to_difference_str
-    date_difference = TimeDifference.between(self, Date.today).in_general
+    days = TimeDifference.between(self, Date.today).in_days.to_i
 
-    date_difference[:days].zero? ? "วันนี้" : "#{date_difference[:days]} วันที่แล้ว"
+    days.zero? ? "วันนี้" : "#{days} วันที่แล้ว"
   end
 
   def to_day_month
