@@ -361,7 +361,7 @@ class LineBot
 
   def self.quick_reply_text(messages, title = 'สวัสดีครับ มีคำถามอะไร คุณสามารถเลือกได้เลย')
     messages = ['พื้นที่เสี่ยงติดโควิด', 'ผู้ติดเชื้อ ใกล้ฉัน', 'ที่ตรวจโควิด ใกล้ฉัน', 'ประเทศไทย', 'ทั่วโลก', 'พื้นที่เสี่ยงติดโควิด ชลบุรี', 'กรุงเทพ', 'เชียงใหม่', 'สหรัฐ', 'ญี่ปุ่น'] unless messages.present?
-    
+
     items = []
     messages.each do |message|
       items << {
@@ -523,4 +523,120 @@ class LineBot
       }
     }
   end
+
+  def self.flex_created
+    {
+      type: "bubble",
+      body: {
+        type: "box",
+        layout: "vertical",
+        contents: [
+          {
+            type: "image",
+            url: "https://lh3.googleusercontent.com/yLr_44-QZb2WMgRVYHoFTaHGazMwTkrkH5XdFkVgntza6Fq_yrpKIU3lKxr7enXCLpw0HFIcNlfIJuBz9RmSd_Zd2B9wptRz_XXCXbXX7LdZ7IUhjuV8UEoo2M0GHam6mTT51ny8bCMsiCcSN3m3m1Ug8B5maroyah-gSIfAQ7JsCR1U-3hRGrdQFO9bisBcwRnEmeEJTLxrceARVqr9FO03ezN-xZVmAlQwN5pY6uvGJBTkCk7e-lxvix8zuJbdS7Jml91YlxXjUW24P09nVx4wvE6gD_6EB9IhCPKSXtWKCW0RLjFNlMdSzCZRdLRpzHOBRVT9junt9TwyOexYjGWidj_2dT1dp99ZZAQUQS10_rVDkQlFmUw0qVjQqZ3NFCwpecEQT6vvrES7H1pHoH_HsTsMtMxlW5sFm_P0usA1ImB-TAHzyKEl0YDJcU0WyMnwuoDajE5_j31hEsXeQRQhHQaFag6DP3bC2VaRnSM7fyNuX3LuKnLXJJXkLM2EiOrZttxczs0nI5_Qro1JszFMsH8G_zKWUb9poLDwFrm8u-w7hRbCGWxVD5MefNTvJrYO7SoYv_Ljndv3PpDhj-naq-YaRcIwWLcm0M7G_GBpRGMT708HwGeLXw3nvmOMa-u9emRXjgmDJV_jcJWPqpI0_qAOUNvmrwqBf8hcW0v7wP_9TD8iNap4l_szkg=w687-h915-no",
+            size: "full",
+            aspectMode: "cover",
+            aspectRatio: "2:3",
+            gravity: "top"
+          },
+          {
+            type: "box",
+            layout: "vertical",
+            contents: [
+              {
+                type: "box",
+                layout: "vertical",
+                contents: [
+                  {
+                    type: "text",
+                    text: "Saharak Manoo",
+                    size: "xl",
+                    color: "#ffffff",
+                    weight: "bold"
+                  }
+                ]
+              },
+              {
+                type: "box",
+                layout: "vertical",
+                contents: [
+                  {
+                    type: "filler"
+                  },
+                  {
+                    type: "box",
+                    layout: "baseline",
+                    contents: [
+                      {
+                        type: "filler"
+                      },
+                      {
+                        type: "icon",
+                        url: "https://cdn3.iconfinder.com/data/icons/popular-services-brands/512/github-512.png",
+                        size: "lg"
+                      },
+                      {
+                        type: "text",
+                        text: "GitHub",
+                        color: "#ffffff",
+                        flex: 0,
+                        offsetTop: "-2px",
+                        action: {
+                          type: "uri",
+                          label: "action",
+                          uri: "https://github.com/Saharak-Dove"
+                        }
+                      },
+                      {
+                        type: "filler"
+                      }
+                    ],
+                    spacing: "sm"
+                  },
+                  {
+                    type: "filler"
+                  }
+                ],
+                borderWidth: "1px",
+                cornerRadius: "4px",
+                spacing: "sm",
+                borderColor: "#ffffff",
+                margin: "xxl",
+                height: "40px"
+              }
+            ],
+            position: "absolute",
+            offsetBottom: "0px",
+            offsetStart: "0px",
+            offsetEnd: "0px",
+            backgroundColor: "#03303aac",
+            paddingAll: "20px",
+            paddingTop: "18px"
+          },
+          {
+            type: "box",
+            layout: "vertical",
+            contents: [
+              {
+                type: "text",
+                text: "Dove",
+                color: "#ffffff",
+                align: "center",
+                size: "xs",
+                offsetTop: "3px"
+              }
+            ],
+            position: "absolute",
+            cornerRadius: "20px",
+            offsetTop: "18px",
+            backgroundColor: "#0799EA",
+            offsetStart: "18px",
+            height: "25px",
+            width: "53px"
+          }
+        ],
+        paddingAll: "0px"
+      }
+    }
+  end  
 end
