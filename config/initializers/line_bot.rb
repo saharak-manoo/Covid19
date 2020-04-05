@@ -145,7 +145,7 @@ class LineBot
       if world.present?
         return flex(flex_world(world), world[:country_th])
       else
-        return { type: 'text', text: "ขออภัยไม่มีข้อมูลของ #{location} โปรดลองเป็น ชื่อจังหวัด เช่น จีน, สหรัฐ" }
+        return quick_reply_location("ขออภัยไม่มีข้อมูลของ #{location} โปรดเลือกได้จากตัวเลือกด้านล่างได้เลยครับ")
       end  
     end
 
