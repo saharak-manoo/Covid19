@@ -82,7 +82,7 @@ class WebhooksController < ApplicationController
               LineBot.reply(event['replyToken'], LineBot.flex_carousel(box_messages, "ข้อมูล พื้นที่เสียงล่าสุด 10 แห่ง"))
             end
           elsif resp[:intent_name] == "CREATED"
-            LineBot.reply(event['replyToken'], { type: 'text', text: "ฉันถูกพัฒนาโดย Saharak Manoo" })
+            LineBot.reply(event['replyToken'], LineBot.flex(LineBot.flex_created))
           else
             LineBot.reply(event['replyToken'], LineBot.quick_reply_text(nil))
           end
