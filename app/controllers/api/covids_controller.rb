@@ -163,16 +163,32 @@ class Api::CovidsController < Api::ApplicationController
             data: timeline.pluck(:confirmed),
           },
           {
+            name: 'ผู้ติดเชื้อเพิ่มขึ้น',
+            data: timeline.pluck(:confirmed_add_today),
+          },
+          {
             name: 'กำลังรักษา',
             data: timeline.pluck(:healings),
+          },
+          {
+            name: 'กำลังรักษาเพิ่มขึ้น',
+            data: timeline.pluck(:healings_add_today),
           },
           {
             name: 'รักษาหายแล้ว',
             data: timeline.pluck(:recovered),
           },
           {
+            name: 'รักษาหายแล้วเพิ่มขึ้น',
+            data: timeline.pluck(:recovered_add_today),
+          },
+          {
             name: 'เสียชีวิต',
             data: timeline.pluck(:deaths),
+          },
+          {
+            name: 'เสียชีวิตเพิ่มขึ้น',
+            data: timeline.pluck(:deaths_add_today),
           },
         ]
       } 

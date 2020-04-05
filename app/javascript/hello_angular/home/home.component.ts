@@ -264,8 +264,11 @@ export class HomeComponent {
   timelineOptions = {
     series: [],
     chart: {
-      height: 450,
+      height: 400,
       type: 'line',
+      zoom: {
+        enabled: false,
+      },
     },
     stroke: {
       width: 4,
@@ -278,7 +281,7 @@ export class HomeComponent {
       type: 'gradient',
       gradient: {
         shade: 'dark',
-        gradientToColors: ['#FCD35E', '#BFFD59', '#5EFCAD', '#FC5E71'],
+        gradientToColors: ['#FCD35E', '#F24F20', '#BFFD59', '#07EA66', '#5EFCAD', '#07EACD', '#FC5E71', '#713ff9'],
         shadeIntensity: 1,
         type: 'horizontal',
         opacityFrom: 1,
