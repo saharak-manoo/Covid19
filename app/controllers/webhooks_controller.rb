@@ -73,16 +73,18 @@ class WebhooksController < ApplicationController
               elsif !parameters['risky-area'].present?
                 LineBot.reply(event['replyToken'], LineBot.flex(flex_province, "ข้อมูลจำนวนผู้ติดเชื้อในจังหวัด #{parameters['province']}"))
               else
-                LineBot.reply(event['replyToken'], { type: 'text', text: resp[:fulfillment][:speech] })
+                LineBot.reply(event['replyToken'], LineBot.quick_reply_text(nil, 'ขออภัยฉันไม่มีข้อมูลที่คุณถาม โปรดเลือกจากข้อมูลนี้'))
               end
             else
               risky_areas = risky_areas.take(10).reverse
               box_messages = risky_areas.map.with_index { |area, index| LineBot.flex_risky_area(area, "#{index + 1}.") }
 
               LineBot.reply(event['replyToken'], LineBot.flex_carousel(box_messages, "ข้อมูล พื้นที่เสียงล่าสุด 10 แห่ง"))
-            end   
+            end
+          elsif resp[:intent_name] == "CREATED"
+            LineBot.reply(event['replyToken'], { type: 'text', text: "ฉันถูกพัฒนาโดย Saharak Manoo" })
           else
-            LineBot.reply(event['replyToken'], { type: 'text', text: resp[:fulfillment][:speech] })
+            LineBot.reply(event['replyToken'], LineBot.quick_reply_text(nil))
           end
         when Line::Bot::Event::MessageType::Location
           title = event.message['title']
@@ -116,14 +118,14 @@ class WebhooksController < ApplicationController
               LineBot.reply(event['replyToken'], { type: 'text', text: "ไม่มีข้อมูล ผู้ติดเชื้อในบริเวณนี้" })
             end
           else
-            LineBot.reply(event['replyToken'], { type: 'text', text: "โปรดแจ้งเรื่องที่คุณอยากรู้ เช่น ที่ตรวจโควิด, ผู้ติดเชื้อ ใกล้ฉัน" })
+            LineBot.reply(event['replyToken'], LineBot.quick_reply_text(nil, 'โปรดบอกข้อมูลที่คุณอยากรู้ หรือเลือกจากที่นี่ได้เลยครับ'))
           end
 
           UserTempChat.where(line_user_id: line_user_id).delete_all
         when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
-          response = client.get_message_content(event.message['id'])
-          tf = Tempfile.open("content")
-          tf.write(response.body)
+          LineBot.reply(event['replyToken'], LineBot.quick_reply_text(nil, 'สวัสดีครับ มีอะไรให้ผมช่วยไหมครับ โปรดบอกเราได้เลย'))
+        else
+          LineBot.reply(event['replyToken'], LineBot.quick_reply_text(nil, 'สวัสดีครับ มีอะไรให้ผมช่วยไหมครับ โปรดบอกเราได้เลย'))
         end
       end
     end

@@ -359,6 +359,31 @@ class LineBot
     end
   end
 
+  def self.quick_reply_text(messages, title = 'สวัสดีครับ มีคำถามอะไร คุณสามารถเลือกได้เลย')
+    messages = ['พื้นที่เสี่ยงติดโควิด', 'ผู้ติดเชื้อ ใกล้ฉัน', 'ที่ตรวจโควิด ใกล้ฉัน', 'ประเทศไทย', 'ทั่วโลก', 'พื้นที่เสี่ยงติดโควิด ชลบุรี', 'กรุงเทพ', 'เชียงใหม่', 'สหรัฐ', 'ญี่ปุ่น'] unless messages.present?
+    
+    items = []
+    messages.each do |message|
+      items << {
+        type: 'action',
+        imageUrl: "https://cdn4.iconfinder.com/data/icons/coronavirus-1/512/wuhan-coronavirus-virus-outbreak-02-512.png",
+        action: {
+          type: 'message',
+          label: message,
+          text: message
+        }
+      }
+    end
+
+    {
+      type: 'text',
+      text: title,
+      quickReply: {
+        items: items
+      }
+    }
+  end
+
   def self.quick_reply_location(title = 'โปรดส่งตำแหน่งของคุณให้เราทราบ หรือข้อมูลด้านอื่น เลือกได้เลยครับ')
     {
       type: 'text',
