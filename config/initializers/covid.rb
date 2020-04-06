@@ -845,7 +845,9 @@ class Covid
 
       data_timelines << {
         date: date,
-        date_str: date.present? ? I18n.l(date, format: '%d %b') : '-',
+        date_str: date.present? ? date.strftime('%d/%m/%Y') : '-',
+        date_short_thai_str: date.present? ? I18n.l(date, format: '%d %b') : '-',
+        date_thai_str: date.present? ? I18n.l(date, format: '%d %B %Y') : '-',
         confirmed: (timeline['Confirmed'] || 0).non_negative,
         confirmed_add_today: (timeline['NewConfirmed'] || 0).non_negative,
         healings: (timeline['Hospitalized'] || 0.non_negative),

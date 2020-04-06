@@ -261,17 +261,70 @@ export class HomeComponent {
     },
   }
 
+  timelineStartDate: string = 'กำลังโหลด'
+  timelineEndDate: string = 'กำลังโหลด'
   timelineOptions = {
     series: [],
     chart: {
       height: 400,
       type: 'line',
+      locales: [
+        {
+          name: 'th',
+          options: {
+            months: [
+              'มกราคม',
+              'กุมภาพันธ์',
+              'มีนาคม',
+              'เมษายน',
+              'พฤษภาคม',
+              'มิถุนายน',
+              'กรกฎาคม',
+              'สิงหาคม',
+              'กันยายน',
+              'ตุลาคม',
+              'พฤศจิกายน',
+              'ธันวาคม',
+            ],
+            shortMonths: [
+              'ม.ค.',
+              'ก.พ.',
+              'มี.ค.',
+              'เม.ย.',
+              'พ.ค.',
+              'มิ.ย.',
+              'ก.ค.',
+              'ส.ค.',
+              'ก.ย.',
+              'ต.ค.',
+              'พ.ย.',
+              'ธ.ค.',
+            ],
+            days: ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'],
+            shortDays: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
+            toolbar: {
+              exportToSVG: 'ดาวน์โหลด SVG',
+              exportToPNG: 'ดาวน์โหลด PNG',
+              exportToCSV: 'ดาวน์โหลด CSV',
+              menu: 'เมนู',
+              selection: 'เลือก',
+              selectionZoom: 'เลือกจุดที่จะซูม',
+              zoomIn: 'ซูมเข้า',
+              zoomOut: 'ซูมออก',
+              pan: 'ปรากฎว่า',
+              reset: 'รีเซ็ตการซูม',
+            },
+          },
+        },
+      ],
+      defaultLocale: 'th',
     },
     stroke: {
       width: 2,
       curve: 'smooth',
     },
     xaxis: {
+      type: 'datetime',
       categories: [],
     },
     colors: ['#FCD35E', '#F24F20', '#BFFD59', '#07EA66', '#5EFCAD', '#07EACD', '#FC5E71', '#713ff9'],
@@ -667,7 +720,10 @@ export class HomeComponent {
     this.appService.get('api/covids/thailand_timeline_for_chart').subscribe(
       (resp) => {
         let response: any = resp
+        this.timelineStartDate = response.data.start_date
+        this.timelineEndDate = response.data.end_date
         this.timelineOptions.xaxis = {
+          type: 'datetime',
           categories: response.data.categories,
         }
         this.timelineOptions.series = response.data.series
