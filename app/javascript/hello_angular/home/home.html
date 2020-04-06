@@ -125,8 +125,11 @@
             <mat-card class="card-chart">
               <mat-card-content>
                 <p class="text-center font-size-26">
-                  <strong class="font-size-26 case-management-admit">ไทม์ไลน์</strong>
-                  จำนวนผู้ติดเชื้อ
+                  <strong class="font-size-26 watch-out-collectors">สถิติผู้ติดเชื้อทั้งหมด</strong>
+                  ตั้งแต่วันที่
+                  <strong class="font-size-26 color-bl">{{ timelineStartDate }}</strong>
+                  ถึง
+                  <strong class="font-size-26 severed">{{ timelineEndDate }}</strong>
                 </p>
                 <div class="apex-chart">
                   <apx-chart
