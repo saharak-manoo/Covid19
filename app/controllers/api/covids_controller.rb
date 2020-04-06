@@ -156,7 +156,9 @@ class Api::CovidsController < Api::ApplicationController
 
     render json: { data: 
       {
-        categories: timeline.pluck(:date_str),
+        start_date: timeline.first[:date_thai_str],
+        end_date: timeline.last[:date_thai_str],
+        categories: timeline.pluck(:date),
         series: [
           {
             name: 'ผู้ติดเชื้อ',
