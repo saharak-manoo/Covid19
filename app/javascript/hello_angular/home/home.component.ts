@@ -334,11 +334,7 @@ export class HomeComponent {
   }
 
   ngOnInit() {
-    this.getLocation()
     this.loadThailandTimeline()
-    this.loadCasesThai()
-    this.loadHospital()
-    this.loadSafeZone()
     this.loadData()
 
     setInterval(() => {
@@ -466,55 +462,6 @@ export class HomeComponent {
     this.loadAllCountry()
     this.loadInfectedByProvince()
     this.loadGlobalSummary()
-  }
-
-  getLocation() {
-    this.app.getPosition().then((pos) => {
-      this.latitude = pos.lat
-      this.longitude = pos.lng
-      this.loadCasesThai()
-      this.loadHospital()
-    })
-  }
-
-  loadCasesThai() {
-    this.appService
-      .getWithParams('api/covids/thailand_case_by_location', { latitude: this.latitude, longitude: this.longitude })
-      .subscribe(
-        (resp) => {
-          let response: any = resp
-          this.cases = response.data
-        },
-        (e) => {
-          this.app.openSnackBar('มีข้อผิดพลาด ในการโหลดข้อมูล', 'Close', 'red-snackbar')
-        }
-      )
-  }
-
-  loadHospital() {
-    this.appService
-      .getWithParams('api/covids/hospital_by_location', { latitude: this.latitude, longitude: this.longitude })
-      .subscribe(
-        (resp) => {
-          let response: any = resp
-          this.hospitals = response.data
-        },
-        (e) => {
-          this.app.openSnackBar('มีข้อผิดพลาด ในการโหลดข้อมูล', 'Close', 'red-snackbar')
-        }
-      )
-  }
-
-  loadSafeZone() {
-    this.appService.get('api/covids/safe_zone').subscribe(
-      (resp) => {
-        let response: any = resp
-        this.safeZones = response.data
-      },
-      (e) => {
-        this.app.openSnackBar('มีข้อผิดพลาด ในการโหลดข้อมูล', 'Close', 'red-snackbar')
-      }
-    )
   }
 
   loadThailandSummary() {
