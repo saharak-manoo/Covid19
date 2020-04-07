@@ -126,9 +126,6 @@ const appRoutes: Routes = [
     FlexLayoutModule,
     CountToModule,
     NgApexchartsModule,
-    AgmCoreModule.forRoot({
-      apiKey: environment.googleApiKey,
-    }),
   ],
   providers: [{ provide: APP_BASE_HREF, useValue: '/' }],
   entryComponents: [ConfirmDialogComponent],
