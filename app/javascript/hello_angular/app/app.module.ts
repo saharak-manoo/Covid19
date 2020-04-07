@@ -102,7 +102,6 @@ export class MaterialModule {}
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'homes', component: HomeComponent },
-  { path: 'map', component: MapComponent },
 ]
 
 @NgModule({
