@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core'
 import { enableProdMode } from '@angular/core'
 import { AppComponent } from './app.component'
 import { HomeComponent } from '../home/home.component'
-import { MapComponent } from '../map/map.component'
 import { RouterModule, Routes } from '@angular/router'
 import { APP_BASE_HREF } from '@angular/common'
 import { HttpClientModule } from '@angular/common/http'
@@ -54,7 +53,6 @@ import {
   MatStepperModule,
   MatFormFieldModule,
 } from '@angular/material'
-import { AgmCoreModule } from '@agm/core'
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client'
 import { FlexLayoutModule } from '@angular/flex-layout'
 import { CountToModule } from 'angular-count-to'
@@ -105,7 +103,7 @@ const appRoutes: Routes = [
 ]
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, ConfirmDialogComponent, MapComponent],
+  declarations: [AppComponent, HomeComponent, ConfirmDialogComponent],
   imports: [
     BrowserModule,
     HttpClientModule,

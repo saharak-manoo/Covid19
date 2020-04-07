@@ -301,7 +301,7 @@ class Covid
 
       data << {
         country: resp['name'],
-        country_th: GoogleApi.translate(resp['name']),
+        country_th: World.find_by(country: resp['name'])&.country_th || resp['name'],
         country_flag: "/#{resp['alpha2'].downcase}.png",
         confirmed: confirmed,
         confirmed_color: confirmed.to_covid_color,
