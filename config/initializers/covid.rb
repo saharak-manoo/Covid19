@@ -279,7 +279,6 @@ class Covid
   end
 
   def self.world
-    total = Covid.total(Date.yesterday - 1.days)
     data = []
     response = api_workpoint('world')
 
@@ -320,7 +319,6 @@ class Covid
 
     {
       confirmed: response['totalConfirmed'] || 0,
-      add_today_count: (((response['totalConfirmed'] || 0) - total[:confirmed]) || 0).non_negative,
       healings: ((response['totalConfirmed'].to_i - response['totalRecovered'].to_i ) - response['totalDeaths'].to_i || 0).non_negative,
       deaths: response['totalDeaths'] || 0,
       recovered: response['totalRecovered'] || 0,
