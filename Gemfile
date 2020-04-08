@@ -118,3 +118,5 @@ gem 'google_drive'
 gem 'geokit-rails'
 gem 'geokit'
 gem 'chronic'
+
+gem 'scb_easy_api', '~> 2.1', '>= 2.1.3'
