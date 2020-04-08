@@ -396,6 +396,8 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
+    scb_easy_api (2.1.3)
+      rest-client
     selenium-webdriver (3.142.3)
       childprocess (>= 0.5, < 2.0)
       rubyzip (~> 1.2, >= 1.2.2)
@@ -510,6 +512,7 @@ DEPENDENCIES
   ruby-cheerio
   rufus-scheduler
   sass-rails (~> 5)
+  scb_easy_api (~> 2.1, >= 2.1.3)
   selenium-webdriver
   simple_form
   sinatra
