@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_02_043815) do
+ActiveRecord::Schema.define(version: 2020_04_10_075011) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -134,6 +134,9 @@ ActiveRecord::Schema.define(version: 2020_04_02_043815) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.date "date"
+    t.integer "confirmed_case_from_foreign_countries", default: 0
+    t.integer "confirmed_add_today_from_foreign_countries", default: 0
+    t.integer "confirmed_deaths_from_foreign_countries", default: 0
   end
 
   create_table "user_temp_chats", force: :cascade do |t|

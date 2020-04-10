@@ -177,11 +177,11 @@ class Api::CovidsController < Api::ApplicationController
             data: timeline.pluck(:healings_add_today),
           },
           {
-            name: 'รักษาหายแล้ว',
+            name: 'รักษาหาย',
             data: timeline.pluck(:recovered),
           },
           {
-            name: 'รักษาหายแล้วเพิ่มขึ้น',
+            name: 'รักษาหายเพิ่มขึ้น',
             data: timeline.pluck(:recovered_add_today),
           },
           {
