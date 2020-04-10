@@ -34,16 +34,9 @@ export class HomeComponent {
     },
   }
   pieChartDataLocal: number[] = [0, 0, 0, 0]
-  pieChartLabelsLocal: Label[] = [['ผู้ติดเชื้อ'], ['กำลังรักษา'], ['อาการหนัก'], ['รักษาหาย'], ['เสียชีวิต']]
   pieChartLabels: Label[] = [['ผู้ติดเชื้อ'], ['กำลังรักษา'], ['รักษาหาย'], ['เสียชีวิต']]
   pieChartData: number[] = [0, 0, 0, 0]
   pieChartType: ChartType = 'pie'
-  pieChartColorsLocal = [
-    {
-      backgroundColor: ['#FCD35E', '#BFFD59', '#713ff9', '#5EFCAD', '#FC5E71'],
-      borderColor: ['#FCD35E', '#BFFD59', '#713ff9', '#5EFCAD', '#FC5E71'],
-    },
-  ]
   pieChartColors = [
     {
       backgroundColor: ['#FCD35E', '#BFFD59', '#5EFCAD', '#FC5E71'],
@@ -62,6 +55,7 @@ export class HomeComponent {
     critical_add_today: 0,
     recovered_add_today: 0,
     watch_out_collectors_add_today: 0,
+    confirmed_case_from_foreign_countries: 0,
   }
   total: any = {
     confirmed: 0,
@@ -93,42 +87,19 @@ export class HomeComponent {
       ],
     },
   }
+  barChartLabels: Label[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+  barChartType: ChartType = 'line'
   barChartDataLocal: any = [
     { data: [0, 0, 0, 0, 0, 0, 0], label: 'ผู้ติดเชื้อ' },
     { data: [0, 0, 0, 0, 0, 0, 0], label: 'กำลังรักษา' },
-    { data: [0, 0, 0, 0, 0, 0, 0], label: 'อาการหนัก' },
-    { data: [0, 0, 0, 0, 0, 0, 0], label: 'รักษาหายแล้ว' },
+    { data: [0, 0, 0, 0, 0, 0, 0], label: 'รักษาหาย' },
     { data: [0, 0, 0, 0, 0, 0, 0], label: 'เสียชีวิต' },
   ]
-  barChartLabels: Label[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-  barChartType: ChartType = 'line'
   barChartData: any = [
     { data: [0, 0, 0, 0, 0, 0, 0], label: 'ผู้ติดเชื้อ' },
     { data: [0, 0, 0, 0, 0, 0, 0], label: 'กำลังรักษา' },
-    { data: [0, 0, 0, 0, 0, 0, 0], label: 'รักษาหายแล้ว' },
+    { data: [0, 0, 0, 0, 0, 0, 0], label: 'รักษาหาย' },
     { data: [0, 0, 0, 0, 0, 0, 0], label: 'เสียชีวิต' },
-  ]
-  barChartColorsLocal = [
-    {
-      backgroundColor: 'rgb(252, 211, 94, 0.5)',
-      borderColor: '#FCD35E',
-    },
-    {
-      backgroundColor: 'rgb(191, 253, 89, 0.5)',
-      borderColor: '#BFFD59',
-    },
-    {
-      backgroundColor: 'rgb(113, 63, 249, 0.5)',
-      borderColor: '#713ff9',
-    },
-    {
-      backgroundColor: 'rgb(94, 252, 173, 0.5)',
-      borderColor: '#5EFCAD',
-    },
-    {
-      backgroundColor: 'rgb(252, 94, 113, 0.5)',
-      borderColor: '#FC5E71',
-    },
   ]
   barChartColors = [
     {
@@ -148,8 +119,6 @@ export class HomeComponent {
       borderColor: '#FC5E71',
     },
   ]
-  latitude: number = 13.7530066
-  longitude: number = 100.4960144
   hospitals: any = []
   allCountryDisplayedColumns: string[] = [
     'country_flag',
@@ -340,28 +309,6 @@ export class HomeComponent {
     setInterval(() => {
       if (this.barChartType === 'bar') {
         this.barChartType = 'line'
-        this.barChartColorsLocal = [
-          {
-            backgroundColor: 'rgb(252, 211, 94, 0.5)',
-            borderColor: '#FCD35E',
-          },
-          {
-            backgroundColor: 'rgb(191, 253, 89, 0.5)',
-            borderColor: '#BFFD59',
-          },
-          {
-            backgroundColor: 'rgb(113, 63, 249, 0.5)',
-            borderColor: '#713ff9',
-          },
-          {
-            backgroundColor: 'rgb(94, 252, 173, 0.5)',
-            borderColor: '#5EFCAD',
-          },
-          {
-            backgroundColor: 'rgb(252, 94, 113, 0.5)',
-            borderColor: '#FC5E71',
-          },
-        ]
         this.barChartColors = [
           {
             backgroundColor: 'rgb(252, 211, 94, 0.5)',
@@ -382,28 +329,6 @@ export class HomeComponent {
         ]
       } else {
         this.barChartType = 'bar'
-        this.barChartColorsLocal = [
-          {
-            backgroundColor: '#FCD35E',
-            borderColor: '#FCD35E',
-          },
-          {
-            backgroundColor: '#BFFD59',
-            borderColor: '#BFFD59',
-          },
-          {
-            backgroundColor: '#713ff9',
-            borderColor: '#713ff9',
-          },
-          {
-            backgroundColor: '#5EFCAD',
-            borderColor: '#5EFCAD',
-          },
-          {
-            backgroundColor: '#FC5E71',
-            borderColor: '#FC5E71',
-          },
-        ]
         this.barChartColors = [
           {
             backgroundColor: '#FCD35E',
@@ -476,7 +401,6 @@ export class HomeComponent {
         this.pieChartDataLocal = [
           this.totalLocal.confirmed,
           this.totalLocal.healings,
-          this.totalLocal.critical,
           this.totalLocal.recovered,
           this.totalLocal.deaths,
         ]
@@ -495,9 +419,8 @@ export class HomeComponent {
         Object.keys(response.data).forEach((key, index) => {
           this.barChartDataLocal[0].data[index] = response.data[key].confirmed
           this.barChartDataLocal[1].data[index] = response.data[key].healings
-          this.barChartDataLocal[2].data[index] = response.data[key].critical
-          this.barChartDataLocal[3].data[index] = response.data[key].recovered
-          this.barChartDataLocal[4].data[index] = response.data[key].deaths
+          this.barChartDataLocal[2].data[index] = response.data[key].recovered
+          this.barChartDataLocal[3].data[index] = response.data[key].deaths
         })
       },
       (e) => {
