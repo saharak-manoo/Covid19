@@ -557,16 +557,19 @@ class Covid
     end
 
     # Infected
-    infected_keys = jQuery.find('td.popup_subhead').take(6).map.with_index do |td, index|
-      case index
-      when 0..3
-        "Confirmed case #{td.text}".to_key
-      when 4..5
-        "PUI #{td.text}".to_key
-      end
-    end
+    infected_keys = [
+      'confirmed_case_total', 
+      'confirmed_case_new_case', 
+      'confirmed_case_deaths', 
+      'confirmed_case_from_foreign_countries',
+      'confirmed_add_today_from_foreign_countries',
+      'confirmed_deaths_from_foreign_countries',
+      'pui_total',
+      'new_pui'
+    ]
 
-    infected_values = jQuery.find('td.popup_num').take(infected_keys.count).map { |td| td.text.tap { |s| s.delete!(',') }.to_i }
+    infected_values = jQuery.find('td.popup_subhead span.txt').take(6).map { |td| td.text.tap { |s| s.delete!(',') }.to_i }
+    infected_values += jQuery.find('td.popup_subhead span.txt4').take(2).map { |td| td.text.tap { |s| s.delete!(',') }.to_i }
     infecteds = Hash[infected_keys.zip(infected_values)]
 
     # Traveler
@@ -576,20 +579,18 @@ class Covid
 
     confirmed = infecteds['confirmed_case_total'].to_i || 0
     deaths = infecteds['confirmed_case_deaths'].to_i || 0
-    recovered = infecteds['confirmed_case_discharged'].to_i || 0
-    severed = infecteds['confirmed_case_severe'].to_i || 0
 
     {
       name: 'Corona Virus Disease (COVID-19)',
       country: 'Thailand',
       confirmed: confirmed,
-      healings: ((confirmed - recovered) - deaths || 0).non_negative,
-      deaths: deaths,
-      recovered: recovered,
-      critical: severed,
       confirmed_add_today: infecteds['confirmed_case_new_case'].to_i || 0,
+      deaths: deaths,
+      confirmed_case_from_foreign_countries: infecteds['confirmed_case_from_foreign_countries'].to_i || 0,
+      confirmed_add_today_from_foreign_countries:infecteds['confirmed_add_today_from_foreign_countries'].to_i || 0 ,
+      confirmed_deaths_from_foreign_countries: infecteds['confirmed_deaths_from_foreign_countries'].to_i || 0,
       watch_out_collectors: infecteds['pui_total'].to_i || 0,
-      new_watch_out: infecteds['pui_new_pui'].to_i || 0,
+      new_watch_out: infecteds['new_pui'].to_i || 0,
       airport: travelers['airport'].to_i || 0,
       sea_port: travelers['sea_port'].to_i || 0,
       ground_port: travelers['ground_port'].to_i || 0,
@@ -656,10 +657,10 @@ class Covid
       global_summary = GlobalSummary.new if global_summary.nil?
 
       confirmed = global_confirmed
-      confirmed_add_today = ((confirmed - yesterday.confirmed) || 0).non_negative
+      confirmed_add_today = ((confirmed - (yesterday&.confirmed || 0)) || 0).non_negative
       recovered = global_recovered
       deaths = global_deaths
-      deaths_add_today = ((deaths - yesterday.deaths) || 0).non_negative
+      deaths_add_today = ((deaths - (yesterday&.deaths || 0)) || 0).non_negative
 
       global_summary.date = global_summary.date != date ? global_summary.date : date
       global_summary.confirmed = confirmed || 0
@@ -696,22 +697,13 @@ class Covid
 
   def self.global_summary
     begin
-      total = Covid.total
       confirmed = Covid.api_arcgis_global(ENV['arcgis_global_confirmed_host'])
-
+      recovered = Covid.api_arcgis_global(ENV['arcgis_global_recovered_host'])
+      deaths = Covid.api_arcgis_global(ENV['arcgis_global_deaths_host'])
       yesterday = GlobalSummary.find_by(date: Date.yesterday)
 
-      if total[:confirmed] > confirmed
-        confirmed = total[:confirmed]
-        recovered = total[:recovered]
-        deaths = total[:deaths]
-      else
-        recovered = Covid.api_arcgis_global(ENV['arcgis_global_recovered_host'])
-        deaths = Covid.api_arcgis_global(ENV['arcgis_global_deaths_host'])
-      end
-
-      confirmed_add_today = ((confirmed - yesterday.confirmed) || 0).non_negative
-      deaths_add_today = ((deaths - yesterday.deaths) || 0).non_negative
+      confirmed_add_today = ((confirmed - (yesterday&.confirmed || 0)) || 0).non_negative
+      deaths_add_today = ((deaths - (yesterday&.deaths || 0)) || 0).non_negative
 
       date = Date.today
       global_summary = GlobalSummary.find_by(date: date)
@@ -722,9 +714,6 @@ class Covid
       global_summary.confirmed_add_today = confirmed_add_today || 0
       global_summary.healings = ((confirmed - recovered) - deaths || 0).non_negative
       global_summary.recovered = recovered || 0
-      begin
-        global_summary.critical = global_critical || 0
-      end
       global_summary.deaths = deaths || 0
       global_summary.deaths_add_today = deaths_add_today || 0
       global_summary.save
@@ -928,11 +917,13 @@ class Covid
       thailand_summary.confirmed = data[:confirmed] || 0
       thailand_summary.confirmed_add_today = data[:confirmed_add_today] || 0
       thailand_summary.healings = data[:healings] || 0
-      thailand_summary.recovered = data[:recovered].zero? ? yesterday.recovered || 0 : data[:recovered] || 0
+      thailand_summary.recovered = data[:recovered].zero? ? yesterday&.recovered || 0 : data[:recovered] || 0
       thailand_summary.deaths = data[:deaths] || 0
 
       unless ddc.nil?
-        thailand_summary.critical = ddc[:critical] || 0
+        thailand_summary.confirmed_case_from_foreign_countries = ddc[:confirmed_case_from_foreign_countries] || 0
+        thailand_summary.confirmed_add_today_from_foreign_countries = ddc[:confirmed_add_today_from_foreign_countries] || 0
+        thailand_summary.confirmed_deaths_from_foreign_countries = ddc[:confirmed_deaths_from_foreign_countries] || 0
         thailand_summary.watch_out_collectors = ddc[:watch_out_collectors] || 0
         thailand_summary.new_watch_out = ddc[:new_watch_out] || 0
         thailand_summary.airport = ddc[:airport] || 0
