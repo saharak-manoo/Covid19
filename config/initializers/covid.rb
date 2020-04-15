@@ -542,39 +542,44 @@ class Covid
 
   def self.ddc_retry
     jQuery = api_ddc
-    # Date
-    date_time_str = jQuery.find('td.popup_hh').map { |td| td.text }.uniq.join(' ')
-    updated_at = DateTime.strptime("#{date_time_str} +07:00", '%d %B %Y At %H:%M %Z').localtime
 
-    return jQuery, date_time_str, updated_at
+    return jQuery
+  end
+
+  def self.ddc_get_value(jQuery)
+    jQuery.take(2).map { |v| v.text.tap { |s| s.delete!(',') }.to_i }
   end
 
   def self.thai_ddc
     begin
-      jQuery, date_time_str, updated_at = ddc_retry
+      jQuery = ddc_retry
     rescue Exception
-      jQuery, date_time_str, updated_at = ddc_retry
+      jQuery = ddc_retry
     end
 
     # Infected
     infected_keys = [
       'confirmed_case_total', 
-      'confirmed_case_new_case', 
-      'confirmed_case_deaths', 
       'confirmed_case_from_foreign_countries',
+      'confirmed_case_new_case', 
       'confirmed_add_today_from_foreign_countries',
+      'confirmed_case_deaths', 
       'confirmed_deaths_from_foreign_countries',
       'pui_total',
       'new_pui'
     ]
 
-    infected_values = jQuery.find('td.popup_subhead span.txt').take(6).map { |td| td.text.tap { |s| s.delete!(',') }.to_i }
-    infected_values += jQuery.find('td.popup_subhead span.txt4').take(2).map { |td| td.text.tap { |s| s.delete!(',') }.to_i }
+    infected_values = ddc_get_value(jQuery.find('div.w3-col.s4 div.bg1 h4.txt'))
+    infected_values += ddc_get_value(jQuery.find('div.w3-col.s4 div.bg2 h4.txt'))
+    infected_values += ddc_get_value(jQuery.find('div.w3-col.s4 div.bg3 h4.txt'))
+    infected_values += ddc_get_value(jQuery.find('div.w3-col.s6 div.bg3 h5.txt2'))
+
     infecteds = Hash[infected_keys.zip(infected_values)]
 
     # Traveler
-    traveler_keys = jQuery.find('td.popup_subhead2').map { |td| td.text.to_key }
-    traveler_values = jQuery.find('td.popup_num2').take(traveler_keys.count).map { |td| td.text.tap { |s| s.delete!(',') }.to_i }
+    traveler_keys = ['airport', 'sea_port', 'ground_port', 'at_chaeng_wattana']
+    traveler_values = jQuery.find('div.w3-col.s6 div.bg5').take(traveler_keys.count).map { |v| v.text.tap { |s| s.delete!(',') }.to_i }
+
     travelers = Hash[traveler_keys.zip(traveler_values)]
 
     confirmed = infecteds['confirmed_case_total'].to_i || 0
@@ -595,9 +600,6 @@ class Covid
       sea_port: travelers['sea_port'].to_i || 0,
       ground_port: travelers['ground_port'].to_i || 0,
       at_chaeng_wattana: travelers['at_chaeng_wattana'].to_i || 0,
-      date_time_str: date_time_str,
-      updated_at: updated_at,
-      last_updated: updated_at.to_difference_str,
       source: 'กรมควบคุมโรค Department of Disease Control',
       data_source: 'https://ddc.moph.go.th/viralpneumonia',
     }
