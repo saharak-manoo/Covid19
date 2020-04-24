@@ -23,10 +23,10 @@ default: &default
 
 development:
   <<: *default
-  database: Covid19_development
-  username: saharak
-  password: password
-  port: 5433
+  database: postgres
+  username: pun
+  password: 
+  port: 5432
   pool: 10
 
   # The specified database role being used to connect to postgres.
